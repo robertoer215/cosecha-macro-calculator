@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cosecha — Armador de Plato Modular</title>
+<link rel="stylesheet" href="css/styles.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+<div class="app">
+
+  <div class="header">
+    <div>
+      <div class="logo">Cosecha</div>
+      <div class="tagline" style="margin-top:3px">Alimentación inteligente</div>
+    </div>
+  </div>
+
+  <div class="global-tracker" id="global-tracker">
+    <div class="gt-top">
+      <div class="gt-lbl">Progreso de macros</div>
+      <div class="gt-kcal" id="gt-kcal">0 / 0 kcal</div>
+    </div>
+    <div class="gt-bars">
+      <div class="gt-bar-wrap"><div class="gt-bar-top"><span class="gt-bar-lbl">Proteína</span><span class="gt-bar-val" id="gtv-p">0/0g</span></div><div class="bar-bg"><div class="bar-fill bp" id="gtb-p" style="width:0%"></div></div></div>
+      <div class="gt-bar-wrap"><div class="gt-bar-top"><span class="gt-bar-lbl">Carbos</span><span class="gt-bar-val" id="gtv-c">0/0g</span></div><div class="bar-bg"><div class="bar-fill bc" id="gtb-c" style="width:0%"></div></div></div>
+      <div class="gt-bar-wrap"><div class="gt-bar-top"><span class="gt-bar-lbl">Grasas</span><span class="gt-bar-val" id="gtv-g">0/0g</span></div><div class="bar-bg"><div class="bar-fill bg2" id="gtb-g" style="width:0%"></div></div></div>
+    </div>
+  </div>
+
+  <div class="stepper" id="stepper">
+    <div style="display:flex;align-items:center;flex:1"><div class="s-node" onclick="goStep(0)"><div class="s-dot active" id="d0">1</div><div class="s-lbl active" id="l0">Perfil</div></div><div class="s-line"></div></div>
+    <div style="display:flex;align-items:center;flex:1"><div class="s-node" onclick="goStep(1)"><div class="s-dot" id="d1">2</div><div class="s-lbl" id="l1">Plato</div></div><div class="s-line"></div></div>
+    <div style="display:flex;align-items:center;flex:0"><div class="s-node" onclick="goStep(2)"><div class="s-dot" id="d2">3</div><div class="s-lbl" id="l2">Resumen</div></div></div>
+  </div>
+
+  <div class="screen active" id="sc0">
+    <div class="eyebrow">Paso 01</div>
+    <div class="stitle">Tu perfil</div>
+    <div class="ssub">Calculamos los macronutrientes exactos para cada comida según tus objetivos fisiológicos.</div>
+
+    <div class="mode-toggle">
+      <div class="mt-btn mt-active" id="mt-calc" onclick="setMode('calc')">Calcular con fórmula</div>
+      <div class="mt-btn" id="mt-manual" onclick="setMode('manual')">Ingresar mis macros</div>
+    </div>
+
+    <div id="formula-form">
+      <div class="form-grid">
+        <div class="fg"><label>Sexo biológico</label><select id="sexo"><option value="masculino">Masculino</option><option value="femenino">Femenino</option></select></div>
+        <div class="fg"><label>Edad</label><input type="number" id="edad" value="28" min="15" max="80"></div>
+        <div class="fg"><label>Peso — kg</label><input type="number" id="peso" value="75" min="40" max="200"></div>
+        <div class="fg"><label>Altura — cm</label><input type="number" id="altura" value="175" min="140" max="220"></div>
+        <div class="fg"><label>Comidas por día</label><select id="comidas"><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option></select></div>
+      </div>
+      <div class="divider"></div>
+      <div class="sec-lbl">Objetivo</div>
+      <div class="obj-grid">
+        <div class="obj-card selected" data-o="perder_grasa" onclick="selObj(this)"><div class="on">Perder grasa</div><div class="od">Déficit −15%</div></div>
+        <div class="obj-card" data-o="mantener" onclick="selObj(this)"><div class="on">Mantener</div><div class="od">TDEE exacto</div></div>
+        <div class="obj-card" data-o="ganar_musculo" onclick="selObj(this)"><div class="on">Ganar músculo</div><div class="od">Superávit +10%</div></div>
+        <div class="obj-card" data-o="rendimiento" onclick="selObj(this)"><div class="on">Rendimiento</div><div class="od">Superávit +5%</div></div>
+      </div>
+      <div class="sec-lbl">Nivel de actividad</div>
+      <div class="act-grid">
+        <div class="act-card" data-a="sedentario" onclick="selAct(this)"><div class="an">Sedentario</div><div class="ad">Sin ejercicio</div></div>
+        <div class="act-card" data-a="ligero" onclick="selAct(this)"><div class="an">Ligero</div><div class="ad">1–3 días</div></div>
+        <div class="act-card selected" data-a="moderado" onclick="selAct(this)"><div class="an">Moderado</div><div class="ad">3–5 días</div></div>
+        <div class="act-card" data-a="alto" onclick="selAct(this)"><div class="an">Alto</div><div class="ad">6–7 días</div></div>
+        <div class="act-card" data-a="atleta" onclick="selAct(this)"><div class="an">Atleta</div><div class="ad">Doble sesión</div></div>
+      </div>
+
+      <div class="terms-wrap">
+        <div class="terms-title">Antes de continuar</div>
+        <p class="terms-text">Esta herramienta usa la fórmula Mifflin-St Jeor, pensada para personas sanas en general. Si tienes alguna condición de salud, estás bajo tratamiento médico o trabajas con un especialista, te recomendamos usar sus indicaciones directamente.</p>
+        <button class="terms-accept-btn" id="terms-btn" onclick="aceptarTerminos()">
+          <span class="terms-btn-icon" id="terms-icon">○</span>
+          <span id="terms-btn-txt">Entendido, acepto continuar</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="manual-form" style="display:none">
+      <div class="manual-note">Usa los valores que te indicó tu nutrióloga o los que ya conoces.</div>
+
+      <div class="sub-toggle">
+        <div class="st-btn st-active" id="st-comida" onclick="setSubMode('comida')">Por comida</div>
+        <div class="st-btn" id="st-total" onclick="setSubMode('total')">Total del día</div>
+      </div>
+
+      <div id="sub-comida">
+        <div class="form-grid">
+          <div class="fg"><label>Proteína — g</label><input type="number" id="mc-prot" placeholder="45" min="0" max="300"></div>
+          <div class="fg"><label>Carbohidratos — g</label><input type="number" id="mc-carb" placeholder="60" min="0" max="400"></div>
+          <div class="fg"><label>Grasas — g</label><input type="number" id="mc-gras" placeholder="20" min="0" max="150"></div>
+        </div>
+      </div>
+
+      <div id="sub-total" style="display:none">
+        <div class="form-grid">
+          <div class="fg"><label>Comidas por día</label><select id="m-comidas"><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option></select></div>
+          <div class="fg"><label>Kcal totales / día</label><input type="number" id="m-kcal" placeholder="2000" min="800" max="5000"></div>
+          <div class="fg"><label>Proteína — g totales</label><input type="number" id="m-prot" placeholder="150" min="0" max="500"></div>
+          <div class="fg"><label>Carbohidratos — g totales</label><input type="number" id="m-carb" placeholder="200" min="0" max="800"></div>
+          <div class="fg"><label>Grasas — g totales</label><input type="number" id="m-gras" placeholder="65" min="0" max="300"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row"><div></div><button class="btn btn-main" id="btn-calcular" onclick="calcular()" disabled>Continuar</button></div>
+  </div>
+
+  <div class="screen" id="sc1">
+    <div class="eyebrow">Paso 02</div>
+    <div class="stitle">Arma tu plato</div>
+    <div class="ssub">Selecciona un módulo por categoría y elige el tamaño. La app sugerirá extras para alcanzar tu meta.</div>
+    <div id="meta-panel"></div>
+    <div id="base-mods"></div>
+    <div id="sugg-wrap"></div>
+    <div id="plato-btn-row" class="btn-row"></div>
+  </div>
+
+  <div class="screen" id="sc2">
+    <div class="eyebrow">Paso 03</div>
+    <div class="stitle">Tu plato</div>
+    <div class="ssub">Composición nutricional, precio final y código para cocina.</div>
+    <div id="res-content"></div>
+    <div class="btn-row"><button class="btn btn-ghost" onclick="goStep(1)">← Editar plato</button><button class="btn btn-main" onclick="goStep(0)">Nueva consulta</button></div>
+  </div>
+
+</div>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

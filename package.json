@@ -1,0 +1,12 @@
+{
+  "name": "cosecha-app",
+  "version": "1.0.0",
+  "description": "Armador de plato modular con macros personalizados — Cosecha",
+  "type": "module",
+  "scripts": {
+    "dev": "npx serve src -p 3000",
+    "start": "npx serve src -p 3000"
+  },
+  "keywords": ["foodtech", "nutricion", "fast-casual"],
+  "license": "MIT"
+}
