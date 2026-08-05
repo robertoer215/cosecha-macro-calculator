@@ -1,5 +1,5 @@
 import { ING, SIZES, OBJ_LABEL, CATS, CAT_LABEL } from './data.js';
-import { precio, mac, calcularMeta, recomendarSize } from './calc.js';
+import { precio, mac, calcularMeta, metaManualComida, metaManualTotal, recomendarSize } from './calc.js';
 
 let meta = {}, selBase = {}, szBase = {}, selExtra = {}, szExtra = {};
 let modoActual = 'calc';
@@ -44,36 +44,36 @@ window.setSubMode = function(sub) {
 window.selObj = el => { document.querySelectorAll('.obj-card').forEach(c=>c.classList.remove('selected')); el.classList.add('selected'); };
 window.selAct = el => { document.querySelectorAll('.act-card').forEach(c=>c.classList.remove('selected')); el.classList.add('selected'); };
 
+// Lee un input numérico validando contra los min/max declarados en el HTML.
+// Devuelve null si está vacío, no es número o está fuera de rango (el 0 sí es válido si min lo permite).
+function numCampo(id) {
+  const el = $(id), v = String(el.value).trim();
+  if (v === '') return null;
+  const n = +v;
+  if (!Number.isFinite(n)) return null;
+  if (el.min !== '' && n < +el.min) return null;
+  if (el.max !== '' && n > +el.max) return null;
+  return n;
+}
+
 window.calcular = function() {
   if (modoActual === 'manual') {
     if (subModoActual === 'comida') {
-      const prot = +$('mc-prot').value;
-      const carb = +$('mc-carb').value;
-      const gras = +$('mc-gras').value;
-      if (!prot || !carb || !gras) { alert('Completa todos los campos de macros'); return; }
-      const kcal = Math.round(prot * 4 + carb * 4 + gras * 9);
-      meta = { kcal, prot, carb, gras, comidas: 1, objetivo: 'manual', actividad: 'manual', peso: 0 };
+      const prot = numCampo('mc-prot'), carb = numCampo('mc-carb'), gras = numCampo('mc-gras');
+      if (prot === null || carb === null || gras === null) { alert('Revisa los campos de macros: completa los tres con valores dentro de rango (el 0 es válido).'); return; }
+      meta = metaManualComida({ prot, carb, gras });
     } else {
       const comidas = +$('m-comidas').value;
-      const kcalTotal = +$('m-kcal').value;
-      const protTotal = +$('m-prot').value;
-      const carbTotal = +$('m-carb').value;
-      const grasTotal = +$('m-gras').value;
-      if (!kcalTotal || !protTotal || !carbTotal || !grasTotal) { alert('Completa todos los campos de macros'); return; }
-      meta = {
-        kcal: Math.round(kcalTotal / comidas),
-        prot: Math.round(protTotal / comidas),
-        carb: Math.round(carbTotal / comidas),
-        gras: Math.round(grasTotal / comidas),
-        comidas, objetivo: 'manual', actividad: 'manual', peso: 0
-      };
+      const kcalTotal = numCampo('m-kcal'), protTotal = numCampo('m-prot'), carbTotal = numCampo('m-carb'), grasTotal = numCampo('m-gras');
+      if (kcalTotal === null || protTotal === null || carbTotal === null || grasTotal === null) { alert('Revisa los campos: completa todos con valores dentro de rango (el 0 es válido en macros).'); return; }
+      meta = metaManualTotal({ protTotal, carbTotal, grasTotal, comidas });
     }
   } else {
+    const edad = numCampo('edad'), peso = numCampo('peso'), altura = numCampo('altura');
+    if (edad === null || peso === null || altura === null) { alert('Revisa edad, peso y altura: deben estar dentro de los rangos indicados.'); return; }
     meta = calcularMeta({
       sexo: $('sexo').value,
-      edad: +$('edad').value,
-      peso: +$('peso').value,
-      altura: +$('altura').value,
+      edad, peso, altura,
       comidas: +$('comidas').value,
       objetivo: document.querySelector('.obj-card.selected').dataset.o,
       actividad: document.querySelector('.act-card.selected').dataset.a
@@ -102,7 +102,7 @@ function totals() {
 }
 
 function updateGlobalTracker() {
-  if(!meta.kcal) return;
+  if(meta.kcal===undefined) return; // 0 es una meta válida (manual): el tracker debe refrescarse igual
   const t = totals();
   const pp=Math.min(100,Math.round(t.prot/(meta.prot||1)*100));
   const cp=Math.min(100,Math.round(t.carb/(meta.carb||1)*100));
@@ -132,6 +132,7 @@ function renderMeta() {
       <div class="mn"><div class="mn-val">${meta.gras}<span class="mn-unit">g</span></div><div class="mn-lbl g">Grasas</div></div>
       <div class="mn"><div class="mn-val">${meta.kcal}<span class="mn-unit" style="font-size:9px">cal</span></div><div class="mn-lbl k">Energía</div></div>
     </div>
+    ${meta.ajusteCarb ? `<div class="meta-warn">Con tu perfil, la proteína y grasa objetivo cubren prácticamente todas tus calorías del día, así que tu meta de carbohidratos por comida quedó en 0 g. Te recomendamos validar tu plan con un especialista.</div>` : ''}
   </div>`;
 }
 
@@ -169,9 +170,11 @@ function renderBase() {
   let html = renderSubNav();
   html += `<div class="cat-sec"><div class="cat-hd"><span class="cat-nm">${CAT_LABEL[cat]}</span><span class="cat-ht">Elige uno o más${selCount ? ` · ${selCount} elegido${selCount>1?'s':''}` : ''}</span></div><div class="items-grid">`;
   items.forEach(it => {
-    const sz=szBase[it.id]||1;
-    const isSel=(selBase[cat]||[]).includes(it.id);
     const rec=recomendarSize(it,meta);
+    // La carta muestra SIEMPRE el tamaño que se agregará al tocarla (el recomendado
+    // si el usuario no ha elegido otro): así los macros de la carta y la barra cuadran.
+    const sz=szBase[it.id]??rec;
+    const isSel=(selBase[cat]||[]).includes(it.id);
     const m=mac(it,sz),pr=precio(it,sz);
     html+=`<div class="icard${isSel?' sel':''}" onclick="selBI('${it.id}','${cat}')">
       <div class="i-check"></div>
@@ -226,7 +229,9 @@ function renderSugg() {
     return;
   }
   const t=totals();
-  const gP=meta.prot-t.prot,gC=meta.carb-t.carb,gG=meta.gras-t.gras;
+  // gG se normaliza a 1 decimal: t.gras trae decimales binarios (13.3) y la resta
+  // directa imprimiría artefactos tipo "6.699999999999999g" en pantalla.
+  const gP=meta.prot-t.prot,gC=meta.carb-t.carb,gG=Math.round((meta.gras-t.gras)*10)/10;
   const suggs=[];
   if(gP>8){const b=ING.filter(i=>i.cat==='proteina'&&!(selBase.proteina||[]).includes(i.id)).sort((a,b2)=>b2.prot-a.prot)[0];if(b)suggs.push({it:b,why:`Faltan ~${gP}g de proteína para alcanzar tu meta.`,m:'Proteína'});}
   if(gC>10){const b=ING.filter(i=>i.cat==='carbohidrato'&&!(selBase.carbohidrato||[]).includes(i.id)).sort((a,b2)=>b2.carb-a.carb)[0];if(b)suggs.push({it:b,why:`Faltan ~${gC}g de carbohidratos para energía sostenida.`,m:'Carbohidrato'});}
@@ -259,7 +264,7 @@ window.toggleE = function(id){ if(selExtra[id])delete selExtra[id]; else{selExtr
 function buildQRText() {
   const lines=['COSECHA — ORDEN DE COCINA',''];
   const ts=new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
-  lines.push('Hora: '+ts,'Objetivo: '+OBJ_LABEL[meta.objetivo],'','--- PORCIONES ---');
+  lines.push('Hora: '+ts,'Objetivo: '+(meta.objetivo==='manual'?'Macros personalizados':OBJ_LABEL[meta.objetivo]),'','--- PORCIONES ---');
   CATS.forEach(cat=>{ (selBase[cat]||[]).forEach(id=>{ const it=ING.find(i=>i.id===id);const sz=szBase[id]||1,m=mac(it,sz);lines.push(it.nombre+' ('+SIZES.find(s=>s.k===sz).l+'): '+m.g+'g'); }); });
   Object.keys(selExtra).forEach(id=>{ const it=ING.find(i=>i.id===id);const sz=szExtra[id]||1,m=mac(it,sz);lines.push('[EXTRA] '+it.nombre+' ('+SIZES.find(s=>s.k===sz).l+'): '+m.g+'g'); });
   const t=totals();
@@ -290,10 +295,14 @@ window.goResumen = function() {
     rows+=`<div class="res-item"><div><div class="res-extra-tag">Extra</div><div class="res-name">${it.nombre}</div><div class="res-sub">${SIZES.find(s=>s.k===sz)?.l||'Estándar'} · ${m.g}g</div></div><div class="res-right"><div class="res-macs"><span class="res-mac" style="color:var(--green)">${m.prot}g P</span><span class="res-mac" style="color:var(--blue)">${m.carb}g C</span><span class="res-mac" style="color:var(--amber)">${m.gras}g G</span></div><div class="res-price">$${pr}</div></div></div>`;
   });
   const dP=Math.round(tP)-meta.prot,dC=Math.round(tC)-meta.carb,dG=Math.round(tG-meta.gras),dK=Math.round(tK)-meta.kcal;
+  // Umbrales coherentes entre sí: ±TOLG g por macro equivalen hasta 4·4+4·4+9·4 = 68 kcal.
+  // Reduce (no elimina del todo) los casos de "En tu meta" ×3 con kcal en rojo: las kcal de
+  // etiqueta de data.js no cumplen 4/4/9 exacto y en platos grandes pueden apilarse más allá de 68.
+  const TOLG=4,TOLK=TOLG*(4+4+9);
   const fmtKcal=v=>v>0?'+'+v:''+v;
-  const clsKcal=v=>Math.abs(v)<=4?'ok':'off';
-  const clsMacro=v=>Math.abs(v)<=4?'ok':v>0?'over':'under';
-  const fmtMacro=(v,unit)=>{ if(Math.abs(v)<=4) return 'En tu meta'; return v>0?`${v}${unit} de más`:`${Math.abs(v)}${unit} de menos`; };
+  const clsKcal=v=>Math.abs(v)<=TOLK?'ok':'off';
+  const clsMacro=v=>Math.abs(v)<=TOLG?'ok':v>0?'over':'under';
+  const fmtMacro=(v,unit)=>{ if(Math.abs(v)<=TOLG) return 'En tu meta'; return v>0?`${v}${unit} de más`:`${Math.abs(v)}${unit} de menos`; };
   const insts=buildQRInstructions();
   const instHTML=insts.map((it,i)=>`<div class="qr-inst-item"><div class="qr-inst-num">${i+1}</div><div><div class="qr-inst-text">${it.name}${it.isExtra?' <span style="font-size:10px;color:var(--accent);font-family:Inter,sans-serif">(extra)</span>':''}</div><div class="qr-inst-detail">Porción ${it.sz} · <strong>${it.g}g</strong> · ${it.cat}</div></div></div>`).join('');
   $('res-content').innerHTML=`
