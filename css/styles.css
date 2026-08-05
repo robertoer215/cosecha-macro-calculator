@@ -107,8 +107,9 @@ select option{font-family:sans-serif;background:#FAFAF8}
 .sz-pill.sz-on{background:var(--text);color:#fff}
 .sz-pill.sz-rec{border-top:2px solid var(--accent)}
 .sz-pill.sz-rec.sz-on{border-top:2px solid var(--accent)}
-.rec-dot{display:block;width:4px;height:4px;border-radius:50%;background:var(--accent);margin:2px auto 0;opacity:.8}
-.sz-pill.sz-on .rec-dot{background:#fff}
+/* La palabra en vez de un punto: el punto no comunicaba nada por sí solo. */
+.rec-lbl{display:block;font-size:7px;letter-spacing:.4px;text-transform:uppercase;color:var(--accent);margin-top:3px;white-space:nowrap}
+.sz-pill.sz-on .rec-lbl{color:#fff}
 .sugg-box{border:1px solid var(--border);margin-bottom:2rem}
 .sugg-hd{padding:.875rem 1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
 .sugg-badge{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;font-family:'Inter',sans-serif;color:var(--accent);padding:4px 10px;border:1px solid var(--border-strong)}

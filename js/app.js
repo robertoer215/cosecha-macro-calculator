@@ -191,7 +191,7 @@ function renderBase() {
         <div class="i-top"><div class="i-name">${it.nombre}</div></div>
         <div class="i-macros"><div class="mp"><b>${m.prot}g</b> P</div><div class="mp"><b>${m.carb}g</b> C</div><div class="mp"><b>${m.gras}g</b> G</div></div>
         <div class="i-price">$${pr} MXN</div>
-        <div class="size-pills">${SIZES.map(s=>`<div class="sz-pill${sz===s.k?' sz-on':''}${s.k===rec?' sz-rec':''}" onclick="event.stopPropagation();setSzB('${it.id}','${cat}',${s.k})">${s.l}${s.k===rec?'<span class="rec-dot"></span>':''}</div>`).join('')}</div>
+        <div class="size-pills">${SIZES.map(s=>`<div class="sz-pill${sz===s.k?' sz-on':''}${s.k===rec?' sz-rec':''}" onclick="event.stopPropagation();setSzB('${it.id}','${cat}',${s.k})">${s.l}${s.k===rec?'<span class="rec-lbl">Recomendado</span>':''}</div>`).join('')}</div>
       </div>
     </div>`;
   });
