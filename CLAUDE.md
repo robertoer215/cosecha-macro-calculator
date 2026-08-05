@@ -9,6 +9,23 @@ y la app calcula macros personalizados, sugiere extras y genera un QR para cocin
 - `src/js/data.js` — datos: ingredientes, precios (pKg), factores, constantes
 - `src/js/calc.js` — funciones puras: precio(), mac(), calcularMeta()
 - `src/js/app.js` — estado y render de la UI; expone funciones a window
+- `assets/ingredientes/` — foto de cada ingrediente, 600×600 JPEG (~110 KB). Son
+  derivadas con `sips` de las fotos de la landing (repo cosecha-landing/assets).
+  `src/assets` es un symlink a `../assets` para no duplicar los binarios en git.
+
+## Fotos de ingredientes
+- `data.js` trae `img` (nombre de archivo) y `foco` (object-position) por ingrediente.
+- Las fotos son cuadradas y las tarjetas 4:3 (16:9 en móvil): `foco` recentra el recorte
+  en los platos que no están al centro de su foto (guacamole, nueces, semillas, arroz,
+  camote, esquites, verduras). Sin `foco` se corta el plato.
+- Se renderizan con el helper `foto(it, cls)` de app.js, en tarjetas, extras y resumen.
+  Van con `loading="lazy"`: el paso 2 sólo muestra una categoría a la vez.
+- El ticket de cocina (instrucciones del QR) va sin fotos a propósito: es para staff.
+
+## Duplicación src/ ↔ raíz (deuda conocida)
+Los 5 archivos de `src/` y la raíz son copias idénticas: `npm run dev` sirve `src/`,
+los tests importan de `../js/` y GitHub Pages sirve la raíz. Al tocar código hay que
+copiar a las dos. Pendiente decidir si se colapsa en una sola ubicación.
 
 ## Reglas de negocio (NO cambiar sin avisar)
 - Macros: Mifflin-St Jeor → TDEE → kcal objetivo → reparto por comida
@@ -24,6 +41,13 @@ y la app calcula macros personalizados, sugiere extras y genera un QR para cocin
 - Nota conocida: las kcal de etiqueta en data.js no cumplen 4/4/9 exacto con sus
   propios macros (hasta ±9.5 kcal por item); en platos grandes esos desvíos pueden
   apilarse más allá de los 68 kcal y aún pintar la kcal en rojo con macros en meta.
+
+## Bugs conocidos
+- El QR del resumen NO se genera con platos de ~4 items o más: qrcodejs lanza
+  `code length overflow (7908>2920)` porque buildQRText() supera la capacidad de la
+  librería. El recuadro del QR queda vacío. Anterior a las fotos (verificado contra
+  el commit 0f73bb7). Arreglo: acortar el texto (IDs y gramos en vez de nombres y
+  encabezados) o subir correctLevel/versión.
 
 ## Tareas pendientes / ideas
 - [ ] Backend para guardar perfiles

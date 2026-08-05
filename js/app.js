@@ -1,4 +1,4 @@
-import { ING, SIZES, OBJ_LABEL, CATS, CAT_LABEL } from './data.js';
+import { ING, SIZES, OBJ_LABEL, CATS, CAT_LABEL, IMG_DIR } from './data.js';
 import { precio, mac, calcularMeta, metaManualComida, metaManualTotal, recomendarSize } from './calc.js';
 
 let meta = {}, selBase = {}, szBase = {}, selExtra = {}, szExtra = {};
@@ -10,6 +10,15 @@ const CATS_STEPS = ['proteina', 'carbohidrato', 'vegetal', 'grasa'];
 const STEP_LABELS = {proteina:'Proteína', carbohidrato:'Carbohidrato', vegetal:'Vegetal', grasa:'Grasa saludable'};
 
 const $ = id => document.getElementById(id);
+
+// Foto del ingrediente. Las fotos son cuadradas y los contenedores no siempre:
+// `foco` recentra el recorte en los platos que no están al centro de su imagen.
+// Van con loading="lazy" porque el paso 2 sólo muestra una categoría a la vez.
+function foto(it, cls) {
+  if (!it.img) return '';
+  const pos = it.foco ? ` style="object-position:${it.foco}"` : '';
+  return `<img class="${cls}" src="${IMG_DIR}${it.img}" alt="${it.nombre}" loading="lazy" decoding="async" width="600" height="600"${pos}>`;
+}
 
 window.aceptarTerminos = function() {
   const btn = $('terms-btn');
@@ -177,11 +186,13 @@ function renderBase() {
     const isSel=(selBase[cat]||[]).includes(it.id);
     const m=mac(it,sz),pr=precio(it,sz);
     html+=`<div class="icard${isSel?' sel':''}" onclick="selBI('${it.id}','${cat}')">
-      <div class="i-check"></div>
-      <div class="i-top"><div class="i-name">${it.nombre}</div></div>
-      <div class="i-macros"><div class="mp"><b>${m.prot}g</b> P</div><div class="mp"><b>${m.carb}g</b> C</div><div class="mp"><b>${m.gras}g</b> G</div></div>
-      <div class="i-price">$${pr} MXN</div>
-      <div class="size-pills">${SIZES.map(s=>`<div class="sz-pill${sz===s.k?' sz-on':''}${s.k===rec?' sz-rec':''}" onclick="event.stopPropagation();setSzB('${it.id}','${cat}',${s.k})">${s.l}${s.k===rec?'<span class="rec-dot"></span>':''}</div>`).join('')}</div>
+      <div class="i-photo">${foto(it,'i-img')}<div class="i-check"></div></div>
+      <div class="i-body">
+        <div class="i-top"><div class="i-name">${it.nombre}</div></div>
+        <div class="i-macros"><div class="mp"><b>${m.prot}g</b> P</div><div class="mp"><b>${m.carb}g</b> C</div><div class="mp"><b>${m.gras}g</b> G</div></div>
+        <div class="i-price">$${pr} MXN</div>
+        <div class="size-pills">${SIZES.map(s=>`<div class="sz-pill${sz===s.k?' sz-on':''}${s.k===rec?' sz-rec':''}" onclick="event.stopPropagation();setSzB('${it.id}','${cat}',${s.k})">${s.l}${s.k===rec?'<span class="rec-dot"></span>':''}</div>`).join('')}</div>
+      </div>
     </div>`;
   });
   html += `</div></div>`;
@@ -245,13 +256,16 @@ function renderSugg() {
     const sz=szExtra[s.it.id]||1,isOn=!!selExtra[s.it.id];
     const pr=precio(s.it,sz);
     items+=`<div class="sugg-item">
-      <div class="sugg-macro-tag">${s.m}</div>
-      <div class="sugg-name">${s.it.nombre}</div>
-      <div class="sugg-why">${s.why}</div>
-      <div class="sugg-controls">
-        <div class="sugg-sizes">${SIZES.map(sv=>`<div class="ss-pill${sz===sv.k?' ss-on':''}" onclick="setSzE('${s.it.id}',${sv.k})">${sv.l}</div>`).join('')}</div>
-        <div class="sugg-price">$${pr}</div>
-        <button class="btn-add ${isOn?'on':'off'}" onclick="toggleE('${s.it.id}')">${isOn?'Quitar':'+ Agregar'}</button>
+      <div class="sugg-thumb">${foto(s.it,'sugg-img')}</div>
+      <div class="sugg-main">
+        <div class="sugg-macro-tag">${s.m}</div>
+        <div class="sugg-name">${s.it.nombre}</div>
+        <div class="sugg-why">${s.why}</div>
+        <div class="sugg-controls">
+          <div class="sugg-sizes">${SIZES.map(sv=>`<div class="ss-pill${sz===sv.k?' ss-on':''}" onclick="setSzE('${s.it.id}',${sv.k})">${sv.l}</div>`).join('')}</div>
+          <div class="sugg-price">$${pr}</div>
+          <button class="btn-add ${isOn?'on':'off'}" onclick="toggleE('${s.it.id}')">${isOn?'Quitar':'+ Agregar'}</button>
+        </div>
       </div>
     </div>`;
   });
@@ -286,13 +300,13 @@ window.goResumen = function() {
     (selBase[cat]||[]).forEach(id=>{
       const it=ING.find(i=>i.id===id);const sz=szBase[id]||1,m=mac(it,sz),pr=precio(it,sz);
       tP+=m.prot;tC+=m.carb;tG+=m.gras;tK+=m.kcal;total+=pr;
-      rows+=`<div class="res-item"><div><div class="res-name">${it.nombre}</div><div class="res-sub">${SIZES.find(s=>s.k===sz)?.l||'Estándar'} · ${m.g}g</div></div><div class="res-right"><div class="res-macs"><span class="res-mac" style="color:var(--green)">${m.prot}g P</span><span class="res-mac" style="color:var(--blue)">${m.carb}g C</span><span class="res-mac" style="color:var(--amber)">${m.gras}g G</span></div><div class="res-price">$${pr}</div></div></div>`;
+      rows+=`<div class="res-item"><div class="res-left"><div class="res-thumb">${foto(it,'res-img')}</div><div><div class="res-name">${it.nombre}</div><div class="res-sub">${SIZES.find(s=>s.k===sz)?.l||'Estándar'} · ${m.g}g</div></div></div><div class="res-right"><div class="res-macs"><span class="res-mac" style="color:var(--green)">${m.prot}g P</span><span class="res-mac" style="color:var(--blue)">${m.carb}g C</span><span class="res-mac" style="color:var(--amber)">${m.gras}g G</span></div><div class="res-price">$${pr}</div></div></div>`;
     });
   });
   Object.keys(selExtra).forEach(id=>{
     const it=ING.find(i=>i.id===id);const sz=szExtra[id]||1,m=mac(it,sz),pr=precio(it,sz);
     tP+=m.prot;tC+=m.carb;tG+=m.gras;tK+=m.kcal;total+=pr;
-    rows+=`<div class="res-item"><div><div class="res-extra-tag">Extra</div><div class="res-name">${it.nombre}</div><div class="res-sub">${SIZES.find(s=>s.k===sz)?.l||'Estándar'} · ${m.g}g</div></div><div class="res-right"><div class="res-macs"><span class="res-mac" style="color:var(--green)">${m.prot}g P</span><span class="res-mac" style="color:var(--blue)">${m.carb}g C</span><span class="res-mac" style="color:var(--amber)">${m.gras}g G</span></div><div class="res-price">$${pr}</div></div></div>`;
+    rows+=`<div class="res-item"><div class="res-left"><div class="res-thumb">${foto(it,'res-img')}</div><div><div class="res-extra-tag">Extra</div><div class="res-name">${it.nombre}</div><div class="res-sub">${SIZES.find(s=>s.k===sz)?.l||'Estándar'} · ${m.g}g</div></div></div><div class="res-right"><div class="res-macs"><span class="res-mac" style="color:var(--green)">${m.prot}g P</span><span class="res-mac" style="color:var(--blue)">${m.carb}g C</span><span class="res-mac" style="color:var(--amber)">${m.gras}g G</span></div><div class="res-price">$${pr}</div></div></div>`;
   });
   const dP=Math.round(tP)-meta.prot,dC=Math.round(tC)-meta.carb,dG=Math.round(tG-meta.gras),dK=Math.round(tK)-meta.kcal;
   // Umbrales coherentes entre sí: ±TOLG g por macro equivalen hasta 4·4+4·4+9·4 = 68 kcal.

@@ -74,15 +74,29 @@ select option{font-family:sans-serif;background:#FAFAF8}
 .cat-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
 .cat-nm{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-family:'Inter',sans-serif;color:var(--text)}
 .cat-ht{font-size:10px;color:var(--light);font-family:'Inter',sans-serif}
-.items-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border)}
-.icard{background:var(--bg);padding:14px;cursor:pointer;transition:background .2s;position:relative}
+/* Bordes por celda en vez de "gap sobre fondo": con un número impar de ingredientes
+   (proteína son 3) la celda sobrante ya no se pinta como un bloque gris. */
+.items-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--border);border-left:1px solid var(--border)}
+.icard{background:var(--bg);cursor:pointer;transition:background .2s;position:relative;display:flex;flex-direction:column;overflow:hidden;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
 .icard:hover{background:var(--surface)}
 .icard.sel{background:var(--accent-soft)}
+.i-photo{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--surface)}
+.i-img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:transform .5s ease}
+.icard:hover .i-img{transform:scale(1.045)}
+/* Velo superior: el check tiene que leerse también sobre las fotos más claras. */
+.i-photo::after{content:'';position:absolute;inset:0 0 auto 0;height:60px;background:linear-gradient(180deg,rgba(26,26,24,.3),transparent);pointer-events:none}
+/* El aro de seleccionado va en un pseudo-elemento: un inset box-shadow sobre .i-photo
+   se pinta por debajo del <img> hijo y no se vería. */
+.i-photo::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;box-shadow:inset 0 0 0 0 var(--accent);transition:box-shadow .2s}
+.i-body{padding:14px}
 .i-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
 .i-name{font-size:13px;color:var(--text);line-height:1.3}
 .i-price{font-size:12px;color:var(--accent);font-family:'Inter',sans-serif;font-weight:500}
-.i-check{width:14px;height:14px;border-radius:50%;border:1px solid var(--border-strong);transition:all .2s;position:absolute;top:14px;right:14px}
-.icard.sel .i-check{background:var(--accent);border-color:var(--accent)}
+.i-check{width:20px;height:20px;border-radius:50%;border:1px solid rgba(255,255,255,.85);background:rgba(26,26,24,.2);transition:all .2s;position:absolute;top:10px;right:10px;z-index:2;display:flex;align-items:center;justify-content:center}
+.i-check::after{content:'';width:8px;height:8px;border-radius:50%;background:transparent;transition:background .2s}
+.icard.sel .i-check{background:var(--accent);border-color:#fff}
+.icard.sel .i-check::after{background:#fff}
+.icard.sel .i-photo::before{box-shadow:inset 0 0 0 3px var(--accent)}
 .i-macros{display:flex;gap:10px;margin-bottom:4px}
 .mp{font-size:10px;color:var(--muted);font-family:'Inter',sans-serif}
 .mp b{color:var(--text);font-weight:500;font-style:normal}
@@ -99,8 +113,11 @@ select option{font-family:sans-serif;background:#FAFAF8}
 .sugg-hd{padding:.875rem 1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
 .sugg-badge{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;font-family:'Inter',sans-serif;color:var(--accent);padding:4px 10px;border:1px solid var(--border-strong)}
 .sugg-desc{font-size:11px;color:var(--muted);font-family:'Inter',sans-serif}
-.sugg-item{padding:14px 1.25rem;border-bottom:1px solid var(--border)}
+.sugg-item{padding:14px 1.25rem;border-bottom:1px solid var(--border);display:flex;gap:14px;align-items:flex-start}
 .sugg-item:last-child{border-bottom:none}
+.sugg-thumb{width:76px;height:76px;flex-shrink:0;overflow:hidden;background:var(--surface);border:1px solid var(--border)}
+.sugg-img{width:100%;height:100%;object-fit:cover;display:block}
+.sugg-main{flex:1;min-width:0}
 .sugg-name{font-size:13px;color:var(--text);margin-bottom:3px}
 .sugg-macro-tag{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;font-family:'Inter',sans-serif;color:var(--accent);margin-bottom:6px}
 .sugg-why{font-size:11px;color:var(--muted);font-family:'Inter',sans-serif;margin-bottom:10px;line-height:1.5}
@@ -121,6 +138,9 @@ select option{font-family:sans-serif;background:#FAFAF8}
 .res-wrap{border:1px solid var(--border);margin-bottom:1.5rem}
 .res-item{display:flex;justify-content:space-between;align-items:flex-start;padding:13px 1.25rem;border-bottom:1px solid var(--border)}
 .res-item:last-child{border-bottom:none}
+.res-left{display:flex;gap:12px;align-items:center;min-width:0}
+.res-thumb{width:46px;height:46px;flex-shrink:0;overflow:hidden;background:var(--surface);border:1px solid var(--border)}
+.res-img{width:100%;height:100%;object-fit:cover;display:block}
 .res-name{font-size:13px;color:var(--text);margin-bottom:2px}
 .res-sub{font-size:10px;color:var(--light);font-family:'Inter',sans-serif}
 .res-extra-tag{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;font-family:'Inter',sans-serif;color:var(--accent);border:1px solid var(--border-strong);padding:2px 7px;display:inline-block;margin-bottom:4px}
@@ -188,3 +208,14 @@ select option{font-family:sans-serif;background:#FAFAF8}
 .terms-accept-btn.accepted .terms-btn-icon{color:var(--accent)}
 .terms-accept-btn span:last-child{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);transition:color .2s}
 .terms-accept-btn.accepted span:last-child{color:var(--accent);font-weight:500}
+/* En móvil dos columnas dejan la foto en ~145px: se pierde el detalle del plato,
+   que es justo lo que la foto tiene que comunicar. Una sola columna y más ancha. */
+@media (max-width:560px){
+  .items-grid{grid-template-columns:1fr}
+  .i-photo{aspect-ratio:16/9}
+  .sugg-thumb{width:60px;height:60px}
+  /* La miniatura le quita ancho a la fila de controles: sin esto los tamaños,
+     el precio y "+ Agregar" no caben en una línea y el botón se sale de la tarjeta. */
+  .sugg-controls{flex-wrap:wrap;gap:8px}
+  .sugg-sizes{flex:1 1 100%}
+}
