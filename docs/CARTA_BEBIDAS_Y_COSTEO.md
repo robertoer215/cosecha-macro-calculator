@@ -110,7 +110,7 @@ Registro internacional con una sola ancla local por familia, según la direcció
 
 > **ADD-PROT®** — 30 ml — $45
 > Sube 25 g de proteína limpia a casi cualquier bebida.
-> `102 kcal · P 25 g · C 0 g · G 0.3 g`
+> `104 kcal · P 25 g · C 0 g · G 0.2 g`
 
 Se ofrece sobre café frío, aguas y smoothies. **No** sobre café caliente: el aislado de suero cuaja por encima de 60 °C y en medio ácido.
 
@@ -120,26 +120,26 @@ Dos columnas de precio. La **fórmula de la casa** es `ceil(costo × 1.40 ÷ 0.8
 
 | código | nombre | costo porción | precio fórmula | food cost fórmula | precio carta | food cost carta | margen bruto carta |
 |---|---|---:|---:|---:|---:|---:|---:|
-| BE-01® | Arándano y romero | $34.20 | $57 | 60.0 % | **$55** | 62.2 % | $20.80 |
-| BE-02® | Pepino y hierbabuena | $13.07 | $22 | 59.4 % | **$45** | 29.0 % | $31.93 |
-| BE-03® | Fresa y jengibre | $16.72 | $28 | 59.7 % | **$50** | 33.4 % | $33.28 |
-| BE-04® | Toronja, albahaca y sal de mar | $11.09 | $19 | 58.4 % | **$45** | 24.6 % | $33.91 |
-| BE-05® | Piña, chía y hierbabuena | $12.17 | $21 | 57.9 % | **$50** | 24.3 % | $37.83 |
-| BE-06® | Jamaica en frío | $7.87 | $13 | 60.6 % | **$40** | 19.7 % | $32.13 |
+| BE-01® | Arándano y romero | $33.96 | $56 | 60.7 % | **$55** | 61.7 % | $21.04 |
+| BE-02® | Pepino y hierbabuena | $12.95 | $22 | 58.9 % | **$45** | 28.8 % | $32.05 |
+| BE-03® | Fresa y jengibre | $16.48 | $28 | 58.9 % | **$50** | 33.0 % | $33.52 |
+| BE-04® | Toronja, albahaca y sal de mar | $10.89 | $18 | 60.5 % | **$45** | 24.2 % | $34.11 |
+| BE-05® | Piña, chía y hierbabuena | $11.97 | $20 | 59.9 % | **$50** | 23.9 % | $38.03 |
+| BE-06® | Jamaica en frío | $7.60 | $13 | 58.4 % | **$40** | 19.0 % | $32.40 |
 | BE-07® | Espresso Doble | $8.72 | $15 | 58.1 % | **$45** | 19.4 % | $36.28 |
 | BE-08® | Latte | $13.73 | $23 | 59.7 % | **$60** | 22.9 % | $46.27 |
 | BE-09® | Cappuccino | $10.69 | $18 | 59.4 % | **$55** | 19.4 % | $44.31 |
-| BE-10® | Cold Brew | $12.59 | $21 | 60.0 % | **$60** | 21.0 % | $47.41 |
-| BE-11® | Espresso Coconut Cloud | $21.47 | $36 | 59.6 % | **$85** | 25.3 % | $63.53 |
-| BE-12® | Matcha Latte | $18.83 | $32 | 58.9 % | **$80** | 23.5 % | $61.17 |
-| BE-13® | Dirty Chai Latte | $19.53 | $33 | 59.2 % | **$80** | 24.4 % | $60.47 |
-| BE-14® | Horchata Cold Brew | $18.51 | $31 | 59.7 % | **$75** | 24.7 % | $56.49 |
-| BE-15® | Berry Protein | $41.43 | $69 | 60.1 % | **$125** | 33.1 % | $83.57 |
-| BE-16® | Cacao Peanut | $37.65 | $63 | 59.8 % | **$120** | 31.4 % | $82.35 |
-| BE-17® | Mango Coconut | $44.34 | $74 | 59.9 % | **$130** | 34.1 % | $85.66 |
-| BE-18® | Vanilla Matcha | $40.50 | $67 | 60.5 % | **$125** | 32.4 % | $84.50 |
-| BE-19® | Mamey | $45.91 | $76 | 60.4 % | **$135** | 34.0 % | $89.09 |
-| | **Promedio** | $22.58 | $37.79 | 59.8 % | **$76.84** | 29.4 % | $54.26 |
+| BE-10® | Cold Brew | $12.87 | $22 | 58.5 % | **$60** | 21.5 % | $47.13 |
+| BE-11® | Espresso Coconut Cloud | $21.50 | $36 | 59.7 % | **$85** | 25.3 % | $63.50 |
+| BE-12® | Matcha Latte | $18.89 | $32 | 59.0 % | **$80** | 23.6 % | $61.11 |
+| BE-13® | Dirty Chai Latte | $19.62 | $33 | 59.5 % | **$80** | 24.5 % | $60.38 |
+| BE-14® | Horchata Cold Brew | $18.82 | $31 | 60.7 % | **$75** | 25.1 % | $56.18 |
+| BE-15® | Berry Protein | $41.41 | $69 | 60.0 % | **$125** | 33.1 % | $83.59 |
+| BE-16® | Cacao Peanut | $37.62 | $62 | 60.7 % | **$120** | 31.4 % | $82.38 |
+| BE-17® | Mango Coconut | $44.30 | $73 | 60.7 % | **$130** | 34.1 % | $85.70 |
+| BE-18® | Vanilla Matcha | $40.47 | $67 | 60.4 % | **$125** | 32.4 % | $84.53 |
+| BE-19® | Mamey | $45.89 | $76 | 60.4 % | **$135** | 34.0 % | $89.11 |
+| | **Promedio** | $22.55 | $37.58 | 60.0 % | **$76.84** | 29.3 % | $54.30 |
 | ADD-PROT® | Add-on de proteína | $14.74 | $25 | 59.0 % | **$45** | 32.8 % | $30.26 |
 
 ### Por qué el precio de carta no es el de la fórmula
@@ -279,3 +279,18 @@ Transparencia sobre cómo se produjo este documento. La carta se formuló con un
 De los **159 fallos** que encontraron los nueve auditores, 30 se aplicaron automáticamente y **los 15 bloqueantes restantes los apliqué yo**: precio del arándano fuera de rango, hielo sin costear en las 6 aguas, macros de hierbabuena tomadas de *peppermint* en vez de *spearmint*, requesón costeado como cottage USDA, vida útil del jarabe de 21 a 7 días, remojo de pepita a 60 °C dentro de zona de peligro, prensado a la orden que contradecía su propio batcheo, y la promesa de 25 g de proteína en fichas de café donde el add-on no estaba costeado.
 
 Quedan **114 fallos serios y menores sin aplicar** en aguas y smoothies. Están íntegros en el journal del workflow y son el primer trabajo pendiente sobre este documento.
+
+### Auditoría post-entrega
+
+Se corrió después una auditoría determinista sobre los 24 items ya escritos. Encontró y corrigió:
+
+| hallazgo | gravedad | corrección |
+|---|---|---|
+| **BE-17 y BE-18 no declaraban COCO** pese a llevar agua de coco | seguridad alimentaria | Alérgeno añadido en las dos. BE-11 ya lo declaraba: era olvido puntual, no criterio. |
+| Agua purificada costeada a $0, $1.75 y $2.50 según la ficha | escandallo | Normalizada a $2.50/L en toda la casa. |
+| Hielo costeado a $1.75 y $2.00 | escandallo | Normalizado a $2.00/kg. |
+| 22 sub-recetas con costo declarado desfasado tras normalizar el agua | escandallo | Recalculado el costo por lote y repercutido en su línea padre. |
+
+Verificado tras corregir: los 5 smoothies siguen por encima de 25 g de proteína, los 24 items conservan `precio = ceil(costo × 1.40 ÷ 0.85)` sin excepción, y los módulos de `js/` y `src/js/` siguen idénticos entre sí y sincronizados con la fuente.
+
+Dos hallazgos de esa auditoría resultaron ser **falsos positivos míos** y se documentan para que nadie los persiga: el "jarabe de dátil sin costear" de BE-13 es una sub-receta anidada dentro del concentrado de chai y ya está costeada ahí; y el coulis de PS-02 cuadra exacto cuando se lee su rendimiento real (906 g), no la masa cruda (1.066 kg).

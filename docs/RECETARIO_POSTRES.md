@@ -13,15 +13,15 @@ Cara a cocina. 5 fichas ejecutables, una por postre. Cero azúcar refinada añad
 
 | insumo | cantidad | merma % | costo unitario | costo en la porción |
 |---|---:|---:|---:|---:|
-| Base prensada de pepita, nuez y girasol [sub-receta] | 38 g | 3 % | $209.52 MXN/kg | $8.21 |
+| Base prensada de pepita, nuez y girasol [sub-receta] | 38 g | 3 % | $210.36 MXN/kg | $8.24 |
 | Relleno de cheesecake de requesón y vainilla [sub-receta] | 140 g | 2 % | $136.01 MXN/kg | $19.43 |
-| Coulis de maracuyá [sub-receta] | 30 g | 3 % | $165.20 MXN/kg | $5.11 |
+| Coulis de maracuyá [sub-receta] | 30 g | 3 % | $165.48 MXN/kg | $5.12 |
 | Pepita verde sin cáscara tostada | 5 g | 3 % | $190.00 MXN/kg | $0.98 |
-| **Total insumos** | | | | **$33.73** |
+| **Total insumos** | | | | **$33.77** |
 
 #### Sub-receta — Base prensada de pepita, nuez y girasol
 
-**Rendimiento** Batch de 1.0 kg = 26 fondos de 38 g (4-5 moldes de 20 cm) · **Costo** $209.52 MXN/kg · **Vida útil** 7 días sin rellenar, en hermético a 2-4 °C · **Refrigeración** 2-4 °C una vez prensada; se maneja siempre fría o se rompe.
+**Rendimiento** Batch de 1.0 kg = 26 fondos de 38 g (4-5 moldes de 20 cm) · **Costo** $210.36 MXN/kg · **Vida útil** 7 días sin rellenar, en hermético a 2-4 °C · **Refrigeración** 2-4 °C una vez prensada; se maneja siempre fría o se rompe.
 
 | insumo | cantidad | merma % | costo unitario |
 |---|---:|---:|---:|
@@ -66,13 +66,13 @@ Cara a cocina. 5 fichas ejecutables, una por postre. Cero azúcar refinada añad
 
 #### Sub-receta — Coulis de maracuyá
 
-**Rendimiento** 1.066 kg de mezcla cruda reducen 15% y rinden 906 g = 30 porciones de 30 g · **Costo** $165.20 MXN/kg · **Vida útil** 7 días a 2-4 °C en frasco hervido; 3 meses congelado en bolsa plana · **Refrigeración** Enfriar a 2-4 °C en menos de 2 h, abierto, y tapar frío para no generar condensación.
+**Rendimiento** 1.066 kg de mezcla cruda reducen 15% y rinden 906 g = 30 porciones de 30 g · **Costo** $165.48 MXN/kg · **Vida útil** 7 días a 2-4 °C en frasco hervido; 3 meses congelado en bolsa plana · **Refrigeración** Enfriar a 2-4 °C en menos de 2 h, abierto, y tapar frío para no generar condensación.
 
 | insumo | cantidad | merma % | costo unitario |
 |---|---:|---:|---:|
 | Pulpa de maracuyá congelada sin azúcar | 800 g | 0 % | $140.00 MXN/kg |
 | Dátil Medjool deshuesado | 150 g | 3 % | $210.00 MXN/kg |
-| Agua filtrada | 100 ml | 0 % | $0.00 MXN/L |
+| Agua filtrada | 100 ml | 0 % | $2.50 MXN/L |
 | Jugo de limón | 15 ml | 60 % | $32.00 MXN/L |
 | Monk fruit puro en polvo | 1 g | 0 % | $4000.00 MXN/kg |
 
@@ -92,7 +92,7 @@ Cara a cocina. 5 fichas ejecutables, una por postre. Cero azúcar refinada añad
 
 **Equipo** Licuadora de vaso alta · Aros de 6 cm x 4.5 cm o molde de 20 cm · Procesador de alimentos / cutter · Horno de convección (tostado de semillas) · Báscula de 0.1 g para la grenetina · Cámara a 2-4 °C · Cuchillo caliente o soplete para desmoldar
 
-**Alérgenos** leche (requesón, queso crema, yogur griego, aislado de suero) · frutos secos (nuez) · semillas (pepita, girasol)
+**Alérgenos** leche (requesón, queso crema, yogur griego, aislado de suero) · frutos secos (nuez) · semillas (pepita, girasol) · coco (clasificado como fruto seco por la FDA; declarar en carta)
 
 **Vida útil** Montado y desmoldado, 3 días a 2-4 °C: al cuarto día la base cede humedad y deja de crujir. Base prensada sin rellenar, 7 días a 2-4 °C. Coulis, 7 días a 2-4 °C en frasco hervido o 3 meses congelado.
 
@@ -210,15 +210,15 @@ Cara a cocina. 5 fichas ejecutables, una por postre. Cero azúcar refinada añad
 
 | insumo | cantidad | merma % | costo unitario | costo en la porción |
 |---|---:|---:|---:|---:|
-| Mousse aireada de mamey [sub-receta] | 140 g | 2 % | $116.23 MXN/kg | $16.60 |
+| Mousse aireada de mamey [sub-receta] | 140 g | 2 % | $116.34 MXN/kg | $16.62 |
 | Yogur griego colado 12 h | 20 g | 30 % | $90.00 MXN/kg | $2.57 |
 | Pepita caramelizada con agave y sal [sub-receta] | 18 g | 2 % | $205.35 MXN/kg | $3.77 |
 | Jugo y ralladura de lima | 4 g | 60 % | $32.00 MXN/kg | $0.32 |
-| **Total insumos** | | | | **$23.27** |
+| **Total insumos** | | | | **$23.28** |
 
 #### Sub-receta — Mousse aireada de mamey
 
-**Rendimiento** Batch de 1.153 kg = 8 copas de 140 g · **Costo** $116.23 MXN/kg · **Vida útil** 3 días a 2-4 °C; al cuarto día el mamey pardea · **Refrigeración** Cuajar 4 h a 2-4 °C ya dosificada. No congelar: la espuma colapsa al descongelar.
+**Rendimiento** Batch de 1.153 kg = 8 copas de 140 g · **Costo** $116.34 MXN/kg · **Vida útil** 3 días a 2-4 °C; al cuarto día el mamey pardea · **Refrigeración** Cuajar 4 h a 2-4 °C ya dosificada. No congelar: la espuma colapsa al descongelar.
 
 | insumo | cantidad | merma % | costo unitario |
 |---|---:|---:|---:|
@@ -232,7 +232,7 @@ Cara a cocina. 5 fichas ejecutables, una por postre. Cero azúcar refinada añad
 | Monk fruit puro en polvo | 1.2 g | 0 % | $4000.00 MXN/kg |
 | Extracto de vainilla de Papantla | 4 ml | 1 % | $1800.00 MXN/L |
 | Sal fina de mar | 1.5 g | 0 % | $16.00 MXN/kg |
-| Agua filtrada | 50 ml | 0 % | $0.00 MXN/L |
+| Agua filtrada | 50 ml | 0 % | $2.50 MXN/L |
 
 1. Abrir el mamey, retirar hueso y cáscara y licuar la pulpa de inmediato con el jugo de lima y la sal; colar por chino fino (PCC de pardeamiento).
 2. Cocer el jarabe de agave a 118 °C.
@@ -300,21 +300,21 @@ Cara a cocina. 5 fichas ejecutables, una por postre. Cero azúcar refinada añad
 
 | insumo | cantidad | merma % | costo unitario | costo en la porción |
 |---|---:|---:|---:|---:|
-| Bizcocho húmedo de dátil y nuez [sub-receta] | 85 g | 8 % | $219.99 MXN/kg | $20.33 |
-| Salsa toffee de dátil [sub-receta] | 45 g | 3 % | $140.03 MXN/kg | $6.50 |
+| Bizcocho húmedo de dátil y nuez [sub-receta] | 85 g | 8 % | $220.48 MXN/kg | $20.37 |
+| Salsa toffee de dátil [sub-receta] | 45 g | 3 % | $140.60 MXN/kg | $6.52 |
 | Crema batida de canela y yogur colado [sub-receta] | 30 g | 3 % | $121.46 MXN/kg | $3.76 |
 | Nuez de Castilla tostada | 10 g | 3 % | $280.00 MXN/kg | $2.89 |
 | Sal de mar en escamas | 0.3 g | 0 % | $240.00 MXN/kg | $0.07 |
-| **Total insumos** | | | | **$33.54** |
+| **Total insumos** | | | | **$33.61** |
 
 #### Sub-receta — Bizcocho húmedo de dátil y nuez
 
-**Rendimiento** 1.02 kg de masa rinden 898 g horneados = 10 porciones de 85 g · **Costo** $219.99 MXN/kg · **Vida útil** 4 días a 2-4 °C envuelto; 1 mes congelado en porción · **Refrigeración** 2-4 °C o -18 °C en porción. Nunca se sirve frío: se regenera siempre.
+**Rendimiento** 1.02 kg de masa rinden 898 g horneados = 10 porciones de 85 g · **Costo** $220.48 MXN/kg · **Vida útil** 4 días a 2-4 °C envuelto; 1 mes congelado en porción · **Refrigeración** 2-4 °C o -18 °C en porción. Nunca se sirve frío: se regenera siempre.
 
 | insumo | cantidad | merma % | costo unitario |
 |---|---:|---:|---:|
 | Dátil Medjool deshuesado | 300 g | 3 % | $210.00 MXN/kg |
-| Agua hirviendo | 175 ml | 0 % | $0.00 MXN/L |
+| Agua hirviendo | 175 ml | 0 % | $2.50 MXN/L |
 | Huevo entero | 170 g | 12 % | $48.00 MXN/kg |
 | Harina de almendra | 160 g | 2 % | $320.00 MXN/kg |
 | Nuez de Castilla molida | 90 g | 3 % | $280.00 MXN/kg |
@@ -334,13 +334,13 @@ Cara a cocina. 5 fichas ejecutables, una por postre. Cero azúcar refinada añad
 
 #### Sub-receta — Salsa toffee de dátil
 
-**Rendimiento** Batch de 1 kg = 22 porciones de 45 g · **Costo** $140.03 MXN/kg · **Vida útil** 6 días a 2-4 °C en pomo cerrado · **Refrigeración** 2-4 °C. En servicio se mantiene a 63 °C o más en baño maría, máximo 4 h.
+**Rendimiento** Batch de 1 kg = 22 porciones de 45 g · **Costo** $140.60 MXN/kg · **Vida útil** 6 días a 2-4 °C en pomo cerrado · **Refrigeración** 2-4 °C. En servicio se mantiene a 63 °C o más en baño maría, máximo 4 h.
 
 | insumo | cantidad | merma % | costo unitario |
 |---|---:|---:|---:|
 | Dátil Medjool deshuesado | 330 g | 3 % | $210.00 MXN/kg |
 | Crema para batir 35% grasa | 330 g | 2 % | $95.00 MXN/kg |
-| Agua filtrada | 230 ml | 0 % | $0.00 MXN/L |
+| Agua filtrada | 230 ml | 0 % | $2.50 MXN/L |
 | Mantequilla sin sal | 90 g | 2 % | $140.00 MXN/kg |
 | Sal de mar en escamas | 8 g | 0 % | $240.00 MXN/kg |
 | Extracto de vainilla de Papantla | 12 ml | 1 % | $1800.00 MXN/L |
@@ -409,15 +409,15 @@ Cara a cocina. 5 fichas ejecutables, una por postre. Cero azúcar refinada añad
 
 | insumo | cantidad | merma % | costo unitario | costo en la porción |
 |---|---:|---:|---:|---:|
-| Masa de barra de dátil, nuez y cacao [sub-receta] | 77 g | 0 % | $251.96 MXN/kg | $19.40 |
+| Masa de barra de dátil, nuez y cacao [sub-receta] | 77 g | 0 % | $252.04 MXN/kg | $19.41 |
 | Cobertura de cacao 72% | 12 g | 5 % | $350.00 MXN/kg | $4.42 |
 | Nibs de cacao tostados | 2 g | 2 % | $350.00 MXN/kg | $0.71 |
 | Sal de mar en escamas | 0.2 g | 0 % | $240.00 MXN/kg | $0.05 |
-| **Total insumos** | | | | **$24.58** |
+| **Total insumos** | | | | **$24.59** |
 
 #### Sub-receta — Masa de barra de dátil, nuez y cacao
 
-**Rendimiento** 1.91 kg de masa rinden 1.853 kg cortados (3% de merma de corte) = 24 barras de 77 g · **Costo** $251.96 MXN/kg · **Vida útil** 21 días a 18-20 °C empacada; 40 días refrigerada · **Refrigeración** Prensada, 1 h a 2-4 °C antes de cortar; después se conserva a 18-20 °C. Se baña a 8-10 °C: congelada agrieta la cobertura por choque térmico.
+**Rendimiento** 1.91 kg de masa rinden 1.853 kg cortados (3% de merma de corte) = 24 barras de 77 g · **Costo** $252.04 MXN/kg · **Vida útil** 21 días a 18-20 °C empacada; 40 días refrigerada · **Refrigeración** Prensada, 1 h a 2-4 °C antes de cortar; después se conserva a 18-20 °C. Se baña a 8-10 °C: congelada agrieta la cobertura por choque térmico.
 
 | insumo | cantidad | merma % | costo unitario |
 |---|---:|---:|---:|
@@ -430,7 +430,7 @@ Cara a cocina. 5 fichas ejecutables, una por postre. Cero azúcar refinada añad
 | Aceite de coco virgen | 60 g | 1 % | $160.00 MXN/kg |
 | Sal fina de mar | 6 g | 0 % | $16.00 MXN/kg |
 | Canela de Ceylán molida | 4 g | 1 % | $900.00 MXN/kg |
-| Agua filtrada | 60 ml | 0 % | $0.00 MXN/L |
+| Agua filtrada | 60 ml | 0 % | $2.50 MXN/L |
 
 1. Cutter: triturar el dátil deshuesado hasta pasta que se pegue a la pared del vaso.
 2. Agregar aislado, cacao, canela, sal y agua; pulsar hasta masa homogénea.

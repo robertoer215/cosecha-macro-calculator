@@ -21,14 +21,14 @@ Los 153 nombres NO son 153 productos. Distintas fichas llamaron al mismo insumo 
 | producto real | variantes de nombre | rango de precio | dispersión |
 |---|---:|---|---:|
 | Monk fruit / mogrósido | 7 | $14.99 – $4000.00 /kg | **266.8×** |
-| Vainilla de Papantla | 6 | $44.18 – $6000.00 /kg | **135.8×** |
+| Vainilla de Papantla | 6 | $45.01 – $6000.00 /kg | **133.3×** |
 | Sal | 3 | $16.00 – $240.00 /kg | **15.0×** |
 | Cacao | 7 | $166.95 – $350.00 /kg | **2.1×** |
-| Dátil | 10 | $133.18 – $251.96 /kg | **1.9×** |
+| Dátil | 10 | $133.18 – $252.04 /kg | **1.9×** |
 | Aislado de suero | 3 | $450.00 – $780.00 /kg | **1.7×** |
-| Agua purificada | 8 | $1.75 – $3.00 /kg | **1.7×** |
-| Hielo | 2 | $1.75 – $2.50 /kg | **1.4×** |
+| Agua purificada | 8 | $2.00 – $2.50 /kg | **1.3×** |
 | Matcha | 2 | $3200.00 – $3800.00 /kg | **1.2×** |
+| Hielo | 2 | $2.00 – $2.00 /kg | **1.0×** |
 
 El caso peor es el monk fruit: el mismo extracto cotizado entre $2 500 y $4 000/kg según la ficha. Pesa poco en el vaso (menos de $0.10 por bebida), así que no mueve el escandallo — pero sí revela que **ninguna de las dos cifras está verificada**.
 
@@ -58,11 +58,11 @@ El caso peor es el monk fruit: el mismo extracto cotizado entre $2 500 y $4 000/
 | Nuez de Castilla molida | $280.00 | PS-03® → Bizcocho húmedo de dátil y nuez (sub-receta) | Secos y semillas |
 | Extracto natural de vainilla | $260.00 | BE-18® | Especias y extractos |
 | Pimienta negra entera | $260.00 | BE-13® → Concentrado de chai COSECHA (sub-receta) | Otros |
-| Masa de barra de dátil, nuez y cacao [sub-receta] | $251.96 | PS-05® | Café y té |
+| Masa de barra de dátil, nuez y cacao [sub-receta] | $252.04 | PS-05® | Café y té |
 | Cacao en polvo natural sin azucar | $240.00 | BE-16® | Café y té |
-| Bizcocho húmedo de dátil y nuez [sub-receta] | $219.99 | PS-03® | Fruta y verdura |
+| Bizcocho húmedo de dátil y nuez [sub-receta] | $220.48 | PS-03® | Fruta y verdura |
 | Crumble de girasol, almendra y cacao [sub-receta] | $218.48 | PS-01® | Café y té |
-| Base prensada de pepita, nuez y girasol [sub-receta] | $209.52 | PS-02® | Secos y semillas |
+| Base prensada de pepita, nuez y girasol [sub-receta] | $210.36 | PS-02® | Secos y semillas |
 
 *(Se listan los 25 más caros de los 94; el resto está en la tabla completa abajo, identificable por la columna "recetas" = 1.)*
 
@@ -76,13 +76,13 @@ El caso peor es el monk fruit: el mismo extracto cotizado entre $2 500 y $4 000/
 | Cacao natural en polvo sin azúcar | $240.00 | 2 | 3 | 300.5 | 19.6 | 24.7 | 13.7 | `[SUPUESTO]` |
 | Cafe de especialidad en grano, origen Veracruz / Sierra Norte de Puebla, molienda gruesa | $380.00 | 8 | 2 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
 | Cobertura de cacao 72% | $350.00 | 2–5 | 2 | 554.6 | 7.8 | 35 | 42.6 | `[SUPUESTO]` |
-| Concentrado de cold brew COSECHA (sub-receta) | $85.06 | 2 | 2 | 3.6 | 0.05 | 0.67 | 0.07 | `[SUPUESTO]` |
+| Concentrado de cold brew COSECHA (sub-receta) | $86.11 | 2 | 2 | 3.6 | 0.05 | 0.67 | 0.07 | `[SUPUESTO]` |
 | Nibs de cacao tostados | $350.00 | 2 | 2 | 464.6 | 10.7 | 8.7 | 43 | `[SUPUESTO]` |
 | Cacao en polvo natural sin azucar | $240.00 | 0 | 1 | 228 | 19.6 | 57.9 | 13.7 | `[SUPUESTO]` |
-| Concentrado de chai COSECHA (sub-receta) | $68.56 | 3 | 1 | 34 | 0.25 | 8.1 | 0.03 | `[SUPUESTO]` |
+| Concentrado de chai COSECHA (sub-receta) | $69.37 | 3 | 1 | 34 | 0.25 | 8.1 | 0.03 | `[SUPUESTO]` |
 | Cremoso de cacao 72% con requesón [sub-receta] | $166.95 | 2 | 1 | 221.4 | 11.48 | 16.94 | 11.97 | `[SUPUESTO]` |
 | Crumble de girasol, almendra y cacao [sub-receta] | $218.48 | 3 | 1 | 575.2 | 15.33 | 24.43 | 46.24 | `[SUPUESTO]` |
-| Masa de barra de dátil, nuez y cacao [sub-receta] | $251.96 | 0 | 1 | 431.5 | 17.02 | 36.37 | 24.22 | `[SUPUESTO]` |
+| Masa de barra de dátil, nuez y cacao [sub-receta] | $252.04 | 0 | 1 | 431.5 | 17.02 | 36.37 | 24.22 | `[SUPUESTO]` |
 | Matcha ceremonial japones (Uji o Kagoshima), grado bebida | $3200.00 | 0 | 1 | 177 | 29 | 4 | 5 | `[SUPUESTO]` |
 | Matcha culinario grado premium | $3800.00 | 0 | 1 | 297 | 29 | 39 | 5.3 | `[SUPUESTO]` |
 | Te negro Assam a granel, hoja rota | $450.00 | 4 | 1 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
@@ -129,24 +129,24 @@ El caso peor es el monk fruit: el mismo extracto cotizado entre $2 500 y $4 000/
 | Platano Tabasco congelado (pulpa) | $18.00 | 35 | 3 | 89 | 1.09 | 22.84 | 0.33 | `[SUPUESTO]` |
 | Aceite de coco virgen | $160.00 | 1 | 2 | 900 | 0 | 0 | 100 | `[SUPUESTO]` |
 | Agua de coco natural (envase UHT sin azucar) | $45.00 | 0 | 2 | 19 | 0.72 | 3.71 | 0.2 | `[SUPUESTO]` |
-| Jarabe de datil COSECHA (sub-receta) | $140.91 | 2 | 2 | 165 | 1.1 | 40 | 0.15 | `[SUPUESTO]` |
+| Jarabe de datil COSECHA (sub-receta) | $141.45 | 2 | 2 | 165 | 1.1 | 40 | 0.15 | `[SUPUESTO]` |
 | Jugo de limón | $32.00 | 60 | 2 | 30.2 | 0.4 | 6.7 | 0.2 | `[SUPUESTO]` |
 | Arándano azul IQF (congelado) | $300.00 | 0 | 1 | 57 | 0.74 | 14.5 | 0.33 | `[SUPUESTO]` |
 | Base de nube de coco COSECHA (sub-receta) | $124.95 | 3 | 1 | 236 | 2.2 | 8 | 21.6 | `[SUPUESTO]` |
 | Bebida de coco SIN azucares anadidos, <=1.5 g de carbohidrato/100 ml, sin jarabe de glucosa ni maltodextrina (verificar etiqueta en cada compra) | $75.00 | 2 | 1 | 28 | 0.2 | 1.2 | 2.4 | `[SUPUESTO]` |
-| Bizcocho húmedo de dátil y nuez [sub-receta] | $219.99 | 8 | 1 | 355.3 | 12 | 25.59 | 22.77 | `[SUPUESTO]` |
+| Bizcocho húmedo de dátil y nuez [sub-receta] | $220.48 | 8 | 1 | 355.3 | 12 | 25.59 | 22.77 | `[SUPUESTO]` |
 | Cáscara de naranja en tira (guarnición) | $22.00 | 88 | 1 | 97 | 1.5 | 25 | 0.2 | `[SUPUESTO]` |
 | Cáscara de naranja sin albedo | $22.00 | 88 | 1 | 97 | 1.5 | 25 | 0.2 | `[SUPUESTO]` |
 | Coco rallado deshidratado sin azúcar, tostado | $150.00 | 2 | 1 | 637.7 | 6.9 | 7.4 | 64.5 | `[SUPUESTO]` |
-| Coulis de maracuyá [sub-receta] | $165.20 | 3 | 1 | 112.7 | 1.72 | 25.37 | 0.48 | `[SUPUESTO]` |
+| Coulis de maracuyá [sub-receta] | $165.48 | 3 | 1 | 112.7 | 1.72 | 25.37 | 0.48 | `[SUPUESTO]` |
 | Flor de jamaica seca | $130.00 | 0 | 1 | 300 | 4 | 70 | 1 | `[SUPUESTO]` |
 | Frambuesa congelada IQF | $180.00 | 0 | 1 | 52 | 1.2 | 11.94 | 0.65 | `[SUPUESTO]` |
 | Fresa congelada IQF (despuntada) | $70.00 | 5 | 1 | 32 | 0.67 | 7.68 | 0.3 | `[SUPUESTO]` |
 | Fresa fresca | $60.00 | 6 | 1 | 32 | 0.67 | 7.68 | 0.3 | `[SUPUESTO]` |
 | Fresa fresca laminada (guarnición) | $60.00 | 6 | 1 | 32 | 0.67 | 7.68 | 0.3 | `[SUPUESTO]` |
-| Infusión fría de arándano y romero (sub-receta) | $65.82 | 0 | 1 | 8 | 0.11 | 2 | 0.04 | `[SUPUESTO]` |
-| Infusión fría de fresa y jengibre (sub-receta) | $23.95 | 0 | 1 | 8 | 0.15 | 1.85 | 0.06 | `[SUPUESTO]` |
-| Infusión fría de jamaica y naranja (sub-receta) | $12.89 | 0 | 1 | 6 | 0.1 | 1.4 | 0 | `[SUPUESTO]` |
+| Infusión fría de arándano y romero (sub-receta) | $65.30 | 0 | 1 | 8 | 0.11 | 2 | 0.04 | `[SUPUESTO]` |
+| Infusión fría de fresa y jengibre (sub-receta) | $23.44 | 0 | 1 | 8 | 0.15 | 1.85 | 0.06 | `[SUPUESTO]` |
+| Infusión fría de jamaica y naranja (sub-receta) | $12.33 | 0 | 1 | 6 | 0.1 | 1.4 | 0 | `[SUPUESTO]` |
 | Jarabe de datil COSECHA (sub-receta de esta misma ficha) | $140.91 | 2 | 1 | 165 | 1.1 | 40 | 0.15 | `[SUPUESTO]` |
 | Jarabe de datil COSECHA (sub-receta documentada en BE-11 y BE-12) | $140.91 | 2 | 1 | 165 | 1.1 | 40 | 0.15 | `[SUPUESTO]` |
 | Jengibre fresco | $70.00 | 15 | 1 | 80 | 1.82 | 17.77 | 0.75 | `[SUPUESTO]` |
@@ -158,12 +158,12 @@ El caso peor es el monk fruit: el mismo extracto cotizado entre $2 500 y $4 000/
 | Jugo y ralladura de lima | $32.00 | 60 | 1 | 30.2 | 0.4 | 6.7 | 0.2 | `[SUPUESTO]` |
 | Mamey (pulpa congelada IQF) | $55.00 | 40 | 1 | 124 | 1.45 | 32.1 | 0.46 | `[SUPUESTO]` |
 | Mango Ataulfo en cubos congelados | $38.00 | 40 | 1 | 60 | 0.82 | 15 | 0.38 | `[SUPUESTO]` |
-| Mousse aireada de mamey [sub-receta] | $116.23 | 2 | 1 | 109.6 | 10.34 | 15.01 | 0.91 | `[SUPUESTO]` |
+| Mousse aireada de mamey [sub-receta] | $116.34 | 2 | 1 | 109.6 | 10.34 | 15.01 | 0.91 | `[SUPUESTO]` |
 | Pepino en rodaja (guarnición) | $18.00 | 5 | 1 | 15 | 0.65 | 3.63 | 0.11 | `[SUPUESTO]` |
 | Pulpa de mamey | $55.00 | 35 | 1 | 117.3 | 1.5 | 26.7 | 0.5 | `[SUPUESTO]` |
 | Pulpa de maracuyá congelada sin azúcar | $140.00 | 0 | 1 | 74.1 | 1.6 | 15.8 | 0.5 | `[SUPUESTO]` |
 | Ralladura de toronja (guarnición) | $25.00 | 90 | 1 | 42 | 0.77 | 10.66 | 0.14 | `[SUPUESTO]` |
-| Salsa toffee de dátil [sub-receta] | $140.03 | 3 | 1 | 270.3 | 1.37 | 23.66 | 18.91 | `[SUPUESTO]` |
+| Salsa toffee de dátil [sub-receta] | $140.60 | 3 | 1 | 270.3 | 1.37 | 23.66 | 18.91 | `[SUPUESTO]` |
 
 ### Herbáceos frescos — 8 insumos
 
@@ -171,10 +171,10 @@ El caso peor es el monk fruit: el mismo extracto cotizado entre $2 500 y $4 000/
 |---|---:|---:|---:|---:|---:|---:|---:|---|
 | Hierbabuena fresca | $90.00 | 25 | 2 | 44 | 3.29 | 8.41 | 0.73 | `[SUPUESTO]` |
 | Hierbabuena fresca (guarnición, 1 ramita) | $90.00 | 0 | 2 | 44 | 3.29 | 8.41 | 0.73 | `[SUPUESTO]` |
-| Infusión fría de hierbabuena (sub-receta) | $6.18 | 0 | 2 | 0.1 | 0.01 | 0.01 | 0 | `[SUPUESTO]` |
+| Infusión fría de hierbabuena (sub-receta) | $5.65 | 0 | 2 | 0.1 | 0.01 | 0.01 | 0 | `[SUPUESTO]` |
 | Albahaca genovesa en hoja (guarnición) | $120.00 | 0 | 1 | 23 | 3.15 | 2.65 | 0.64 | `[SUPUESTO]` |
 | Albahaca genovesa fresca | $120.00 | 25 | 1 | 23 | 3.15 | 2.65 | 0.64 | `[SUPUESTO]` |
-| Infusión fría de albahaca (sub-receta) | $6.03 | 0 | 1 | 0.1 | 0.01 | 0.01 | 0 | `[SUPUESTO]` |
+| Infusión fría de albahaca (sub-receta) | $5.50 | 0 | 1 | 0.1 | 0.01 | 0.01 | 0 | `[SUPUESTO]` |
 | Romero fresco | $120.00 | 30 | 1 | 131 | 3.31 | 20.7 | 5.86 | `[SUPUESTO]` |
 | Romero fresco (guarnición, 1 rama) | $120.00 | 0 | 1 | 131 | 3.31 | 20.7 | 5.86 | `[SUPUESTO]` |
 
@@ -187,8 +187,8 @@ El caso peor es el monk fruit: el mismo extracto cotizado entre $2 500 y $4 000/
 | Pepita verde sin cáscara tostada | $190.00 | 3 | 2 | 593 | 29.8 | 8.2 | 49 | `[SUPUESTO]` |
 | Semillas de girasol tostadas | $90.00 | 0 | 2 | 592.3 | 20.8 | 11.4 | 51.5 | `data.js` |
 | Avena en hojuelas | $32.00 | 0 | 1 | 389 | 16.89 | 66.27 | 6.9 | `[SUPUESTO]` |
-| Base prensada de pepita, nuez y girasol [sub-receta] | $209.52 | 3 | 1 | 548.1 | 15.83 | 22.97 | 43.66 | `[SUPUESTO]` |
-| Chía hidratada COSECHA 1:8 (sub-receta) | $18.21 | 0 | 1 | 54 | 1.83 | 4.68 | 3.41 | `[SUPUESTO]` |
+| Base prensada de pepita, nuez y girasol [sub-receta] | $210.36 | 3 | 1 | 548.1 | 15.83 | 22.97 | 43.66 | `[SUPUESTO]` |
+| Chía hidratada COSECHA 1:8 (sub-receta) | $17.76 | 0 | 1 | 54 | 1.83 | 4.68 | 3.41 | `[SUPUESTO]` |
 | Chía seca | $140.00 | 0 | 1 | 486 | 16.5 | 42.1 | 30.7 | `[SUPUESTO]` |
 | Nuez (base G02 de data.js, sin chile piquin) | $280.00 | 5 | 1 | 660 | 16 | 12 | 64 | `data.js` |
 | Nuez de Castilla molida | $280.00 | 3 | 1 | 675.6 | 15.2 | 7 | 65.2 | `data.js` |
@@ -203,13 +203,13 @@ El caso peor es el monk fruit: el mismo extracto cotizado entre $2 500 y $4 000/
 | insumo | precio MXN/kg o L | merma % | recetas | kcal/100 | P | C | G | fuente |
 |---|---:|---:|---:|---:|---:|---:|---:|---|
 | Monk fruit puro en polvo (mogrósido V ≥50%) | $3800.00 | 0 | 6 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
-| Jarabe COSECHA agave + monk fruit (sub-receta) | $39.85 | 0 | 5 | 47 | 0 | 11.5 | 0.07 | `[SUPUESTO]` |
+| Jarabe COSECHA agave + monk fruit (sub-receta) | $39.43 | 0 | 5 | 47 | 0 | 11.5 | 0.07 | `[SUPUESTO]` |
 | Miel de agave orgánica | $180.00 | 0 | 5 | 310 | 0.09 | 76.4 | 0.45 | `[SUPUESTO]` |
 | Monk fruit puro en polvo | $4000.00 | 0 | 5 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
 | Jarabe de agave | $105.00 | 1 | 2 | 309.7 | 0.1 | 76.2 | 0.5 | `[SUPUESTO]` |
 | Extracto de monk fruit (mogrosido V 50%) | $2500.00 | 0 | 1 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
 | Extracto puro de monk fruit (mogrósido V ≥50%) | $3500.00 | 8 | 1 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
-| Jarabe de piloncillo y canela (sub-receta) | $40.20 | 0 | 1 | 122 | 0.2 | 30.7 | 0.03 | `[SUPUESTO]` |
+| Jarabe de piloncillo y canela (sub-receta) | $39.85 | 0 | 1 | 122 | 0.2 | 30.7 | 0.03 | `[SUPUESTO]` |
 | Monk fruit puro en polvo (mogrósido V) | $4000.00 | 0 | 1 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
 | Piloncillo | $55.00 | 0 | 1 | 380 | 0.5 | 96 | 0.1 | `[SUPUESTO]` |
 | Solucion de monk fruit 0.5% (sub-receta) | $14.99 | 0 | 1 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
@@ -230,7 +230,7 @@ El caso peor es el monk fruit: el mismo extracto cotizado entre $2 500 y $4 000/
 | Cardamomo verde en vaina, majado | $1200.00 | 0 | 1 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
 | Clavo de olor entero | $380.00 | 0 | 1 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
 | Extracto natural de vainilla | $260.00 | 0 | 1 | 288 | 0.06 | 12.65 | 0.06 | `[SUPUESTO]` |
-| Horchata COSECHA de arroz, canela de Ceylan y vainilla de Papantla (sub-receta) | $44.18 | 3 | 1 | 50 | 0.8 | 8.2 | 1.6 | `[SUPUESTO]` |
+| Horchata COSECHA de arroz, canela de Ceylan y vainilla de Papantla (sub-receta) | $45.01 | 3 | 1 | 50 | 0.8 | 8.2 | 1.6 | `[SUPUESTO]` |
 | Vainilla de Papantla en vaina | $6000.00 | 0 | 1 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
 | Vainilla de Papantla, vaina entera molida (sin azúcar) | $5000.00 | 3 | 1 | 288 | 0.1 | 12.7 | 0.06 | `[SUPUESTO]` |
 
@@ -238,18 +238,18 @@ El caso peor es el monk fruit: el mismo extracto cotizado entre $2 500 y $4 000/
 
 | insumo | precio MXN/kg o L | merma % | recetas | kcal/100 | P | C | G | fuente |
 |---|---:|---:|---:|---:|---:|---:|---:|---|
-| Agua purificada de garrafón | $3.00 | 0 | 13 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
-| Hielo de agua purificada | $1.75–2.00 | 0 | 9 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
-| Hielo | $2.50 | 0 | 5 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
-| Agua filtrada | $0.00 | 0 | 4 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
-| Agua purificada | $1.75–2.50 | 0 | 4 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
-| Agua purificada a 80 C | $1.75 | 0 | 3 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
+| Agua purificada de garrafón | $2.50 | 0 | 13 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
+| Hielo de agua purificada | $2.00 | 0 | 9 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
+| Hielo | $2.00 | 0 | 5 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
+| Agua filtrada | $2.50 | 0 | 4 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
+| Agua purificada | $2.50 | 0 | 4 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
+| Agua purificada a 80 C | $2.50 | 0 | 3 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
 | Agua purificada caliente | $2.50 | 0 | 3 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
-| Agua purificada filtrada | $1.75 | 0 | 2 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
-| Agua hirviendo | $0.00 | 0 | 1 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
+| Agua purificada filtrada | $2.50 | 0 | 2 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
+| Agua hirviendo | $2.50 | 0 | 1 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
 | Agua mineral de servicio | $12.00 | 0 | 1 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
-| Agua purificada a 75 C | $1.75 | 0 | 1 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
-| Agua purificada fria | $1.75 | 0 | 1 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
+| Agua purificada a 75 C | $2.50 | 0 | 1 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
+| Agua purificada fria | $2.50 | 0 | 1 | 0 | 0 | 0 | 0 | `[SUPUESTO]` |
 
 ### Otros — 10 insumos
 

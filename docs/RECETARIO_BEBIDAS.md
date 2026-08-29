@@ -13,22 +13,22 @@ Cara a barra. 19 fichas ejecutables, una por bebida. Todo en pesos mexicanos, in
 
 | insumo | cantidad | merma % | costo unitario | costo en la porción |
 |---|---:|---:|---:|---:|
-| Infusión fría de arándano y romero (sub-receta) | 430 ml | 0 % | $65.82 MXN/L | $28.30 |
+| Infusión fría de arándano y romero (sub-receta) | 430 ml | 0 % | $65.30 MXN/L | $28.08 |
 | Jugo de limón mexicano recién exprimido | 35 ml | 62 % | $45.00 MXN/L | $4.14 |
-| Jarabe COSECHA agave + monk fruit (sub-receta) | 35 ml | 0 % | $39.85 MXN/L | $1.39 |
+| Jarabe COSECHA agave + monk fruit (sub-receta) | 35 ml | 0 % | $39.43 MXN/L | $1.38 |
 | Romero fresco (guarnición, 1 rama) | 1 g | 0 % | $120.00 MXN/kg | $0.12 |
 | Hielo de agua purificada | 120 g | 0 % | $2.00 MXN/kg | $0.24 |
-| **Total insumos** | | | | **$34.20** |
+| **Total insumos** | | | | **$33.96** |
 
 #### Sub-receta — Infusión fría de arándano y romero
 
-**Rendimiento** 1.0 L de infusión colada y aforada · **Costo** $65.82 MXN/L · **Vida útil** 48 h desde el colado · **Refrigeración** 2-4 °C en Cambro tapado durante la maceración y en botella cerrada después de colar. No congelar.
+**Rendimiento** 1.0 L de infusión colada y aforada · **Costo** $65.30 MXN/L · **Vida útil** 48 h desde el colado · **Refrigeración** 2-4 °C en Cambro tapado durante la maceración y en botella cerrada después de colar. No congelar.
 
 | insumo | cantidad | merma % | costo unitario |
 |---|---:|---:|---:|
 | Arándano azul IQF (congelado) | 205 g | 0 % | $300.00 MXN/kg |
 | Romero fresco | 7 g | 30 % | $120.00 MXN/kg |
-| Agua purificada de garrafón | 1040 ml | 0 % | $3.00 MXN/L |
+| Agua purificada de garrafón | 1040 ml | 0 % | $2.50 MXN/L |
 
 1. Descongelar el arándano 30 min y aplastarlo ligeramente con el machacador: la piel rota es la que suelta el color.
 2. Golpear el romero con el dorso del cuchillo. No picarlo: la hoja picada suelta resina y la infusión sabe a alcanfor.
@@ -39,13 +39,13 @@ Cara a barra. 19 fichas ejecutables, una por bebida. Todo en pesos mexicanos, in
 
 #### Sub-receta — Jarabe COSECHA (miel de agave + monk fruit)
 
-**Rendimiento** 1.0 L (≈29 dosis de 35 ml) · **Costo** $39.85 MXN/L · **Vida útil** 7 días a 2-4 °C (sin pasteurizar). Para 21 días habría que pasteurizar a 85 °C/30 s y embotellar en caliente, lo que hoy no hace la receta. · **Refrigeración** 2-4 °C en botella de vidrio ámbar cerrada. Agitar antes de cada servicio. No congelar.
+**Rendimiento** 1.0 L (≈29 dosis de 35 ml) · **Costo** $39.43 MXN/L · **Vida útil** 7 días a 2-4 °C (sin pasteurizar). Para 21 días habría que pasteurizar a 85 °C/30 s y embotellar en caliente, lo que hoy no hace la receta. · **Refrigeración** 2-4 °C en botella de vidrio ámbar cerrada. Agitar antes de cada servicio. No congelar.
 
 | insumo | cantidad | merma % | costo unitario |
 |---|---:|---:|---:|
 | Miel de agave orgánica | 150 g | 0 % | $180.00 MXN/kg |
 | Monk fruit puro en polvo (mogrósido V ≥50%) | 2.4 g | 0 % | $3800.00 MXN/kg |
-| Agua purificada de garrafón | 850 ml | 0 % | $3.00 MXN/L |
+| Agua purificada de garrafón | 850 ml | 0 % | $2.50 MXN/L |
 | Jugo de limón mexicano | 10 ml | 62 % | $45.00 MXN/L |
 
 1. Pesar el monk fruit en báscula de 0.01 g: 2.4 g por litro. Un error de 0.5 g se nota en boca y no hay forma de corregirlo después.
@@ -94,22 +94,22 @@ Cara a barra. 19 fichas ejecutables, una por bebida. Todo en pesos mexicanos, in
 | insumo | cantidad | merma % | costo unitario | costo en la porción |
 |---|---:|---:|---:|---:|
 | Jugo de pepino prensado en frío | 230 ml | 38 % | $18.00 MXN/L | $6.68 |
-| Infusión fría de hierbabuena (sub-receta) | 215 ml | 0 % | $6.18 MXN/L | $1.33 |
+| Infusión fría de hierbabuena (sub-receta) | 215 ml | 0 % | $5.65 MXN/L | $1.21 |
 | Jugo de limón mexicano recién exprimido | 30 ml | 62 % | $45.00 MXN/L | $3.55 |
-| Jarabe COSECHA agave + monk fruit (sub-receta) | 25 ml | 0 % | $39.85 MXN/L | $1.00 |
+| Jarabe COSECHA agave + monk fruit (sub-receta) | 25 ml | 0 % | $39.43 MXN/L | $0.99 |
 | Pepino en rodaja (guarnición) | 10 g | 5 % | $18.00 MXN/kg | $0.19 |
 | Hierbabuena fresca (guarnición, 1 ramita) | 1 g | 0 % | $90.00 MXN/kg | $0.09 |
 | Hielo de agua purificada | 120 g | 0 % | $2.00 MXN/kg | $0.24 |
-| **Total insumos** | | | | **$13.07** |
+| **Total insumos** | | | | **$12.95** |
 
 #### Sub-receta — Infusión fría de hierbabuena
 
-**Rendimiento** 1.0 L de infusión colada y aforada · **Costo** $6.18 MXN/L · **Vida útil** 48 h desde el colado · **Refrigeración** 2-4 °C tapado. No congelar.
+**Rendimiento** 1.0 L de infusión colada y aforada · **Costo** $5.65 MXN/L · **Vida útil** 48 h desde el colado · **Refrigeración** 2-4 °C tapado. No congelar.
 
 | insumo | cantidad | merma % | costo unitario |
 |---|---:|---:|---:|
 | Hierbabuena fresca | 25 g | 25 % | $90.00 MXN/kg |
-| Agua purificada de garrafón | 1060 ml | 0 % | $3.00 MXN/L |
+| Agua purificada de garrafón | 1060 ml | 0 % | $2.50 MXN/L |
 
 1. Separar hoja de tallo y usar solo hoja.
 2. Enjuagar en agua fría y escurrir en colador; no secar al aire, se oxida y ennegrece.
@@ -119,13 +119,13 @@ Cara a barra. 19 fichas ejecutables, una por bebida. Todo en pesos mexicanos, in
 
 #### Sub-receta — Jarabe COSECHA (miel de agave + monk fruit)
 
-**Rendimiento** 1.0 L (≈40 dosis de 25 ml) · **Costo** $39.85 MXN/L · **Vida útil** 7 días a 2-4 °C (sin pasteurizar). Para 21 días habría que pasteurizar a 85 °C/30 s y embotellar en caliente, lo que hoy no hace la receta. · **Refrigeración** 2-4 °C en botella de vidrio ámbar cerrada. Agitar antes de cada servicio.
+**Rendimiento** 1.0 L (≈40 dosis de 25 ml) · **Costo** $39.43 MXN/L · **Vida útil** 7 días a 2-4 °C (sin pasteurizar). Para 21 días habría que pasteurizar a 85 °C/30 s y embotellar en caliente, lo que hoy no hace la receta. · **Refrigeración** 2-4 °C en botella de vidrio ámbar cerrada. Agitar antes de cada servicio.
 
 | insumo | cantidad | merma % | costo unitario |
 |---|---:|---:|---:|
 | Miel de agave orgánica | 150 g | 0 % | $180.00 MXN/kg |
 | Monk fruit puro en polvo (mogrósido V ≥50%) | 2.4 g | 0 % | $3800.00 MXN/kg |
-| Agua purificada de garrafón | 850 ml | 0 % | $3.00 MXN/L |
+| Agua purificada de garrafón | 850 ml | 0 % | $2.50 MXN/L |
 | Jugo de limón mexicano | 10 ml | 62 % | $45.00 MXN/L |
 
 1. Pesar 2.4 g de monk fruit en báscula de 0.01 g.
@@ -172,22 +172,22 @@ Cara a barra. 19 fichas ejecutables, una por bebida. Todo en pesos mexicanos, in
 
 | insumo | cantidad | merma % | costo unitario | costo en la porción |
 |---|---:|---:|---:|---:|
-| Infusión fría de fresa y jengibre (sub-receta) | 435 ml | 0 % | $23.95 MXN/L | $10.42 |
+| Infusión fría de fresa y jengibre (sub-receta) | 435 ml | 0 % | $23.44 MXN/L | $10.20 |
 | Jugo de limón mexicano recién exprimido | 32 ml | 62 % | $45.00 MXN/L | $3.79 |
-| Jarabe COSECHA agave + monk fruit (sub-receta) | 33 ml | 0 % | $39.85 MXN/L | $1.32 |
+| Jarabe COSECHA agave + monk fruit (sub-receta) | 33 ml | 0 % | $39.43 MXN/L | $1.30 |
 | Fresa fresca laminada (guarnición) | 15 g | 6 % | $60.00 MXN/kg | $0.96 |
 | Hielo de agua purificada | 120 g | 0 % | $2.00 MXN/kg | $0.24 |
-| **Total insumos** | | | | **$16.72** |
+| **Total insumos** | | | | **$16.48** |
 
 #### Sub-receta — Infusión fría de fresa y jengibre
 
-**Rendimiento** 1.0 L de infusión colada y aforada · **Costo** $23.95 MXN/L · **Vida útil** 48 h desde el colado · **Refrigeración** 2-4 °C en Cambro tapado y en botella cerrada tras colar.
+**Rendimiento** 1.0 L de infusión colada y aforada · **Costo** $23.44 MXN/L · **Vida útil** 48 h desde el colado · **Refrigeración** 2-4 °C en Cambro tapado y en botella cerrada tras colar.
 
 | insumo | cantidad | merma % | costo unitario |
 |---|---:|---:|---:|
 | Fresa fresca | 295 g | 6 % | $60.00 MXN/kg |
 | Jengibre fresco | 25 g | 15 % | $70.00 MXN/kg |
-| Agua purificada de garrafón | 1020 ml | 0 % | $3.00 MXN/L |
+| Agua purificada de garrafón | 1020 ml | 0 % | $2.50 MXN/L |
 
 1. Descalizar la fresa con puntilla y cortarla en cuartos. Rallar el jengibre pelado en microplane al momento.
 2. Combinar fresa, jengibre y agua en Cambro tapado. Macerar 14 h a 2-4 °C.
@@ -197,13 +197,13 @@ Cara a barra. 19 fichas ejecutables, una por bebida. Todo en pesos mexicanos, in
 
 #### Sub-receta — Jarabe COSECHA (miel de agave + monk fruit)
 
-**Rendimiento** 1.0 L (≈30 dosis de 33 ml) · **Costo** $39.85 MXN/L · **Vida útil** 7 días a 2-4 °C (sin pasteurizar). Para 21 días habría que pasteurizar a 85 °C/30 s y embotellar en caliente, lo que hoy no hace la receta. · **Refrigeración** 2-4 °C en botella de vidrio ámbar cerrada.
+**Rendimiento** 1.0 L (≈30 dosis de 33 ml) · **Costo** $39.43 MXN/L · **Vida útil** 7 días a 2-4 °C (sin pasteurizar). Para 21 días habría que pasteurizar a 85 °C/30 s y embotellar en caliente, lo que hoy no hace la receta. · **Refrigeración** 2-4 °C en botella de vidrio ámbar cerrada.
 
 | insumo | cantidad | merma % | costo unitario |
 |---|---:|---:|---:|
 | Miel de agave orgánica | 150 g | 0 % | $180.00 MXN/kg |
 | Monk fruit puro en polvo (mogrósido V ≥50%) | 2.4 g | 0 % | $3800.00 MXN/kg |
-| Agua purificada de garrafón | 850 ml | 0 % | $3.00 MXN/L |
+| Agua purificada de garrafón | 850 ml | 0 % | $2.50 MXN/L |
 | Jugo de limón mexicano | 10 ml | 62 % | $45.00 MXN/L |
 
 1. Pesar 2.4 g de monk fruit en báscula de 0.01 g.
@@ -252,23 +252,23 @@ Cara a barra. 19 fichas ejecutables, una por bebida. Todo en pesos mexicanos, in
 | insumo | cantidad | merma % | costo unitario | costo en la porción |
 |---|---:|---:|---:|---:|
 | Jugo de toronja roja recién exprimido | 100 ml | 55 % | $25.00 MXN/L | $5.56 |
-| Infusión fría de albahaca (sub-receta) | 366 ml | 0 % | $6.03 MXN/L | $2.21 |
+| Infusión fría de albahaca (sub-receta) | 366 ml | 0 % | $5.50 MXN/L | $2.01 |
 | Jugo de limón mexicano recién exprimido | 20 ml | 62 % | $45.00 MXN/L | $2.37 |
-| Jarabe COSECHA agave + monk fruit (sub-receta) | 14 ml | 0 % | $39.85 MXN/L | $0.56 |
+| Jarabe COSECHA agave + monk fruit (sub-receta) | 14 ml | 0 % | $39.43 MXN/L | $0.55 |
 | Sal de mar fina | 0.8 g | 0 % | $35.00 MXN/kg | $0.03 |
 | Albahaca genovesa en hoja (guarnición) | 0.5 g | 0 % | $120.00 MXN/kg | $0.06 |
 | Ralladura de toronja (guarnición) | 0.3 g | 90 % | $25.00 MXN/kg | $0.08 |
 | Hielo de agua purificada | 120 g | 0 % | $2.00 MXN/kg | $0.24 |
-| **Total insumos** | | | | **$11.09** |
+| **Total insumos** | | | | **$10.89** |
 
 #### Sub-receta — Infusión fría de albahaca
 
-**Rendimiento** 1.0 L de infusión colada y aforada · **Costo** $6.03 MXN/L · **Vida útil** 48 h desde el colado · **Refrigeración** 2-4 °C en Cambro tapado. No congelar.
+**Rendimiento** 1.0 L de infusión colada y aforada · **Costo** $5.50 MXN/L · **Vida útil** 48 h desde el colado · **Refrigeración** 2-4 °C en Cambro tapado. No congelar.
 
 | insumo | cantidad | merma % | costo unitario |
 |---|---:|---:|---:|
 | Albahaca genovesa fresca | 18 g | 25 % | $120.00 MXN/kg |
-| Agua purificada de garrafón | 1050 ml | 0 % | $3.00 MXN/L |
+| Agua purificada de garrafón | 1050 ml | 0 % | $2.50 MXN/L |
 
 1. Usar solo hoja, entera y sin golpes: la hoja rota se oxida y ennegrece la infusión en dos horas.
 2. Enjuagar en agua fría y escurrir.
@@ -278,13 +278,13 @@ Cara a barra. 19 fichas ejecutables, una por bebida. Todo en pesos mexicanos, in
 
 #### Sub-receta — Jarabe COSECHA (miel de agave + monk fruit)
 
-**Rendimiento** 1.0 L (≈71 dosis de 14 ml) · **Costo** $39.85 MXN/L · **Vida útil** 7 días a 2-4 °C (sin pasteurizar). Para 21 días habría que pasteurizar a 85 °C/30 s y embotellar en caliente, lo que hoy no hace la receta. · **Refrigeración** 2-4 °C en botella de vidrio ámbar cerrada.
+**Rendimiento** 1.0 L (≈71 dosis de 14 ml) · **Costo** $39.43 MXN/L · **Vida útil** 7 días a 2-4 °C (sin pasteurizar). Para 21 días habría que pasteurizar a 85 °C/30 s y embotellar en caliente, lo que hoy no hace la receta. · **Refrigeración** 2-4 °C en botella de vidrio ámbar cerrada.
 
 | insumo | cantidad | merma % | costo unitario |
 |---|---:|---:|---:|
 | Miel de agave orgánica | 150 g | 0 % | $180.00 MXN/kg |
 | Monk fruit puro en polvo (mogrósido V ≥50%) | 2.4 g | 0 % | $3800.00 MXN/kg |
-| Agua purificada de garrafón | 850 ml | 0 % | $3.00 MXN/L |
+| Agua purificada de garrafón | 850 ml | 0 % | $2.50 MXN/L |
 | Jugo de limón mexicano | 10 ml | 62 % | $45.00 MXN/L |
 
 1. Pesar 2.4 g de monk fruit en báscula de 0.01 g.
@@ -334,22 +334,22 @@ Cara a barra. 19 fichas ejecutables, una por bebida. Todo en pesos mexicanos, in
 | insumo | cantidad | merma % | costo unitario | costo en la porción |
 |---|---:|---:|---:|---:|
 | Jugo de piña recién prensado | 90 ml | 67 % | $18.00 MXN/L | $4.91 |
-| Infusión fría de hierbabuena (sub-receta) | 280 ml | 0 % | $6.18 MXN/L | $1.73 |
-| Chía hidratada COSECHA 1:8 (sub-receta) | 90 g | 0 % | $18.21 MXN/kg | $1.64 |
+| Infusión fría de hierbabuena (sub-receta) | 280 ml | 0 % | $5.65 MXN/L | $1.58 |
+| Chía hidratada COSECHA 1:8 (sub-receta) | 90 g | 0 % | $17.76 MXN/kg | $1.60 |
 | Jugo de limón mexicano recién exprimido | 25 ml | 62 % | $45.00 MXN/L | $2.96 |
-| Jarabe COSECHA agave + monk fruit (sub-receta) | 15 ml | 0 % | $39.85 MXN/L | $0.60 |
+| Jarabe COSECHA agave + monk fruit (sub-receta) | 15 ml | 0 % | $39.43 MXN/L | $0.59 |
 | Hierbabuena fresca (guarnición, 1 ramita) | 1 g | 0 % | $90.00 MXN/kg | $0.09 |
 | Hielo de agua purificada | 120 g | 0 % | $2.00 MXN/kg | $0.24 |
-| **Total insumos** | | | | **$12.17** |
+| **Total insumos** | | | | **$11.97** |
 
 #### Sub-receta — Chía hidratada COSECHA (1:8)
 
-**Rendimiento** 1.0 L de gel (≈11 porciones de 90 g) · **Costo** $18.21 MXN/L · **Vida útil** 48 h desde el batido · **Refrigeración** 2-4 °C en recipiente hermético. No congelar: el gel se rompe y suelta agua al descongelar.
+**Rendimiento** 1.0 L de gel (≈11 porciones de 90 g) · **Costo** $17.76 MXN/L · **Vida útil** 48 h desde el batido · **Refrigeración** 2-4 °C en recipiente hermético. No congelar: el gel se rompe y suelta agua al descongelar.
 
 | insumo | cantidad | merma % | costo unitario |
 |---|---:|---:|---:|
 | Chía seca | 111 g | 0 % | $140.00 MXN/kg |
-| Agua purificada de garrafón | 889 ml | 0 % | $3.00 MXN/L |
+| Agua purificada de garrafón | 889 ml | 0 % | $2.50 MXN/L |
 
 1. Verter la chía sobre el agua, nunca al revés, batiendo con globo mientras cae.
 2. Batir de nuevo a los 5 y a los 15 min: es lo único que evita los grumos, y un grumo en el vaso arruina la bebida.
@@ -358,12 +358,12 @@ Cara a barra. 19 fichas ejecutables, una por bebida. Todo en pesos mexicanos, in
 
 #### Sub-receta — Infusión fría de hierbabuena
 
-**Rendimiento** 1.0 L de infusión colada y aforada · **Costo** $6.18 MXN/L · **Vida útil** 48 h desde el colado · **Refrigeración** 2-4 °C tapado.
+**Rendimiento** 1.0 L de infusión colada y aforada · **Costo** $5.65 MXN/L · **Vida útil** 48 h desde el colado · **Refrigeración** 2-4 °C tapado.
 
 | insumo | cantidad | merma % | costo unitario |
 |---|---:|---:|---:|
 | Hierbabuena fresca | 25 g | 25 % | $90.00 MXN/kg |
-| Agua purificada de garrafón | 1060 ml | 0 % | $3.00 MXN/L |
+| Agua purificada de garrafón | 1060 ml | 0 % | $2.50 MXN/L |
 
 1. Separar hoja de tallo y usar solo hoja.
 2. Enjuagar en agua fría y escurrir.
@@ -373,13 +373,13 @@ Cara a barra. 19 fichas ejecutables, una por bebida. Todo en pesos mexicanos, in
 
 #### Sub-receta — Jarabe COSECHA (miel de agave + monk fruit)
 
-**Rendimiento** 1.0 L (≈66 dosis de 15 ml) · **Costo** $39.85 MXN/L · **Vida útil** 7 días a 2-4 °C (sin pasteurizar). Para 21 días habría que pasteurizar a 85 °C/30 s y embotellar en caliente, lo que hoy no hace la receta. · **Refrigeración** 2-4 °C en botella de vidrio ámbar cerrada.
+**Rendimiento** 1.0 L (≈66 dosis de 15 ml) · **Costo** $39.43 MXN/L · **Vida útil** 7 días a 2-4 °C (sin pasteurizar). Para 21 días habría que pasteurizar a 85 °C/30 s y embotellar en caliente, lo que hoy no hace la receta. · **Refrigeración** 2-4 °C en botella de vidrio ámbar cerrada.
 
 | insumo | cantidad | merma % | costo unitario |
 |---|---:|---:|---:|
 | Miel de agave orgánica | 150 g | 0 % | $180.00 MXN/kg |
 | Monk fruit puro en polvo (mogrósido V ≥50%) | 2.4 g | 0 % | $3800.00 MXN/kg |
-| Agua purificada de garrafón | 850 ml | 0 % | $3.00 MXN/L |
+| Agua purificada de garrafón | 850 ml | 0 % | $2.50 MXN/L |
 | Jugo de limón mexicano | 10 ml | 62 % | $45.00 MXN/L |
 
 1. Pesar 2.4 g de monk fruit en báscula de 0.01 g.
@@ -429,21 +429,21 @@ Cara a barra. 19 fichas ejecutables, una por bebida. Todo en pesos mexicanos, in
 
 | insumo | cantidad | merma % | costo unitario | costo en la porción |
 |---|---:|---:|---:|---:|
-| Infusión fría de jamaica y naranja (sub-receta) | 470 ml | 0 % | $12.89 MXN/L | $6.06 |
-| Jarabe de piloncillo y canela (sub-receta) | 30 ml | 0 % | $40.20 MXN/L | $1.21 |
+| Infusión fría de jamaica y naranja (sub-receta) | 470 ml | 0 % | $12.33 MXN/L | $5.80 |
+| Jarabe de piloncillo y canela (sub-receta) | 30 ml | 0 % | $39.85 MXN/L | $1.20 |
 | Cáscara de naranja en tira (guarnición) | 2 g | 88 % | $22.00 MXN/kg | $0.37 |
 | Hielo de agua purificada | 120 g | 0 % | $2.00 MXN/kg | $0.24 |
-| **Total insumos** | | | | **$7.87** |
+| **Total insumos** | | | | **$7.60** |
 
 #### Sub-receta — Infusión fría de jamaica y naranja
 
-**Rendimiento** 1.0 L de infusión colada y aforada · **Costo** $12.89 MXN/L · **Vida útil** 72 h desde el colado (pH < 3.0) · **Refrigeración** 2-4 °C en Cambro tapado durante la maceración y en botella cerrada después. No congelar.
+**Rendimiento** 1.0 L de infusión colada y aforada · **Costo** $12.33 MXN/L · **Vida útil** 72 h desde el colado (pH < 3.0) · **Refrigeración** 2-4 °C en Cambro tapado durante la maceración y en botella cerrada después. No congelar.
 
 | insumo | cantidad | merma % | costo unitario |
 |---|---:|---:|---:|
 | Flor de jamaica seca | 62 g | 0 % | $130.00 MXN/kg |
 | Cáscara de naranja sin albedo | 8 g | 88 % | $22.00 MXN/kg |
-| Agua purificada de garrafón | 1120 ml | 0 % | $3.00 MXN/L |
+| Agua purificada de garrafón | 1120 ml | 0 % | $2.50 MXN/L |
 
 1. Enjuagar la flor 10 s en agua fría para quitar polvo y tierra de campo. Escurrir bien.
 2. Pelar la naranja con pelador, sin llevarse el albedo blanco: el albedo amarga.
@@ -454,14 +454,14 @@ Cara a barra. 19 fichas ejecutables, una por bebida. Todo en pesos mexicanos, in
 
 #### Sub-receta — Jarabe de piloncillo y canela
 
-**Rendimiento** 1.0 L (≈33 dosis de 30 ml) · **Costo** $40.20 MXN/L · **Vida útil** 30 días · **Refrigeración** 2-4 °C en botella cerrada. Agitar antes de cada servicio.
+**Rendimiento** 1.0 L (≈33 dosis de 30 ml) · **Costo** $39.85 MXN/L · **Vida útil** 30 días · **Refrigeración** 2-4 °C en botella cerrada. Agitar antes de cada servicio.
 
 | insumo | cantidad | merma % | costo unitario |
 |---|---:|---:|---:|
 | Piloncillo | 320 g | 0 % | $55.00 MXN/kg |
 | Canela de Ceilán en raja | 8 g | 0 % | $900.00 MXN/kg |
 | Monk fruit puro en polvo (mogrósido V ≥50%) | 3.5 g | 0 % | $3800.00 MXN/kg |
-| Agua purificada de garrafón | 700 ml | 0 % | $3.00 MXN/L |
+| Agua purificada de garrafón | 700 ml | 0 % | $2.50 MXN/L |
 
 1. Calentar 400 ml del agua a 90 °C con las rajas de canela. Tapar, retirar del fuego e infusionar 20 min.
 2. Retirar las rajas y disolver el piloncillo rallado en la infusión caliente, removiendo. No hervir: el piloncillo hervido carameliza y amarga.
@@ -639,19 +639,19 @@ Cara a barra. 19 fichas ejecutables, una por bebida. Todo en pesos mexicanos, in
 
 | insumo | cantidad | merma % | costo unitario | costo en la porción |
 |---|---:|---:|---:|---:|
-| Concentrado de cold brew COSECHA (sub-receta) | 140 ml | 2 % | $85.06 MXN/L | $12.15 |
-| Agua purificada fria | 140 ml | 0 % | $1.75 MXN/L | $0.25 |
-| Hielo de agua purificada | 110 g | 0 % | $1.75 MXN/kg | $0.19 |
-| **Total insumos** | | | | **$12.59** |
+| Concentrado de cold brew COSECHA (sub-receta) | 140 ml | 2 % | $86.11 MXN/L | $12.30 |
+| Agua purificada fria | 140 ml | 0 % | $2.50 MXN/L | $0.35 |
+| Hielo de agua purificada | 110 g | 0 % | $2.00 MXN/kg | $0.22 |
+| **Total insumos** | | | | **$12.87** |
 
 #### Sub-receta — Concentrado de cold brew COSECHA
 
-**Rendimiento** 1.0 L de concentrado por batch (200 g de cafe); los posos retienen ~0.4 L. Rinde 7 vasos de BE-10 o 8 de BE-14. · **Costo** $85.06 MXN/L · **Vida útil** 7 dias desde el embotellado · **Refrigeración** <=4 C en botella de vidrio o PET cerrada, sin luz. Nunca se rellena una botella a medias con lote nuevo.
+**Rendimiento** 1.0 L de concentrado por batch (200 g de cafe); los posos retienen ~0.4 L. Rinde 7 vasos de BE-10 o 8 de BE-14. · **Costo** $86.11 MXN/L · **Vida útil** 7 dias desde el embotellado · **Refrigeración** <=4 C en botella de vidrio o PET cerrada, sin luz. Nunca se rellena una botella a medias con lote nuevo.
 
 | insumo | cantidad | merma % | costo unitario |
 |---|---:|---:|---:|
 | Cafe de especialidad en grano, origen Veracruz / Sierra Norte de Puebla, molienda gruesa | 200 g | 8 % | $380.00 MXN/kg |
-| Agua purificada filtrada | 1400 ml | 0 % | $1.75 MXN/L |
+| Agua purificada filtrada | 1400 ml | 0 % | $2.50 MXN/L |
 
 1. Muele 200 g de cafe grueso (como sal de mar) y humedecelo con 200 ml de agua; espera 2 min a que desgasifique.
 2. Agrega el resto del agua hasta 1.4 L, agita 30 s y tapa.
@@ -701,9 +701,9 @@ Cara a barra. 19 fichas ejecutables, una por bebida. Todo en pesos mexicanos, in
 | Cafe de especialidad en grano, origen Veracruz / Sierra Norte de Puebla, tueste medio | 18 g | 9 % | $380.00 MXN/kg | $7.52 |
 | Base de nube de coco COSECHA (sub-receta) | 45 ml | 3 % | $124.95 MXN/L | $5.80 |
 | Bebida de coco SIN azucares anadidos, <=1.5 g de carbohidrato/100 ml, sin jarabe de glucosa ni maltodextrina (verificar etiqueta en cada compra) | 85 ml | 2 % | $75.00 MXN/L | $6.51 |
-| Jarabe de datil COSECHA (sub-receta) | 10 ml | 2 % | $140.91 MXN/L | $1.44 |
-| Hielo de agua purificada | 120 g | 0 % | $1.75 MXN/kg | $0.21 |
-| **Total insumos** | | | | **$21.47** |
+| Jarabe de datil COSECHA (sub-receta) | 10 ml | 2 % | $141.45 MXN/L | $1.44 |
+| Hielo de agua purificada | 120 g | 0 % | $2.00 MXN/kg | $0.24 |
+| **Total insumos** | | | | **$21.50** |
 
 #### Sub-receta — Base de nube de coco COSECHA
 
@@ -723,12 +723,12 @@ Cara a barra. 19 fichas ejecutables, una por bebida. Todo en pesos mexicanos, in
 
 #### Sub-receta — Jarabe de datil COSECHA
 
-**Rendimiento** 0.55 L por batch (400 g de datil); rinde 22 dosis de 25 ml de BE-12, o 55 dosis de 10 ml de esta ficha · **Costo** $140.91 MXN/L · **Vida útil** 7 dias · **Refrigeración** <=4 C en botella de vidrio esterilizada y llenada en caliente; agitar antes de usar; no congelar (cristaliza y se separa).
+**Rendimiento** 0.55 L por batch (400 g de datil); rinde 22 dosis de 25 ml de BE-12, o 55 dosis de 10 ml de esta ficha · **Costo** $141.45 MXN/L · **Vida útil** 7 dias · **Refrigeración** <=4 C en botella de vidrio esterilizada y llenada en caliente; agitar antes de usar; no congelar (cristaliza y se separa).
 
 | insumo | cantidad | merma % | costo unitario |
 |---|---:|---:|---:|
 | Datil deglet noor sin hueso | 400 g | 6 % | $180.00 MXN/kg |
-| Agua purificada a 80 C | 400 ml | 0 % | $1.75 MXN/L |
+| Agua purificada a 80 C | 400 ml | 0 % | $2.50 MXN/L |
 | Sal de mar fina | 2 g | 0 % | $30.00 MXN/kg |
 | Acido citrico grado alimenticio | 1.2 g | 0 % | $120.00 MXN/kg |
 
@@ -782,19 +782,19 @@ Cara a barra. 19 fichas ejecutables, una por bebida. Todo en pesos mexicanos, in
 | insumo | cantidad | merma % | costo unitario | costo en la porción |
 |---|---:|---:|---:|---:|
 | Matcha ceremonial japones (Uji o Kagoshima), grado bebida | 3 g | 0 % | $3200.00 MXN/kg | $9.60 |
-| Agua purificada a 75 C | 60 ml | 0 % | $1.75 MXN/L | $0.11 |
+| Agua purificada a 75 C | 60 ml | 0 % | $2.50 MXN/L | $0.15 |
 | Leche entera pasteurizada 3.3% grasa | 200 ml | 6 % | $26.00 MXN/L | $5.53 |
-| Jarabe de datil COSECHA (sub-receta) | 25 ml | 2 % | $140.91 MXN/L | $3.59 |
-| **Total insumos** | | | | **$18.83** |
+| Jarabe de datil COSECHA (sub-receta) | 25 ml | 2 % | $141.45 MXN/L | $3.61 |
+| **Total insumos** | | | | **$18.89** |
 
 #### Sub-receta — Jarabe de datil COSECHA
 
-**Rendimiento** 0.55 L por batch (400 g de datil); rinde 22 dosis de 25 ml · **Costo** $140.91 MXN/L · **Vida útil** 7 dias · **Refrigeración** <=4 C en botella de vidrio esterilizada y llenada en caliente; agitar antes de usar; no congelar (cristaliza y se separa).
+**Rendimiento** 0.55 L por batch (400 g de datil); rinde 22 dosis de 25 ml · **Costo** $141.45 MXN/L · **Vida útil** 7 dias · **Refrigeración** <=4 C en botella de vidrio esterilizada y llenada en caliente; agitar antes de usar; no congelar (cristaliza y se separa).
 
 | insumo | cantidad | merma % | costo unitario |
 |---|---:|---:|---:|
 | Datil deglet noor sin hueso | 400 g | 6 % | $180.00 MXN/kg |
-| Agua purificada a 80 C | 400 ml | 0 % | $1.75 MXN/L |
+| Agua purificada a 80 C | 400 ml | 0 % | $2.50 MXN/L |
 | Sal de mar fina | 2 g | 0 % | $30.00 MXN/kg |
 | Acido citrico grado alimenticio | 1.2 g | 0 % | $120.00 MXN/kg |
 
@@ -847,13 +847,13 @@ Cara a barra. 19 fichas ejecutables, una por bebida. Todo en pesos mexicanos, in
 | insumo | cantidad | merma % | costo unitario | costo en la porción |
 |---|---:|---:|---:|---:|
 | Cafe de especialidad en grano, origen Veracruz / Sierra Norte de Puebla, tueste medio | 18 g | 9 % | $380.00 MXN/kg | $7.52 |
-| Concentrado de chai COSECHA (sub-receta) | 110 ml | 3 % | $68.56 MXN/L | $7.77 |
+| Concentrado de chai COSECHA (sub-receta) | 110 ml | 3 % | $69.37 MXN/L | $7.87 |
 | Leche entera pasteurizada 3.3% grasa | 150 ml | 8 % | $26.00 MXN/L | $4.24 |
-| **Total insumos** | | | | **$19.53** |
+| **Total insumos** | | | | **$19.62** |
 
 #### Sub-receta — Concentrado de chai COSECHA
 
-**Rendimiento** 1.0 L; rinde 9 bebidas de 110 ml · **Costo** $68.56 MXN/L · **Vida útil** 7 dias · **Refrigeración** <=4 C en botella cerrada, rotulada con fecha y lote.
+**Rendimiento** 1.0 L; rinde 9 bebidas de 110 ml · **Costo** $69.37 MXN/L · **Vida útil** 7 dias · **Refrigeración** <=4 C en botella cerrada, rotulada con fecha y lote.
 
 | insumo | cantidad | merma % | costo unitario |
 |---|---:|---:|---:|
@@ -865,7 +865,7 @@ Cara a barra. 19 fichas ejecutables, una por bebida. Todo en pesos mexicanos, in
 | Pimienta negra entera | 2 g | 0 % | $260.00 MXN/kg |
 | Anis estrella entero | 3 g | 0 % | $420.00 MXN/kg |
 | Jarabe de datil COSECHA (sub-receta documentada en BE-11 y BE-12) | 200 ml | 2 % | $140.91 MXN/L |
-| Agua purificada | 1080 ml | 0 % | $1.75 MXN/L |
+| Agua purificada | 1080 ml | 0 % | $2.50 MXN/L |
 | Sal de mar fina | 1 g | 0 % | $30.00 MXN/kg |
 
 1. Tuesta en seco 60 s canela, cardamomo majado, clavo, anis y pimienta hasta que suelten aroma.
@@ -876,12 +876,12 @@ Cara a barra. 19 fichas ejecutables, una por bebida. Todo en pesos mexicanos, in
 
 #### Sub-receta — Jarabe de datil COSECHA
 
-**Rendimiento** 0.55 L por batch (400 g de datil); 200 ml van a cada litro de concentrado de chai · **Costo** $140.91 MXN/L · **Vida útil** 7 dias · **Refrigeración** <=4 C en botella de vidrio esterilizada y llenada en caliente; agitar antes de usar.
+**Rendimiento** 0.55 L por batch (400 g de datil); 200 ml van a cada litro de concentrado de chai · **Costo** $141.45 MXN/L · **Vida útil** 7 dias · **Refrigeración** <=4 C en botella de vidrio esterilizada y llenada en caliente; agitar antes de usar.
 
 | insumo | cantidad | merma % | costo unitario |
 |---|---:|---:|---:|
 | Datil deglet noor sin hueso | 400 g | 6 % | $180.00 MXN/kg |
-| Agua purificada a 80 C | 400 ml | 0 % | $1.75 MXN/L |
+| Agua purificada a 80 C | 400 ml | 0 % | $2.50 MXN/L |
 | Sal de mar fina | 2 g | 0 % | $30.00 MXN/kg |
 | Acido citrico grado alimenticio | 1.2 g | 0 % | $120.00 MXN/kg |
 
@@ -933,15 +933,15 @@ Cara a barra. 19 fichas ejecutables, una por bebida. Todo en pesos mexicanos, in
 
 | insumo | cantidad | merma % | costo unitario | costo en la porción |
 |---|---:|---:|---:|---:|
-| Horchata COSECHA de arroz, canela de Ceylan y vainilla de Papantla (sub-receta) | 170 ml | 3 % | $44.18 MXN/L | $7.74 |
-| Concentrado de cold brew COSECHA (sub-receta) | 120 ml | 2 % | $85.06 MXN/L | $10.42 |
-| Hielo de agua purificada | 130 g | 0 % | $1.75 MXN/kg | $0.23 |
+| Horchata COSECHA de arroz, canela de Ceylan y vainilla de Papantla (sub-receta) | 170 ml | 3 % | $45.01 MXN/L | $7.89 |
+| Concentrado de cold brew COSECHA (sub-receta) | 120 ml | 2 % | $86.11 MXN/L | $10.54 |
+| Hielo de agua purificada | 130 g | 0 % | $2.00 MXN/kg | $0.26 |
 | Canela de Ceylan molida al momento (servicio) | 0.3 g | 0 % | $420.00 MXN/kg | $0.13 |
-| **Total insumos** | | | | **$18.51** |
+| **Total insumos** | | | | **$18.82** |
 
 #### Sub-receta — Horchata COSECHA de arroz, canela de Ceylan y vainilla de Papantla
 
-**Rendimiento** 1.0 L; rinde 5.8 bebidas de 170 ml · **Costo** $44.18 MXN/L · **Vida útil** 72 h · **Refrigeración** <=4 C siempre, remojo incluido. Botella cerrada y rotulada. Fuera de refrigeracion, maximo 30 min seguidos.
+**Rendimiento** 1.0 L; rinde 5.8 bebidas de 170 ml · **Costo** $45.01 MXN/L · **Vida útil** 72 h · **Refrigeración** <=4 C siempre, remojo incluido. Botella cerrada y rotulada. Fuera de refrigeracion, maximo 30 min seguidos.
 
 | insumo | cantidad | merma % | costo unitario |
 |---|---:|---:|---:|
@@ -950,7 +950,7 @@ Cara a barra. 19 fichas ejecutables, una por bebida. Todo en pesos mexicanos, in
 | Canela de Ceylan en rama | 8 g | 0 % | $420.00 MXN/kg |
 | Vainilla de Papantla en vaina | 1.5 g | 0 % | $6000.00 MXN/kg |
 | Datil deglet noor sin hueso | 70 g | 6 % | $180.00 MXN/kg |
-| Agua purificada | 1100 ml | 0 % | $1.75 MXN/L |
+| Agua purificada | 1100 ml | 0 % | $2.50 MXN/L |
 | Sal de mar fina | 1.5 g | 0 % | $30.00 MXN/kg |
 
 1. Remoja arroz, nuez y canela en rama en 1.10 L de agua DENTRO DE CAMARA a <=4 C, 12 h. Nunca a temperatura ambiente.
@@ -962,12 +962,12 @@ Cara a barra. 19 fichas ejecutables, una por bebida. Todo en pesos mexicanos, in
 
 #### Sub-receta — Concentrado de cold brew COSECHA
 
-**Rendimiento** 1.0 L de concentrado (200 g de cafe); rinde 8 bebidas de 120 ml · **Costo** $85.06 MXN/L · **Vida útil** 7 dias · **Refrigeración** <=4 C en botella cerrada y rotulada, sin luz.
+**Rendimiento** 1.0 L de concentrado (200 g de cafe); rinde 8 bebidas de 120 ml · **Costo** $86.11 MXN/L · **Vida útil** 7 dias · **Refrigeración** <=4 C en botella cerrada y rotulada, sin luz.
 
 | insumo | cantidad | merma % | costo unitario |
 |---|---:|---:|---:|
 | Cafe de especialidad en grano, origen Veracruz / Sierra Norte de Puebla, molienda gruesa | 200 g | 8 % | $380.00 MXN/kg |
-| Agua purificada filtrada | 1400 ml | 0 % | $1.75 MXN/L |
+| Agua purificada filtrada | 1400 ml | 0 % | $2.50 MXN/L |
 
 1. Muele 200 g grueso y humedece con 200 ml de agua; espera 2 min de desgasificado.
 2. Completa a 1.4 L, agita 30 s y tapa.
@@ -1028,8 +1028,8 @@ Cara a barra. 19 fichas ejecutables, una por bebida. Todo en pesos mexicanos, in
 | Leche descremada pasteurizada | 130 ml | 0 % | $26.00 MXN/L | $3.38 |
 | Jugo de limon recien exprimido | 8 ml | 0 % | $35.00 MXN/L | $0.28 |
 | Solucion de monk fruit 0.5% (sub-receta) | 12 ml | 0 % | $14.99 MXN/L | $0.18 |
-| Hielo | 45 g | 0 % | $2.50 MXN/kg | $0.11 |
-| **Total insumos** | | | | **$41.43** |
+| Hielo | 45 g | 0 % | $2.00 MXN/kg | $0.09 |
+| **Total insumos** | | | | **$41.41** |
 
 #### Sub-receta — Solucion de monk fruit 0.5%
 
@@ -1092,8 +1092,8 @@ Cara a barra. 19 fichas ejecutables, una por bebida. Todo en pesos mexicanos, in
 | Leche entera pasteurizada | 180 ml | 0 % | $24.00 MXN/L | $4.32 |
 | Canela molida | 0.5 g | 0 % | $320.00 MXN/kg | $0.16 |
 | Sal de mar fina | 0.4 g | 0 % | $18.00 MXN/kg | $0.01 |
-| Hielo | 50 g | 0 % | $2.50 MXN/kg | $0.13 |
-| **Total insumos** | | | | **$37.65** |
+| Hielo | 50 g | 0 % | $2.00 MXN/kg | $0.10 |
+| **Total insumos** | | | | **$37.62** |
 
 #### Sub-receta — Pasta de datil
 
@@ -1156,8 +1156,8 @@ Cara a barra. 19 fichas ejecutables, una por bebida. Todo en pesos mexicanos, in
 | Aislado de proteina de suero, sin sabor | 29 g | 0 % | $780.00 MXN/kg | $22.62 |
 | Jugo de limon recien exprimido | 8 ml | 0 % | $35.00 MXN/L | $0.28 |
 | Sal de mar fina | 0.5 g | 0 % | $18.00 MXN/kg | $0.01 |
-| Hielo | 75 g | 0 % | $2.50 MXN/kg | $0.19 |
-| **Total insumos** | | | | **$44.34** |
+| Hielo | 75 g | 0 % | $2.00 MXN/kg | $0.15 |
+| **Total insumos** | | | | **$44.30** |
 
 #### Sub-receta — Pasta de datil
 
@@ -1185,7 +1185,7 @@ Cara a barra. 19 fichas ejecutables, una por bebida. Todo en pesos mexicanos, in
 
 **Equipo** Licuadora de alta potencia 2 HP · Bascula digital 0.1 g · Bolsas IQF porcionadas de 285 g (mango + platano) · Vaso de 500 ml con tapa de domo · Congelador -18 C · Refractometro Brix opcional para verificar madurez del mango en recibo
 
-**Alérgenos** leche (aislado de suero)
+**Alérgenos** leche (aislado de suero) · coco (clasificado como fruto seco por la FDA; declarar en carta)
 
 **Vida útil** Bebida armada: servicio inmediato, maximo 20 min a <=6 C. Es la que mas rapido se separa (poca grasa y poco solido lacteo): a los 25 min hay linea de agua visible. Bolsas IQF de fruta: 30 dias a -18 C. No se guarda ni se re-licua.
 
@@ -1221,8 +1221,8 @@ Cara a barra. 19 fichas ejecutables, una por bebida. Todo en pesos mexicanos, in
 | Extracto natural de vainilla | 1.5 g | 0 % | $260.00 MXN/kg | $0.39 |
 | Jugo de limon recien exprimido | 5 ml | 0 % | $35.00 MXN/L | $0.18 |
 | Sal de mar fina | 0.3 g | 0 % | $18.00 MXN/kg | $0.01 |
-| Hielo | 65 g | 0 % | $2.50 MXN/kg | $0.16 |
-| **Total insumos** | | | | **$40.50** |
+| Hielo | 65 g | 0 % | $2.00 MXN/kg | $0.13 |
+| **Total insumos** | | | | **$40.47** |
 
 #### Sub-receta — Leche de pepita
 
@@ -1267,7 +1267,7 @@ Cara a barra. 19 fichas ejecutables, una por bebida. Todo en pesos mexicanos, in
 
 **Equipo** Licuadora de alta potencia 2 HP · Bascula digital 0.1 g (la dosis de matcha de 3.5 g exige resolucion fina) · Bolsa de filtrado de leche vegetal (nut milk bag) de malla 200 micras · Tamiz fino para el matcha · Jarra dedicada rotulada VEGANO, sin contacto con jarras de suero · Botellas de 1 L para leche de pepita · Vaso de 500 ml con tapa de domo
 
-**Alérgenos** pepita de calabaza (semilla) - no es alergeno de declaracion obligatoria en la NOM-051 pero se declara por politica de casa · chicharo (leguminosa) - idem
+**Alérgenos** pepita de calabaza (semilla) - no es alergeno de declaracion obligatoria en la NOM-051 pero se declara por politica de casa · chicharo (leguminosa) - idem · coco (clasificado como fruto seco por la FDA; declarar en carta)
 
 **Vida útil** Bebida armada: servicio inmediato, maximo 20 min a <=6 C. Leche de pepita: 3 dias a 2-4 C (se separa, agitar antes de usar). Pasta de datil: 10 dias a 2-4 C. Matcha en polvo: 2 meses desde apertura, en lata opaca cerrada a 2-4 C; oxidado pierde color y sabe a heno.
 
@@ -1302,8 +1302,8 @@ Cara a barra. 19 fichas ejecutables, una por bebida. Todo en pesos mexicanos, in
 | Pepita de calabaza tostada sin cascara | 10 g | 0 % | $190.00 MXN/kg | $1.90 |
 | Canela molida | 0.4 g | 0 % | $320.00 MXN/kg | $0.13 |
 | Sal de mar fina | 0.3 g | 0 % | $18.00 MXN/kg | $0.01 |
-| Hielo | 40 g | 0 % | $2.50 MXN/kg | $0.10 |
-| **Total insumos** | | | | **$45.91** |
+| Hielo | 40 g | 0 % | $2.00 MXN/kg | $0.08 |
+| **Total insumos** | | | | **$45.89** |
 
 **Preparación**
 

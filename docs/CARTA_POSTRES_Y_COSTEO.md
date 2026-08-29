@@ -47,12 +47,11 @@ Igual que en bebidas: la **fórmula de la casa** es `ceil(costo × 1.40 ÷ 0.85)
 | código | nombre | costo porción | precio fórmula | food cost fórmula | precio carta | food cost carta | margen bruto carta |
 |---|---|---:|---:|---:|---:|---:|---:|
 | PS-01® | Cremoso de cacao 72%, aceite de oliva y sal | $31.84 | $53 | 60.1 % | **$95** | 33.5 % | $63.16 |
-| PS-02® | Cheesecake frío de vainilla y maracuyá sobre crumble de pepita y nuez | $33.73 | $56 | 60.2 % | **$100** | 33.7 % | $66.27 |
-| PS-03® | Sticky toffee de dátil y nuez, tibio | $33.54 | $56 | 59.9 % | **$100** | 33.5 % | $66.46 |
-| PS-04® | Mousse de mamey, pepita caramelizada y lima | $23.27 | $39 | 59.7 % | **$80** | 29.1 % | $56.73 |
-| PS-05® | Barra de dátil, nuez y cacao 72% | $24.58 | $41 | 60.0 % | **$75** | 32.8 % | $50.42 |
-| | **Promedio** | $29.39 | $49.00 | 60.0 % | **$90.00** | 32.7 % | $60.61 |
-La fórmula impone 60% de food cost cuando el estándar en repostería es 20-30%. Al precio de carta el mix queda en **32.7%**, todavía alto: los postres sin azúcar refinada son caros porque el dátil, la pepita y la cobertura 72% sustituyen a un insumo que costaba $25/kg. Es el precio de la restricción, y se paga.
+| PS-02® | Cheesecake frío de vainilla y maracuyá sobre crumble de pepita y nuez | $33.77 | $56 | 60.3 % | **$100** | 33.8 % | $66.23 |
+| PS-03® | Sticky toffee de dátil y nuez, tibio | $33.61 | $56 | 60.0 % | **$100** | 33.6 % | $66.39 |
+| PS-04® | Mousse de mamey, pepita caramelizada y lima | $23.28 | $39 | 59.7 % | **$80** | 29.1 % | $56.72 |
+| PS-05® | Barra de dátil, nuez y cacao 72% | $24.59 | $41 | 60.0 % | **$75** | 32.8 % | $50.41 |
+| | **Promedio** | $29.42 | $49.00 | 60.0 % | **$90.00** | 32.7 % | $60.58 |
 
 ## Análisis operativo
 
@@ -194,4 +193,15 @@ Lo que **no** está verificado y solo una lente adversarial habría cazado:
 - **Sabor y solapamiento:** el juicio de si saben a postre de verdad o a "versión saludable" viene de un solo agente, sin contradictor.
 - **PCC:** en bebidas la lente de barra encontró un remojo a 60 °C dentro de zona de peligro. Aquí nadie miró con esos ojos.
 
-**Recomendación:** antes de llevar estos postres a cocina, correr las tres lentes de verificación. El workflow está guardado y se puede reanudar desde caché sin repetir la formulación.
+### Auditoría post-entrega
+
+Sobre los 5 postres se corrió después una auditoría determinista, que corrigió:
+
+| hallazgo | corrección |
+|---|---|
+| Agua filtrada y agua hirviendo costeadas a **$0** en 5 sub-recetas | Normalizadas a $2.50/L, el precio único de la casa. |
+| Costo por lote desfasado en 7 sub-recetas tras normalizar el agua | Recalculado y repercutido en su línea padre. |
+
+Ningún postre declaraba alérgenos de menos, ninguno excedía 5 pasos y los gramajes siguen cuadrando exacto con la porción declarada.
+
+**Recomendación:** esto no sustituye las tres lentes adversariales. Antes de llevar estos postres a cocina hay que correrlas: la auditoría determinista comprueba aritmética y formato, no técnica ni sabor. El workflow está guardado y se reanuda desde caché sin repetir la formulación.
