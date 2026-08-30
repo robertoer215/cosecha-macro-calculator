@@ -154,11 +154,11 @@ No propongo cambiar la fórmula: es regla de negocio y `js/bebidas.js` la respet
 
 Ver `docs/INSUMOS.md` para el catálogo completo. Lo que importa aquí:
 
-- **153 nombres de insumo**, de los cuales solo **4 existen hoy** en `js/data.js` (nueces, semillas de girasol y derivados). Los otros 149 son alta de proveedor nueva.
-- **94 insumos sostienen una sola receta.** Cada uno es un SKU que hay que comprar, almacenar, rotar y mermar para vender un producto. Es la métrica que debe guiar el recorte de la v1.
-- **Los 153 nombres no son 153 productos.** El monk fruit aparece con 5 nombres y precios entre $2 500 y $4 000/kg; la vainilla de Papantla entre $1 800 y $6 000. Hay que normalizar el catálogo antes de dar de alta nada.
+- **108 insumos de compra distintos** en la carta vigente (19 bebidas + add-on + 5 postres de mostrador). Solo un puñado existe hoy en `js/data.js` (nueces, semillas de girasol); el resto es alta de proveedor nueva.
+- **66 insumos sostienen una sola receta.** Cada uno es un SKU que hay que comprar, almacenar, rotar y mermar para vender un producto. Es la métrica que debe guiar el recorte de la v1.
+- **Los 108 nombres no son 108 productos.** El monk fruit y la vainilla siguen apareciendo con nombres y precios distintos según la ficha. Hay que normalizar el catálogo antes de dar de alta nada; el detalle está en `docs/INSUMOS.md`.
 - **Rotación lenta:** matcha ceremonial, vainilla en vaina, cardamomo, canela de Ceilán, monk fruit. Caros por kilo, irrelevantes por porción, y con riesgo de merma de almacén si la bebida que los usa no rota.
-- **Temporada en Puebla:** mamey (BE-19, PS-04) y maracuyá (PS-02) tienen ventana. El arándano se resolvió con IQF justamente para esquivarla.
+- **Temporada en Puebla:** el mamey de BE-19 tiene ventana. El arándano de BE-01 se resolvió con IQF justamente para esquivarla. (Los postres vigentes, línea de mostrador tipo Honest Bites, no dependen de fruta de temporada.)
 
 ### Equipo a comprar
 
@@ -248,7 +248,7 @@ Con el add-on al 12% de attach se suman **$363 por cada 100 comandas**. Es el ú
 | riesgo | mitigación |
 |---|---|
 | BE-01 pierde dinero a precio de mercado | No lanzarla, o sustituir arándano IQF por fruta nacional de temporada. |
-| 149 de 153 precios son `[SUPUESTO]` | Cotizar antes de fijar carta. El escandallo es una estimación, no una orden de compra. |
+| 92 de 108 precios son `[SUPUESTO]` | Cotizar antes de fijar carta. Los 16 verificados con cita están en `docs/INSUMOS.md`. |
 | Dependencia de un solo proveedor de café | Segundo proveedor homologado antes de abrir; el café sostiene 8 de 19 bebidas. |
 | Batches sin conservador (jarabe, infusiones) | Vida útil corregida a 7 días y 48 h. Etiquetado obligatorio con fecha y hora de colado. |
 | El add-on cuaja en caliente | Declarado en carta: solo bebidas frías. No es un defecto, es una regla de servicio. |
@@ -257,7 +257,7 @@ Con el add-on al 12% de attach se suman **$363 por cada 100 comandas**. Es el ú
 
 ## Supuestos
 
-1. **149 de 153 precios de insumo son `[SUPUESTO]`** de mayoreo en Puebla, agosto 2026. Solo nueces y semillas de girasol vienen de `js/data.js`. Para confirmarlos hacen falta cotizaciones de Central de Abasto, Costco y un distribuidor de repostería.
+1. **92 de 108 precios de insumo son `[SUPUESTO]`** de mayoreo en Puebla, agosto 2026. Los 16 verificados en línea, cada uno con su cita y fecha, están en `docs/INSUMOS.md`. Para confirmar el resto hacen falta cotizaciones de Central de Abasto, Costco y un distribuidor de repostería.
 2. **`js/data.js` y `COSECHA_PRICE_SHEET.csv` se contradicen** en todos los insumos compartidos (hasta 64% en guacamole, 33% en tenderloin). Se usó `data.js` por ser la fuente que la app importa para cobrar. Reconciliar las dos listas es una decisión de food cost pendiente y ajena a esta carta.
 3. **Precio de carta**: anclado a ≈0.75× la referencia de Honest Greens en España. Falta validarlo contra los precios reales de Vitality, Soul Valley y Fast Fruit en Angelópolis.
 4. **Mix de venta**: estimado, no medido. Se sostiene en que el café es compra diaria y el agua acompaña al plato. Se confirma con 4-6 semanas de ticket real.
@@ -293,4 +293,4 @@ Se corrió después una auditoría determinista sobre los 24 items ya escritos. 
 
 Verificado tras corregir: los 5 smoothies siguen por encima de 25 g de proteína, los 24 items conservan `precio = ceil(costo × 1.40 ÷ 0.85)` sin excepción, y los módulos de `js/` y `src/js/` siguen idénticos entre sí y sincronizados con la fuente.
 
-Dos hallazgos de esa auditoría resultaron ser **falsos positivos míos** y se documentan para que nadie los persiga: el "jarabe de dátil sin costear" de BE-13 es una sub-receta anidada dentro del concentrado de chai y ya está costeada ahí; y el coulis de PS-02 cuadra exacto cuando se lee su rendimiento real (906 g), no la masa cruda (1.066 kg).
+Dos hallazgos de esa auditoría resultaron ser **falsos positivos míos** y se documentan para que nadie los persiga: el "jarabe de dátil sin costear" de BE-13 es una sub-receta anidada dentro del concentrado de chai y ya está costeada ahí; y el coulis de maracuyá del PS-02 de la línea de postres ANTERIOR (hoy reemplazada por la línea tipo Honest Bites) cuadraba exacto cuando se leía su rendimiento real (906 g), no la masa cruda (1.066 kg).
