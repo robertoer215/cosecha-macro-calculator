@@ -1,471 +1,413 @@
 # Recetario de postres — COSECHA
 
-Cara a cocina. 5 fichas ejecutables, una por postre. Cero azúcar refinada añadida.
+Cara a obrador. 5 piezas de mostrador, veganas, sin gluten y sin azúcar refinada añadida.
+
+Réplica de la línea **Honest Bites** de Honest Greens adaptada a las reglas de COSECHA. La diferencia principal y transversal: Honest Greens endulza con **azúcar de coco**, que no está en la lista de endulzantes permitidos de la casa (fruta entera, dátil, piloncillo, agave, monk fruit). Se sustituye por **piloncillo rallado**, el equivalente técnico más cercano.
 
 > Costo de porción = Σ (cantidad ÷ 1000) × precio unitario ÷ (1 − merma). Macros = Σ (cantidad ÷ 100) × valor por 100 g.
-> Las sub-recetas entran al escandallo como una sola línea con su costo por lote ya repercutido: no se cuentan dos veces.
+> Las sub-recetas entran al escandallo como una línea con su costo por kg ya repercutido: no se cuentan dos veces.
 
-## Frío
+## Sub-recetas comunes
 
-### PS-02® CHEESECAKE FRÍO DE VAINILLA Y MARACUYÁ SOBRE CRUMBLE DE PEPITA Y NUEZ
+Las tres las comparten varias piezas. Se producen una vez y se usan en toda la línea.
 
-**Rendimiento** 213 g · **Tiempo de pase** 40 s · **Registro** internacional
+### Mezcla de harinas sin gluten COSECHA
 
-| insumo | cantidad | merma % | costo unitario | costo en la porción |
-|---|---:|---:|---:|---:|
-| Base prensada de pepita, nuez y girasol [sub-receta] | 38 g | 3 % | $210.36 MXN/kg | $8.24 |
-| Relleno de cheesecake de requesón y vainilla [sub-receta] | 140 g | 2 % | $136.01 MXN/kg | $19.43 |
-| Coulis de maracuyá [sub-receta] | 30 g | 3 % | $165.48 MXN/kg | $5.12 |
-| Pepita verde sin cáscara tostada | 5 g | 3 % | $190.00 MXN/kg | $0.98 |
-| **Total insumos** | | | | **$33.77** |
+**Rendimiento** 1.0 kg de mezcla seca (no hay pérdida: es mezclado en seco)
 
-#### Sub-receta — Base prensada de pepita, nuez y girasol
+**Costo** $104.35 MXN/kg · **Vida útil** 3 meses en hermético, seco y fuera de la luz
 
-**Rendimiento** Batch de 1.0 kg = 26 fondos de 38 g (4-5 moldes de 20 cm) · **Costo** $210.36 MXN/kg · **Vida útil** 7 días sin rellenar, en hermético a 2-4 °C · **Refrigeración** 2-4 °C una vez prensada; se maneja siempre fría o se rompe.
+**Refrigeración** No requiere. NO refrigerar: la harina de almendra absorbe humedad y se apelmaza.
 
-| insumo | cantidad | merma % | costo unitario |
-|---|---:|---:|---:|
-| Pepita verde sin cáscara tostada | 300 g | 3 % | $190.00 MXN/kg |
-| Nuez de Castilla tostada | 220 g | 3 % | $280.00 MXN/kg |
-| Semillas de girasol tostadas | 150 g | 0 % | $90.00 MXN/kg |
-| Dátil Medjool deshuesado | 250 g | 3 % | $210.00 MXN/kg |
-| Aceite de coco virgen | 70 g | 1 % | $160.00 MXN/kg |
-| Canela de Ceylán molida | 10 g | 1 % | $900.00 MXN/kg |
-| Sal fina de mar | 4 g | 0 % | $16.00 MXN/kg |
+| insumo | cantidad | merma % | costo unitario | fuente del precio |
+|---|---:|---:|---:|---|
+| Harina de almendra | 400 g | 0 % | $184.00/kg | mayoreo.online — desde 5 kg |
+| Harina de arroz | 350 g | 0 % | $45.00/kg | SUPUESTO — rango mayoreo 35-70; ML vende 1 kg a 55, granel baja a ~45 |
+| Almidón de tapioca | 250 g | 0 % | $60.00/kg | mayoreo.online — bulto 25 kg $1,500 |
 
-1. Tostar pepita, nuez y girasol por separado a 160 °C (8, 10 y 8 min) y enfriar completo.
-2. Procesar el dátil con la sal y la canela hasta pasta.
-3. Añadir las semillas y la nuez y pulsar sin llegar a mantequilla: deben quedar trozos de 2-3 mm.
-4. Integrar el aceite de coco fundido a 30 °C y trabajar 20 s más.
-5. Prensar 38 g por aro con el dorso de un vaso y refrigerar 1 h antes de rellenar; no se hornea.
-
-#### Sub-receta — Relleno de cheesecake de requesón y vainilla
-
-**Rendimiento** Batch de 2.095 kg = 14 porciones de 140 g · **Costo** $136.01 MXN/kg · **Vida útil** 2 días sin cuajar; 3 días ya montado sobre la base · **Refrigeración** Se dosifica tibio-templado (menos de 40 °C) y cuaja 6 h a 2-4 °C. No congelar: la grenetina hace sinéresis al descongelar.
-
-| insumo | cantidad | merma % | costo unitario |
-|---|---:|---:|---:|
-| Requesón fresco pasteurizado | 1050 g | 0 % | $95.00 MXN/kg |
-| Queso crema | 320 g | 2 % | $125.00 MXN/kg |
-| Yogur griego natural sin azúcar | 260 g | 2 % | $90.00 MXN/kg |
-| Aislado de suero sin sabor | 70 g | 0 % | $550.00 MXN/kg |
-| Dátil Medjool deshuesado | 210 g | 3 % | $210.00 MXN/kg |
-| Grenetina en polvo 220 bloom | 22 g | 1 % | $360.00 MXN/kg |
-| Leche entera | 120 ml | 0 % | $26.00 MXN/L |
-| Extracto de vainilla de Papantla | 10 ml | 1 % | $1800.00 MXN/L |
-| Jugo de limón | 30 ml | 60 % | $32.00 MXN/L |
-| Monk fruit puro en polvo | 1.2 g | 0 % | $4000.00 MXN/kg |
-| Sal fina de mar | 2 g | 0 % | $16.00 MXN/kg |
-
-1. Licuar requesón, queso crema y yogur 3 min hasta espejo, sin grano.
-2. Añadir la pasta de dátil colada, el aislado, la vainilla, la sal y el monk fruit; licuar 60 s más sin airear.
-3. Hidratar la grenetina en frío 10 min y disolverla en la leche a 55-60 °C, nunca más (PCC).
-4. Integrar la grenetina en hilo con la licuadora en marcha.
-5. Dosificar de inmediato 140 g por aro sobre la base fría y golpear para sacar aire.
-6. Cuajar mínimo 6 h a 2-4 °C antes del primer desmolde.
-
-#### Sub-receta — Coulis de maracuyá
-
-**Rendimiento** 1.066 kg de mezcla cruda reducen 15% y rinden 906 g = 30 porciones de 30 g · **Costo** $165.48 MXN/kg · **Vida útil** 7 días a 2-4 °C en frasco hervido; 3 meses congelado en bolsa plana · **Refrigeración** Enfriar a 2-4 °C en menos de 2 h, abierto, y tapar frío para no generar condensación.
-
-| insumo | cantidad | merma % | costo unitario |
-|---|---:|---:|---:|
-| Pulpa de maracuyá congelada sin azúcar | 800 g | 0 % | $140.00 MXN/kg |
-| Dátil Medjool deshuesado | 150 g | 3 % | $210.00 MXN/kg |
-| Agua filtrada | 100 ml | 0 % | $2.50 MXN/L |
-| Jugo de limón | 15 ml | 60 % | $32.00 MXN/L |
-| Monk fruit puro en polvo | 1 g | 0 % | $4000.00 MXN/kg |
-
-1. Calentar la pulpa con la pasta de dátil y el agua a fuego medio.
-2. Reducir 15% en peso pesando la olla: sin azúcar es el único control fiable de densidad.
-3. Triturar y colar la mitad, devolviendo algo de semilla para que se vea la fruta.
-4. Fuera del fuego ajustar con el limón y el monk fruit.
-5. Enfriar rápido en baño de hielo y envasar en frasco hervido con fecha.
-
-**Preparación**
-
-1. Prensar 38 g de base fría en el fondo del aro de 6 cm; en frío corta limpio, tibia se desmorona.
-2. Dosificar 140 g de relleno sobre la base, golpear el aro dos veces para sacar aire y cuajar 6 h a 2-4 °C.
-3. Desmoldar con cuchillo caliente y seco, limpiando el filo entre pieza y pieza.
-4. Al pase, cuchara de 30 g de coulis de maracuyá encima, dejando que escurra por un solo costado.
-5. Terminar con 5 g de pepita tostada sobre el coulis, para que el crujiente llegue en el mismo bocado.
-
-**Equipo** Licuadora de vaso alta · Aros de 6 cm x 4.5 cm o molde de 20 cm · Procesador de alimentos / cutter · Horno de convección (tostado de semillas) · Báscula de 0.1 g para la grenetina · Cámara a 2-4 °C · Cuchillo caliente o soplete para desmoldar
-
-**Alérgenos** leche (requesón, queso crema, yogur griego, aislado de suero) · frutos secos (nuez) · semillas (pepita, girasol) · coco (clasificado como fruto seco por la FDA; declarar en carta)
-
-**Vida útil** Montado y desmoldado, 3 días a 2-4 °C: al cuarto día la base cede humedad y deja de crujir. Base prensada sin rellenar, 7 días a 2-4 °C. Coulis, 7 días a 2-4 °C en frasco hervido o 3 meses congelado.
-
-**Punto crítico de control** Requesón pasteurizado obligatorio: es producto listo para comer sin cocción. La grenetina se hidrata en frío y se disuelve por debajo de 60 °C; por encima pierde poder de gel y el cheesecake no cuaja, y eso se descubre seis horas después, en servicio. Cuajado mínimo 6 h a 2-4 °C antes del primer desmolde. Montaje con guante y superficie sanitizada.
-
-**Escalado** Base 1 kg = 26 fondos de 38 g, se prensa una vez por semana. Relleno 2.1 kg = 14 porciones de 140 g, se produce cada dos días. Coulis 900 g = 30 porciones, una vez por semana. El cuello de botella no es la mano de obra sino el espacio de cámara para 14 aros cuajando.
-
-**Etiqueta** `527 kcal · P 25 g · C 32 g · G 33.2 g`
-
-**Supuestos**
-
-- [SUPUESTO] carb_100 es carbohidrato neto y kcal_100 = 4P + 4C + 9G (convención de carta declarada en PS-01).
-- [SUPUESTO] CERO azúcar añadida de cualquier origen en esta ficha: no lleva cobertura de chocolate. Es el postre que mejor sostiene la promesa en carta.
-- [SUPUESTO] La pulpa de maracuyá 100% sin azúcar a 140 MXN/kg es supuesto de proveedor y el insumo a cerrar antes de imprimir carta: si solo se consigue pulpa endulzada, el postre no puede existir tal cual.
-- [SUPUESTO] Dosis de aislado de suero en 3.3% del relleno: por encima de ~5% aparece el retrogusto a suplemento. Si al catar el primer batch se detecta, se baja a 50 g y se pierden 1.2 g de proteína por porción, no más.
-- [SUPUESTO] Etiqueta pública: 213 g, 527 kcal, 25.0 g de proteína, 32.1 g de carbohidrato, 33.2 g de grasa. Es la porción más grande y la más proteica de la carta: 25 g de proteína contra los ~8 g de un cheesecake convencional del mismo tamaño. Es la respuesta directa a la queja número uno de Rodrigo.
-- [SUPUESTO] Precio de venta de fórmula: ceil(33.73 × 1.40 / 0.85) = 56 MXN. Aplica la alerta de PS-01 sobre la fórmula de plato usada en postre.
+1. Pesar las tres harinas en báscula de 1 g.
+2. Tamizar juntas dos veces: la harina de almendra apelmaza y sin tamizar quedan grumos que no se deshacen en la masa.
+3. Guardar en hermético etiquetado con fecha. Agitar antes de cada uso: el almidón, más fino, se va al fondo.
 
 ---
 
-## De cuchara
+### Pasta de dátil
 
-### PS-01® CREMOSO DE CACAO 72%, ACEITE DE OLIVA Y SAL
+**Rendimiento** 1.0 kg de dátil + agua rinden 950 g de pasta (se evapora ~5% al procesar en caliente)
 
-**Rendimiento** 175 g · **Tiempo de pase** 45 s · **Registro** internacional
+**Costo** $140.79 MXN/kg · **Vida útil** 10 días a 2-4 °C
 
-| insumo | cantidad | merma % | costo unitario | costo en la porción |
-|---|---:|---:|---:|---:|
-| Cremoso de cacao 72% con requesón [sub-receta] | 145 g | 2 % | $166.95 MXN/kg | $24.70 |
-| Crumble de girasol, almendra y cacao [sub-receta] | 22 g | 3 % | $218.48 MXN/kg | $4.96 |
-| Aceite de oliva extra virgen | 4 g | 1 % | $200.00 MXN/kg | $0.81 |
-| Nibs de cacao tostados | 3.5 g | 2 % | $350.00 MXN/kg | $1.25 |
-| Sal de mar en escamas | 0.5 g | 0 % | $240.00 MXN/kg | $0.12 |
-| **Total insumos** | | | | **$31.84** |
+**Refrigeración** 2-4 °C en hermético. Congela bien 3 meses.
 
-#### Sub-receta — Cremoso de cacao 72% con requesón
+| insumo | cantidad | merma % | costo unitario | fuente del precio |
+|---|---:|---:|---:|---|
+| Dátil deshuesado | 700 g | 3 % | $190.00/kg | SUPUESTO — rango 130-260 según calidad; medjool arriba, común abajo |
+| Agua purificada | 300 g | 0 % | $2.50/kg | precio único de casa: garrafón 20 L a 50 MXN |
 
-**Rendimiento** Batch de 2.0 kg crudos = 1.96 kg colados = 13 porciones de 145 g · **Costo** $166.95 MXN/kg · **Vida útil** 4 días a 2-4 °C tapado a piel; 48 h una vez dosificado en timbal · **Refrigeración** Abatir a menos de 4 °C en menos de 2 h y conservar a 2-4 °C. No congelar: el requesón se granula al descongelar y la emulsión suelta grasa.
-
-| insumo | cantidad | merma % | costo unitario |
-|---|---:|---:|---:|
-| Requesón fresco pasteurizado | 900 g | 0 % | $95.00 MXN/kg |
-| Leche entera | 350 ml | 0 % | $26.00 MXN/L |
-| Crema para batir 35% grasa | 110 g | 2 % | $95.00 MXN/kg |
-| Cobertura de cacao 72% | 230 g | 2 % | $350.00 MXN/kg |
-| Cacao natural en polvo sin azúcar | 60 g | 2 % | $240.00 MXN/kg |
-| Dátil Medjool deshuesado | 250 g | 3 % | $210.00 MXN/kg |
-| Caseína micelar sin sabor | 90 g | 0 % | $600.00 MXN/kg |
-| Extracto de vainilla de Papantla | 8 ml | 1 % | $1800.00 MXN/L |
-| Sal fina de mar | 3 g | 0 % | $16.00 MXN/kg |
-| Monk fruit puro en polvo (mogrósido V) | 0.6 g | 0 % | $4000.00 MXN/kg |
-
-1. Hidratar el dátil en la leche a 70 °C durante 20 min y triturar a pasta lisa.
-2. Fundir la cobertura a 45-50 °C en baño maría seco.
-3. Licuar el requesón frío con la caseína 2 min hasta que desaparezca el grano.
-4. Añadir el dátil, la vainilla, la sal y el monk fruit; incorporar la cobertura en hilo con la licuadora en marcha (PCC: nunca sobre 55 °C).
-5. Colar por chino fino: el colado es lo que hace cremoso al cremoso.
-6. Dosificar 145 g por timbal, tapar a piel y abatir a menos de 4 °C en menos de 2 h; reposar 12 h antes de servir.
-
-#### Sub-receta — Crumble de girasol, almendra y cacao
-
-**Rendimiento** 955 g de mezcla cruda rinden 860 g horneados = 39 porciones de 22 g · **Costo** $218.48 MXN/kg · **Vida útil** 10 días en hermético a temperatura ambiente con desecante · **Refrigeración** No refrigerar. La humedad de cámara lo ablanda en 24 h y el postre pierde su único contraste.
-
-| insumo | cantidad | merma % | costo unitario |
-|---|---:|---:|---:|
-| Semillas de girasol tostadas | 300 g | 0 % | $90.00 MXN/kg |
-| Harina de almendra | 240 g | 2 % | $320.00 MXN/kg |
-| Mantequilla sin sal | 140 g | 2 % | $140.00 MXN/kg |
-| Dátil Medjool deshuesado | 200 g | 3 % | $210.00 MXN/kg |
-| Cacao natural en polvo sin azúcar | 70 g | 2 % | $240.00 MXN/kg |
-| Sal fina de mar | 5 g | 0 % | $16.00 MXN/kg |
-| Monk fruit puro en polvo | 0.5 g | 0 % | $4000.00 MXN/kg |
-
-1. Arenar la mantequilla fría con la harina de almendra, el girasol molido, el cacao, la sal y el monk fruit hasta grumos de 5-8 mm.
-2. Integrar el dátil picado a mano sin trabajar la masa; si se calienta, refrigerar 15 min.
-3. Extender sobre papel y hornear a 150 °C, 22-26 min, removiendo a la mitad.
-4. Enfriar completo sobre la charola antes de tocarlo: cuaja al enfriar, no en el horno.
-5. Romper a mano al tamaño de garbanzo y guardar en hermético con desecante.
-
-**Preparación**
-
-1. Sacar el timbal 10 min antes del pase: a 4 °C el cacao no se lee, a 10-12 °C se afloja y suelta aroma.
-2. Sembrar 22 g de crumble en media luna al costado, nunca encima: mojado pierde el crujiente en dos minutos.
-3. Cordón de 4 g de aceite de oliva sobre el cremoso, jamás sobre el crumble.
-4. Terminar con 3.5 g de nibs y 0.5 g de sal en escamas delante del cliente.
-5. Salir en menos de 45 s: el cremoso atemperado no espera en pase.
-
-**Equipo** Licuadora de vaso alta o de inmersión · Baño maría seco con termómetro de sonda · Chino fino · Horno de convección (crumble) · Abatidor o baño de hielo · Timbales de cristal de 200 ml · Báscula de 0.1 g
-
-**Alérgenos** leche (requesón, leche, crema, caseína, mantequilla) · frutos secos (almendra) · semillas (girasol) · soya (lecitina de la cobertura)
-
-**Vida útil** Cremoso 4 días a 2-4 °C tapado a piel; ya dosificado en timbal, 48 h. Crumble 10 días en hermético a temperatura ambiente con desecante (si entra a cámara se ablanda en 24 h). Aceite, nibs y sal van al pase.
-
-**Punto crítico de control** Requesón pasteurizado obligatorio: no hay cocción posterior y el requesón artesanal sin pasteurizar es vector de Listeria y Brucella. La cobertura se funde a 45-50 °C y entra en hilo sobre el requesón frío; por encima de 55 °C el requesón se corta y suelta suero. Abatir a menos de 4 °C en menos de 2 h.
-
-**Escalado** Batch de cremoso 2 kg = 13 porciones de 145 g, cubre dos días de servicio a 6-7 postres/día. Escala lineal hasta 3 batches; arriba de eso la licuadora deja de emulsionar parejo. Crumble 1 kg se hornea una vez por semana y rinde 39 porciones. El timbal se dosifica 24 h antes: eso es lo que sostiene el pase de 45 s.
-
-**Etiqueta** `500 kcal · P 20 g · C 30 g · G 33.0 g`
-
-**Supuestos**
-
-- [SUPUESTO] CONVENCIÓN DE ETIQUETA DE TODA LA CARTA: carb_100 se declara como CARBOHIDRATO NETO (total menos fibra) y kcal_100 = 4P + 4C + 9G, para que la etiqueta pública cuadre con la regla de negocio. En insumos con mucha fibra (cacao, pepita, coco) esta kcal difiere de la de tabla hasta ~15%. El propio CLAUDE.md ya documenta que las etiquetas de data.js no cumplen 4/4/9 exacto.
-- [SUPUESTO] ENDULZANTES: se usa monk fruit PURO en toda la carta, nunca la mezcla comercial con eritritol. La lista permitida de la casa es fruta entera, dátil, piloncillo declarado, agave o monk fruit; el eritritol no está y no se adopta por comodidad. Encarece el insumo (4000 MXN/kg contra 750) pero se dosifica en fracciones de gramo por kilo y no mueve el costo.
-- [SUPUESTO] AZÚCAR DE LA COBERTURA: 4.8 g por porción provienen del azúcar propia de la cobertura 72%, no añadida por la casa. Se declara en carta. Los otros cuatro postres de la carta van con CERO azúcar de cualquier origen salvo la barra PS-05 (3.4 g).
-- [SUPUESTO] ALERTA DE REGLA DE NEGOCIO, NO LA ADAPTÉ (aplica a los cinco postres): con 31.84 MXN de insumos, ceil(31.84 × 1.40 / 0.85) da 53 MXN de precio de venta. El margen es correcto, pero la fórmula de plato aplicada a postre deja la categoría 5 veces por debajo del ancla de 250-300 MXN y por debajo de cualquier postre comparable en Angelópolis. Los cinco precios de fórmula son 53, 56, 56, 39 y 41 MXN. Corregirlo es decisión del cliente, no mía: o se acepta el margen bajo en absoluto, o se abre un factor de categoría para postre.
-- [SUPUESTO] DECISIÓN DE CARTA: se descartó el tiramisú, que ambos chefs propusieron. Es buen postre, pero pisa a este cremoso (frío, de cuchara, oscuro, terminado con cacao) y compite contra la propia barra de café, donde el cliente ya puede pedir un cold brew. Entre los dos, el cremoso gana por pureza de sabor y por pase de 45 s contra los 35-60 s de un tiramisú montado en vaso con 48 h de vida útil.
-- [SUPUESTO] Este postre no lleva gluten en ningún componente, pero la cocina no es libre de gluten (hay tortilla en la línea): no se puede declarar 'sin gluten' sin protocolo de contaminación cruzada.
-- [SUPUESTO] Etiqueta pública: 175 g, 500 kcal, 20.4 g de proteína, 30.2 g de carbohidrato, 33.0 g de grasa. Es el postre de placer de la carta y así se vende; los 20 g de proteína son la diferencia con cualquier cremoso de chocolate de la competencia, no el argumento de venta.
+1. Cubrir el dátil con el agua a 80 °C y dejar 20 min: sin hidratar no se muele liso.
+2. Procesar hasta pasta homogénea, raspando las paredes dos veces.
+3. Enfriar a menos de 4 °C en menos de 2 h y etiquetar con fecha.
 
 ---
 
-### PS-04® MOUSSE DE MAMEY, PEPITA CARAMELIZADA Y LIMA
+### Huevo de lino
 
-**Rendimiento** 182 g · **Tiempo de pase** 45 s · **Registro** ancla local
+**Rendimiento** 400 g (100 g de linaza + 300 g de agua). Equivale a 8 huevos.
 
-| insumo | cantidad | merma % | costo unitario | costo en la porción |
-|---|---:|---:|---:|---:|
-| Mousse aireada de mamey [sub-receta] | 140 g | 2 % | $116.34 MXN/kg | $16.62 |
-| Yogur griego colado 12 h | 20 g | 30 % | $90.00 MXN/kg | $2.57 |
-| Pepita caramelizada con agave y sal [sub-receta] | 18 g | 2 % | $205.35 MXN/kg | $3.77 |
-| Jugo y ralladura de lima | 4 g | 60 % | $32.00 MXN/kg | $0.32 |
-| **Total insumos** | | | | **$23.28** |
+**Costo** $14.38 MXN/kg · **Vida útil** 48 h a 2-4 °C
 
-#### Sub-receta — Mousse aireada de mamey
+**Refrigeración** 2-4 °C tapado. Pasadas 48 h se vuelve viscoso y pierde poder ligante.
 
-**Rendimiento** Batch de 1.153 kg = 8 copas de 140 g · **Costo** $116.34 MXN/kg · **Vida útil** 3 días a 2-4 °C; al cuarto día el mamey pardea · **Refrigeración** Cuajar 4 h a 2-4 °C ya dosificada. No congelar: la espuma colapsa al descongelar.
+| insumo | cantidad | merma % | costo unitario | fuente del precio |
+|---|---:|---:|---:|---|
+| Linaza molida | 100 g | 0 % | $50.00/kg | mayoreo.online — 10 kg $500 |
+| Agua purificada | 300 g | 0 % | $2.50/kg | precio único de casa: garrafón 20 L a 50 MXN |
 
-| insumo | cantidad | merma % | costo unitario |
-|---|---:|---:|---:|
-| Pulpa de mamey | 400 g | 35 % | $55.00 MXN/kg |
-| Yogur griego natural sin azúcar | 380 g | 2 % | $90.00 MXN/kg |
-| Clara de huevo pasteurizada | 150 g | 0 % | $60.00 MXN/kg |
-| Aislado de suero sin sabor | 55 g | 0 % | $550.00 MXN/kg |
-| Jarabe de agave | 60 g | 1 % | $105.00 MXN/kg |
-| Grenetina en polvo 220 bloom | 12 g | 1 % | $360.00 MXN/kg |
-| Jugo de lima | 40 ml | 60 % | $32.00 MXN/L |
-| Monk fruit puro en polvo | 1.2 g | 0 % | $4000.00 MXN/kg |
-| Extracto de vainilla de Papantla | 4 ml | 1 % | $1800.00 MXN/L |
-| Sal fina de mar | 1.5 g | 0 % | $16.00 MXN/kg |
-| Agua filtrada | 50 ml | 0 % | $2.50 MXN/L |
-
-1. Abrir el mamey, retirar hueso y cáscara y licuar la pulpa de inmediato con el jugo de lima y la sal; colar por chino fino (PCC de pardeamiento).
-2. Cocer el jarabe de agave a 118 °C.
-3. Montar la clara pasteurizada e incorporar el jarabe en hilo; batir hasta que baje a 35 °C.
-4. Mezclar el puré con el yogur, el aislado, la vainilla y el monk fruit; integrar la grenetina hidratada y disuelta por debajo de 60 °C (PCC).
-5. Envolver el merengue en tres tiempos con espátula, sin desgasificar.
-6. Dosificar de inmediato: la grenetina empieza a cuajar a los 12 min. Cuajar 4 h a 2-4 °C.
-
-#### Sub-receta — Pepita caramelizada con agave y sal
-
-**Rendimiento** 1 kg de mezcla cruda rinde 880 g = 48 porciones de 18 g · **Costo** $205.35 MXN/kg · **Vida útil** 3 semanas en hermético a temperatura ambiente con desecante · **Refrigeración** No refrigerar. La cámara la ablanda en 24 h y deja de ser el crujiente del postre.
-
-| insumo | cantidad | merma % | costo unitario |
-|---|---:|---:|---:|
-| Pepita verde sin cáscara | 780 g | 3 % | $190.00 MXN/kg |
-| Jarabe de agave | 170 g | 1 % | $105.00 MXN/kg |
-| Clara de huevo pasteurizada | 34 g | 0 % | $60.00 MXN/kg |
-| Sal de mar en escamas | 10 g | 0 % | $240.00 MXN/kg |
-| Canela de Ceylán molida | 6 g | 1 % | $900.00 MXN/kg |
-
-1. Batir la clara a espuma ligera con la sal y la canela.
-2. Mezclar con el agave y verter sobre la pepita; remover hasta cubrir cada semilla.
-3. Extender en capa fina sobre papel y hornear a 150 °C, 22-28 min, removiendo cada 8 min.
-4. Sacar cuando la película deje de burbujear y esté ámbar; enfriar completo en la charola.
-5. Romper a mano en placas irregulares de 1-2 cm y guardar en hermético con desecante.
-
-**Preparación**
-
-1. Batir 20 g de yogur griego colado con unas gotas de lima y ponerlo al fondo de la copa: es el ácido que despierta al mamey, que solo es dulce y plano.
-2. Dosificar 140 g de mousse con manga sobre el yogur, sin mezclar, dejando la línea visible.
-3. Reposar mínimo 4 h a 2-4 °C antes de servir.
-4. Al pase, sembrar 18 g de pepita caramelizada rota a mano sobre la superficie; antes no, o se ablanda.
-5. Terminar con 4 g de jugo y ralladura de lima al momento, rallando sobre la copa delante del cliente.
-
-**Equipo** Batidora planetaria con globo · Cazo y termómetro de sonda para el jarabe · Licuadora de vaso y chino fino · Horno de convección (pepita caramelizada) · Espátula de goma grande · Copas de 250 ml · Cámara a 2-4 °C
-
-**Alérgenos** leche (yogur griego, aislado de suero) · huevo (clara pasteurizada) · semillas (pepita)
-
-**Vida útil** Mousse 3 días a 2-4 °C: al cuarto día el mamey pardea y la espuma empieza a llorar suero. Montada en copa, 24 h máximo. Pepita caramelizada 3 semanas en hermético a temperatura ambiente. No se congela.
-
-**Punto crítico de control** El jarabe de agave a 118 °C se vierte sobre clara PASTEURIZADA: doble barrera, no hay huevo crudo en el postre. Grenetina disuelta por debajo de 60 °C. El mamey se recibe entero y se procesa el mismo día, acidulando con la lima en cuanto se abre: la pulpa expuesta pardea en horas. Cuajado 4 h a 2-4 °C.
-
-**Escalado** Mousse 1.15 kg = 8 copas de 140 g. No escala más allá de 2 kg por tazón: arriba de eso el merengue se desgasifica al envolver y la mousse pierde la mitad del volumen. Se produce dos veces al día en hora valle. Pepita caramelizada 1 kg de mezcla cruda rinde 880 g = 48 porciones y se hornea cada 15 días.
-
-**Etiqueta** `281 kcal · P 22 g · C 26 g · G 9.7 g`
-
-**Supuestos**
-
-- [SUPUESTO] carb_100 es carbohidrato neto y kcal_100 = 4P + 4C + 9G (convención de carta declarada en PS-01).
-- [SUPUESTO] CERO azúcar añadida de cualquier origen. El agave y el monk fruit están en la lista permitida y el agave se declara por función (merengue italiano), no por dulzor.
-- [SUPUESTO] ES EL POSTRE DE DEFINICIÓN DE LA CARTA. Etiqueta pública: 182 g, 281 kcal, 22.2 g de proteína, 26.4 g de carbohidrato, 9.7 g de grasa. Es el único que un cliente en déficit puede pedir sin negociar consigo mismo, y el único por debajo de 300 kcal.
-- [SUPUESTO] ES LA ÚNICA ANCLA MEXICANA, como manda la regla de carta. Los otros cuatro son registro internacional. Se eligió el mamey sobre el cacao de metate porque el metate depende de encontrar un molino que venda pasta 100% sin azúcar en Puebla (supuesto no cerrado y proveedor único), mientras que el mamey es commodity de central de abasto; y porque colocar el ancla en el postre ligero, y no en el de chocolate, evita que la identidad mexicana quede atada al postre más caro de producir.
-- [SUPUESTO] TEMPORADA: mamey mexicano de marzo a septiembre. Fuera de temporada se usa pulpa congelada sin azúcar a ~110 MXN/kg [SUPUESTO], lo que sube el costo de porción de 23.27 a ~27 MXN y el precio de fórmula de 39 a 45. Hay que decidir si la ficha es de temporada o de todo el año ANTES de imprimir carta.
-- [SUPUESTO] NO CANIBALIZA LA BARRA DE BEBIDAS: los cinco smoothies son pistacho, matcha, coco, cacao y frutos rojos, y ninguno es de mamey. Por eso se descartó la mousse de frutos rojos y vainilla de la propuesta B, que técnicamente era excelente pero en copa, con yogur y compota de frutos rojos, es exactamente el smoothie de frutos rojos con cuchara.
-- [SUPUESTO] La variedad de mamey mexicana varía en dulzor según madurez: hay que catar cada lote y ajustar el agave, nunca la cantidad de mamey.
-- [SUPUESTO] Precio de venta de fórmula: ceil(23.27 × 1.40 / 0.85) = 39 MXN. Aplica la alerta de PS-01.
+1. Batir la linaza molida con el agua fría.
+2. Reposar 15 min a temperatura ambiente hasta que gelifique y haga hilo al levantar el batidor.
+3. Refrigerar. Agitar antes de usar.
 
 ---
 
-## De horno
+## Galletas
 
-### PS-03® STICKY TOFFEE DE DÁTIL Y NUEZ, TIBIO
+### PS-01® CHOCOLATE CHIP COOKIE
 
-**Rendimiento** 170 g · **Tiempo de pase** 150 s · **Registro** internacional
+**Pieza** 65 g · **Tiempo de pase** 15 s · **Insumos por pieza** 72 g crudos
 
-| insumo | cantidad | merma % | costo unitario | costo en la porción |
-|---|---:|---:|---:|---:|
-| Bizcocho húmedo de dátil y nuez [sub-receta] | 85 g | 8 % | $220.48 MXN/kg | $20.37 |
-| Salsa toffee de dátil [sub-receta] | 45 g | 3 % | $140.60 MXN/kg | $6.52 |
-| Crema batida de canela y yogur colado [sub-receta] | 30 g | 3 % | $121.46 MXN/kg | $3.76 |
-| Nuez de Castilla tostada | 10 g | 3 % | $280.00 MXN/kg | $2.89 |
-| Sal de mar en escamas | 0.3 g | 0 % | $240.00 MXN/kg | $0.07 |
-| **Total insumos** | | | | **$33.61** |
+*Crujiente fuera, masticable dentro. Aceite de oliva y piloncillo.*
 
-#### Sub-receta — Bizcocho húmedo de dátil y nuez
-
-**Rendimiento** 1.02 kg de masa rinden 898 g horneados = 10 porciones de 85 g · **Costo** $220.48 MXN/kg · **Vida útil** 4 días a 2-4 °C envuelto; 1 mes congelado en porción · **Refrigeración** 2-4 °C o -18 °C en porción. Nunca se sirve frío: se regenera siempre.
-
-| insumo | cantidad | merma % | costo unitario |
-|---|---:|---:|---:|
-| Dátil Medjool deshuesado | 300 g | 3 % | $210.00 MXN/kg |
-| Agua hirviendo | 175 ml | 0 % | $2.50 MXN/L |
-| Huevo entero | 170 g | 12 % | $48.00 MXN/kg |
-| Harina de almendra | 160 g | 2 % | $320.00 MXN/kg |
-| Nuez de Castilla molida | 90 g | 3 % | $280.00 MXN/kg |
-| Caseína micelar sin sabor | 40 g | 0 % | $600.00 MXN/kg |
-| Mantequilla sin sal | 60 g | 2 % | $140.00 MXN/kg |
-| Polvo para hornear | 12 g | 1 % | $110.00 MXN/kg |
-| Bicarbonato de sodio | 4 g | 1 % | $60.00 MXN/kg |
-| Sal fina de mar | 3 g | 0 % | $16.00 MXN/kg |
-| Extracto de vainilla de Papantla | 6 ml | 1 % | $1800.00 MXN/L |
-
-1. Cubrir el dátil picado con el agua hirviendo y el bicarbonato, reposar 20 min y licuar hasta pasta.
-2. Batir el huevo con la mantequilla fundida, la vainilla y la sal; integrar la pasta de dátil tibia.
-3. Añadir la harina de almendra, la nuez molida, la caseína y el polvo para hornear; mezclar 30 s, no más.
-4. Verter en marco de 20x20 forrado y hornear a 165 °C, 30-35 min, hasta 92-95 °C de corazón (PCC).
-5. Enfriar en el molde, cortar en cuadros de 85 g y congelar en porción o refrigerar.
-6. Nunca servir sin regenerar: en frío este bizcocho es denso y compacto; tibio es otro producto.
-
-#### Sub-receta — Salsa toffee de dátil
-
-**Rendimiento** Batch de 1 kg = 22 porciones de 45 g · **Costo** $140.60 MXN/kg · **Vida útil** 6 días a 2-4 °C en pomo cerrado · **Refrigeración** 2-4 °C. En servicio se mantiene a 63 °C o más en baño maría, máximo 4 h.
-
-| insumo | cantidad | merma % | costo unitario |
-|---|---:|---:|---:|
-| Dátil Medjool deshuesado | 330 g | 3 % | $210.00 MXN/kg |
-| Crema para batir 35% grasa | 330 g | 2 % | $95.00 MXN/kg |
-| Agua filtrada | 230 ml | 0 % | $2.50 MXN/L |
-| Mantequilla sin sal | 90 g | 2 % | $140.00 MXN/kg |
-| Sal de mar en escamas | 8 g | 0 % | $240.00 MXN/kg |
-| Extracto de vainilla de Papantla | 12 ml | 1 % | $1800.00 MXN/L |
-
-1. Cocer el dátil con el agua 10 min a fuego bajo hasta que oscurezca y huela a caramelo.
-2. Licuar caliente con la crema hasta salsa lisa y colar por chino fino.
-3. Regresar al fuego 3 min removiendo, sin dejar que hierva fuerte.
-4. Fuera del fuego emulsionar la mantequilla fría en cubos, la sal y la vainilla.
-5. Enfriar rápido y envasar; en el pase corregir densidad con agua caliente si el lote salió seco.
-
-#### Sub-receta — Crema batida de canela de Ceylán y yogur colado
-
-**Rendimiento** Batch de 961 g = 32 porciones de 30 g · **Costo** $121.46 MXN/kg · **Vida útil** 2 días a 2-4 °C; se rebate a mano al segundo día · **Refrigeración** 2-4 °C. Se sirve directo de cámara, sin atemperar: el frío es la mitad del plato.
-
-| insumo | cantidad | merma % | costo unitario |
-|---|---:|---:|---:|
-| Crema para batir 35% grasa | 700 g | 2 % | $95.00 MXN/kg |
-| Yogur griego colado 12 h | 250 g | 30 % | $90.00 MXN/kg |
-| Monk fruit puro en polvo | 1 g | 0 % | $4000.00 MXN/kg |
-| Canela de Ceylán molida | 6 g | 1 % | $900.00 MXN/kg |
-| Extracto de vainilla de Papantla | 4 ml | 1 % | $1800.00 MXN/L |
-
-1. Colar el yogur griego 12 h a 2-4 °C sobre manta (pierde 30% en suero).
-2. Disolver el monk fruit y la canela en 40 g de crema tibia y enfriar a 4 °C.
-3. Mezclar con el resto de la crema fría, el yogur colado y la vainilla.
-4. Montar a picos suaves en frío; parar antes de tiempo, se sigue firmando en cámara.
-5. Pasar a manga o sifón y refrigerar; rebatir a mano si se corta.
+| insumo | cantidad | merma % | costo unitario | costo en la pieza | fuente del precio |
+|---|---:|---:|---:|---:|---|
+| Mezcla de harinas sin gluten COSECHA (sub-receta) | 28 g | 0 % | $104.35/kg | $2.92 | sub-receta de casa; costo derivado de sus insumos |
+| Aceite de oliva virgen extra | 9 g | 0 % | $210.00/kg | $1.89 | SUPUESTO — rango 180-260/L en lata de 5 L, mayoreo Puebla |
+| Piloncillo rallado | 9 g | 0 % | $25.00/kg | $0.22 | mayoreo.online — caja 18 kg $450 |
+| Pasta de dátil (sub-receta) | 6 g | 0 % | $140.79/kg | $0.84 | sub-receta de casa |
+| Huevo de lino (sub-receta) | 6 g | 0 % | $14.38/kg | $0.09 | sub-receta de casa |
+| Cobertura de chocolate 70% sin lácteo | 13 g | 0 % | $380.00/kg | $4.94 | SUPUESTO — rango 280-450; exigir lote sin leche ni manteca láctea |
+| Extracto de vainilla de Papantla | 0.5 g | 0 % | $1800.00/kg | $0.90 | SUPUESTO — rango 1200-3000/L de extracto puro |
+| Sal fina de mar | 0.4 g | 0 % | $16.00/kg | $0.01 | SUPUESTO — a granel |
+| Bicarbonato de sodio | 0.3 g | 0 % | $45.00/kg | $0.01 | SUPUESTO — rango 30-60 |
+| **Total insumos** | | | | **$11.83** | |
 
 **Preparación**
 
-1. Regenerar el cuadro de 85 g a 55-60 °C de corazón: 40 s en microondas de pase o 4 min a 160 °C tapado.
-2. Napar con 45 g de salsa toffee a 63 °C sobre el bizcocho, dejando que escurra al plato.
-3. Asentar 30 g de crema de canela FRÍA al lado, nunca encima: encima se derrite y se pierde el contraste de temperatura, que es el argumento entero del postre.
-4. Sembrar 10 g de nuez tostada y quebrada sobre la salsa.
-5. Terminar con 0.3 g de sal en escamas sobre la crema y salir de cocina en menos de 60 s.
+1. Batir el aceite de oliva con el piloncillo y la pasta de dátil 2 min hasta que emulsione y aclare.
+2. Añadir el huevo de lino y la vainilla; batir 30 s.
+3. Incorporar la mezcla de harinas, la sal y el bicarbonato a velocidad baja, solo hasta integrar. Añadir el chocolate picado.
+4. REPOSAR la masa 30 min a 4 °C. Sin este reposo la harina no hidrata, la galleta se extiende y queda arenosa.
+5. Porcionar a 72 g, aplastar ligeramente y hornear 11-13 min a 175 °C. Sale blanda del centro: cuaja al enfriar sobre rejilla.
 
-**Equipo** Horno de convección · Marco de 20x20 cm o moldes individuales de 100 ml · Licuadora de vaso · Olla de fondo grueso · Batidora planetaria con globo · Microondas de pase o salamandra · Baño maría de servicio para la salsa
+**Endulzante** Piloncillo rallado y pasta de dátil. El piloncillo sustituye al azúcar de coco que usa Honest Greens, que NO está en la lista permitida de COSECHA: es el equivalente técnico más cercano (azúcar no refinada, granulada, con melaza propia que da la masticabilidad).
 
-**Alérgenos** leche (mantequilla, crema, yogur, caseína) · huevo · frutos secos (almendra, nuez)
+**Equipo** Batidora de pala · Báscula de 1 g · Cuchara de helado de 40 ml para porcionar · Horno de convección · Charolas con papel siliconado · Rejilla de enfriado
 
-**Vida útil** Bizcocho 4 días a 2-4 °C envuelto, o 1 mes congelado en porción. Salsa toffee 6 días a 2-4 °C. Crema batida de canela 2 días a 2-4 °C, se rebate a mano al segundo día. Plato montado: consumo inmediato.
+**Alérgenos** Frutos secos (almendra) · Ajonjolí: no lleva, pero se produce en obrador que maneja tahini — declarar por contaminación cruzada · Soya (lecitina de la cobertura de chocolate) · Sin gluten certificado · Sin lácteo, sin huevo
 
-**Punto crítico de control** Bizcocho a 92-95 °C de corazón al salir del horno. En el pase se regenera a 55-60 °C de corazón y la salsa se mantiene a 63 °C o más en baño maría, máximo 4 h; por debajo de 60 °C durante más de 2 h es zona de peligro. La crema fría nunca comparte utensilio con la salsa caliente.
+**Vida útil** 3 días en mostrador dentro de campana. 7 días en hermético. La galleta sin gluten se seca más rápido que una con gluten: pasado el día 3 pierde la masticabilidad que la define.
 
-**Escalado** Masa de 1.02 kg rinde 898 g horneados = 10 porciones de 85 g; se hornea en marco de 20x20 y se corta en cuadros. Congelar en porción y regenerar bajo demanda es lo que evita merma en un producto que solo se vende tibio. Salsa 1 kg = 22 porciones. Crema 961 g = 32 porciones. Es el único postre con 150 s de pase: se dispara al levantar el plato fuerte, no al final.
+**Punto crítico de control** Contaminación cruzada con gluten. El obrador comparte espacio con la línea de tortilla y pan: hornear la línea sin gluten SIEMPRE en el primer turno, antes de abrir cualquier harina con gluten, con charolas y utensilios rotulados y de uso exclusivo. Es el punto crítico real de toda esta familia, no la temperatura.
 
-**Etiqueta** `573 kcal · P 14 g · C 34 g · G 42.2 g`
+**Rendimiento por batch** Un batch de masa de 2.2 kg rinde 30 galletas de 72 g crudas que salen a 65 g horneadas. Se hornea una vez por la mañana.
+
+**Diferencia respecto al original** Honest Greens endulza con azúcar de coco; aquí es piloncillo, porque el azúcar de coco no está en la lista de endulzantes permitidos de COSECHA. Se mantiene el aceite de oliva y la base sin gluten.
+
+**Etiqueta** `346 kcal · P 4.3 g · C 35 g · G 20.9 g`
+
+**Notas de insumo**
+
+- **Mezcla de harinas sin gluten COSECHA (sub-receta)** — 40% almendra, 35% arroz, 25% tapioca. Ninguna harina sola funciona: la almendra sola se derrite, el arroz solo queda arenoso.
+- **Aceite de oliva virgen extra** — Sustituye a la mantequilla, como en el original. Al ser líquida la galleta se extiende más: lo compensan el reposo en frío y la harina de almendra.
+- **Piloncillo rallado** — Rallado fino. Su melaza es lo que da la masticabilidad.
+- **Pasta de dátil (sub-receta)** — Endulza y aporta humedad. Sin ella la pieza sin gluten queda seca, no solo menos dulce.
+- **Huevo de lino (sub-receta)** — Ligante vegano. Sin huevo y sin gluten no hay red que sostenga la miga: esto la sostiene.
+- **Cobertura de chocolate 70% sin lácteo** — Picado a cuchillo, no chispa comercial: la chispa lleva azúcar refinada y a veces manteca láctea.
+- **Sal fina de mar** — Sin azúcar refinada el dulce queda plano; la sal es lo que le da relieve.
 
 **Supuestos**
 
-- [SUPUESTO] carb_100 es carbohidrato neto y kcal_100 = 4P + 4C + 9G (convención de carta declarada en PS-01).
-- [SUPUESTO] CERO azúcar añadida de cualquier origen: no lleva cobertura de chocolate.
-- [SUPUESTO] ES EL INDULGENTE DECLARADO DE LA CARTA. Etiqueta pública: 170 g, 573 kcal, 13.9 g de proteína, 34.2 g de carbohidrato, 42.2 g de grasa. Se vende con lectura de uso: para compartir entre dos, para día de volumen o para pedir después de entrenar por su carga de carbohidrato de fruta. No se disfraza de postre ligero.
-- [SUPUESTO] CARGA OPERATIVA: 150 s de pase y un baño maría dedicado en línea caliente, contra los 20-45 s del resto de la carta. Hay que dispararlo al levantar el plato fuerte, no al final. Es la ficha que hay que confirmar contra el tiempo de servicio del fast-casual antes de aprobarla; si el pase no lo aguanta, este es el primero que yo cortaría de los cinco.
-- [SUPUESTO] Se eligió sobre el fondant de cacao y tahini de la propuesta B por dos razones: el fondant ocupa horno 9 min a la orden (540 s) y obliga al mesero a anunciarlo al tomar la orden, y además repite el registro de cacao que ya tienen PS-01 y PS-05. El sticky toffee se regenera desde congelado, no tiene merma si no se vende y aporta el único registro de caramelo de la carta.
-- [SUPUESTO] Con dátil como único endulzante el dulzor varía entre lotes (el Medjool seco endulza más). Hay que catar cada batch de salsa y corregir con agua, nunca con más dátil.
-- [SUPUESTO] Precio de venta de fórmula: ceil(33.54 × 1.40 / 0.85) = 56 MXN. Aplica la alerta de PS-01.
+- [SUPUESTO] Precio del chocolate 70% sin lácteo [SUPUESTO] 380 MXN/kg, rango 280-450.
+- [SUPUESTO] La cobertura 70% aporta ~30% de azúcar propia: se declara en los carbohidratos, no es azúcar añadida.
+- [SUPUESTO] Pérdida de horneado del 10% [SUPUESTO], típica de galleta de 70 g.
+
+**Fuentes**
+
+- honestgreens.com/en/blog/honest-bites-new-kind-of-sweet — composición declarada: aceite de oliva, azúcar de coco, mezcla de harinas sin gluten
 
 ---
 
-## Barra
+### PS-02® RASPBERRY & PISTACHIO COOKIE
 
-### PS-05® BARRA DE DÁTIL, NUEZ Y CACAO 72%
+**Pieza** 65 g · **Tiempo de pase** 15 s · **Insumos por pieza** 69 g crudos
 
-**Rendimiento** 91 g · **Tiempo de pase** 20 s · **Registro** internacional
+*Pistacho molido y frambuesa liofilizada. Ácida y salada, no dulce.*
 
-| insumo | cantidad | merma % | costo unitario | costo en la porción |
-|---|---:|---:|---:|---:|
-| Masa de barra de dátil, nuez y cacao [sub-receta] | 77 g | 0 % | $252.04 MXN/kg | $19.41 |
-| Cobertura de cacao 72% | 12 g | 5 % | $350.00 MXN/kg | $4.42 |
-| Nibs de cacao tostados | 2 g | 2 % | $350.00 MXN/kg | $0.71 |
-| Sal de mar en escamas | 0.2 g | 0 % | $240.00 MXN/kg | $0.05 |
-| **Total insumos** | | | | **$24.59** |
-
-#### Sub-receta — Masa de barra de dátil, nuez y cacao
-
-**Rendimiento** 1.91 kg de masa rinden 1.853 kg cortados (3% de merma de corte) = 24 barras de 77 g · **Costo** $252.04 MXN/kg · **Vida útil** 21 días a 18-20 °C empacada; 40 días refrigerada · **Refrigeración** Prensada, 1 h a 2-4 °C antes de cortar; después se conserva a 18-20 °C. Se baña a 8-10 °C: congelada agrieta la cobertura por choque térmico.
-
-| insumo | cantidad | merma % | costo unitario |
-|---|---:|---:|---:|
-| Dátil Medjool deshuesado | 880 g | 3 % | $210.00 MXN/kg |
-| Pepita verde tostada | 260 g | 3 % | $190.00 MXN/kg |
-| Nuez de Castilla tostada | 260 g | 3 % | $280.00 MXN/kg |
-| Coco rallado deshidratado sin azúcar, tostado | 120 g | 2 % | $150.00 MXN/kg |
-| Aislado de suero sin sabor | 180 g | 0 % | $550.00 MXN/kg |
-| Cacao natural en polvo sin azúcar | 80 g | 2 % | $240.00 MXN/kg |
-| Aceite de coco virgen | 60 g | 1 % | $160.00 MXN/kg |
-| Sal fina de mar | 6 g | 0 % | $16.00 MXN/kg |
-| Canela de Ceylán molida | 4 g | 1 % | $900.00 MXN/kg |
-| Agua filtrada | 60 ml | 0 % | $2.50 MXN/L |
-
-1. Cutter: triturar el dátil deshuesado hasta pasta que se pegue a la pared del vaso.
-2. Agregar aislado, cacao, canela, sal y agua; pulsar hasta masa homogénea.
-3. Integrar a mano la pepita, la nuez y el coco tostados en trozo grande, con el aceite de coco fundido.
-4. Prensar 1.9 cm en marco de 30x20 y refrigerar 1 h a 2-4 °C.
-5. Cortar 24 barras de 77 g con cuchillo largo caliente y atemperar a 8-10 °C antes de bañar.
-6. Bañar la cara superior con 12 g de cobertura templada a 31-32 °C, sembrar nibs y sal, cristalizar 20 min a 16-18 °C y empacar.
+| insumo | cantidad | merma % | costo unitario | costo en la pieza | fuente del precio |
+|---|---:|---:|---:|---:|---|
+| Mezcla de harinas sin gluten COSECHA (sub-receta) | 24 g | 0 % | $104.35/kg | $2.50 | sub-receta de casa; costo derivado de sus insumos |
+| Pistacho pelado crudo | 11 g | 0 % | $850.00/kg | $9.35 | SUPUESTO — rango 700-1100. NO usar el $28/kg scrapeado: es un dato roto |
+| Aceite de oliva virgen extra | 9 g | 0 % | $210.00/kg | $1.89 | SUPUESTO — rango 180-260/L en lata de 5 L, mayoreo Puebla |
+| Piloncillo rallado | 9 g | 0 % | $25.00/kg | $0.22 | mayoreo.online — caja 18 kg $450 |
+| Pasta de dátil (sub-receta) | 6 g | 0 % | $140.79/kg | $0.84 | sub-receta de casa |
+| Huevo de lino (sub-receta) | 6 g | 0 % | $14.38/kg | $0.09 | sub-receta de casa |
+| Frambuesa liofilizada | 3 g | 0 % | $1800.00/kg | $5.40 | SUPUESTO — rango 1200-2500. Es el insumo más caro de la línea |
+| Extracto de vainilla de Papantla | 0.4 g | 0 % | $1800.00/kg | $0.72 | SUPUESTO — rango 1200-3000/L de extracto puro |
+| Sal fina de mar | 0.4 g | 0 % | $16.00/kg | $0.01 | SUPUESTO — a granel |
+| Bicarbonato de sodio | 0.3 g | 0 % | $45.00/kg | $0.01 | SUPUESTO — rango 30-60 |
+| **Total insumos** | | | | **$21.04** | |
 
 **Preparación**
 
-1. Sacar la barra de vitrina a 18-20 °C; a 4 °C el dátil está duro y el cacao no huele.
-2. Partir una pieza de control por lote: si no truena y no tiene brillo, el templado falló y el lote no sale a piso.
-3. Servir en su empaque o sobre papel encerado con el logo, en plato de pizarra o directo en mano.
-4. No decorar en cocina: los nibs y la sal ya van incrustados en la cobertura desde el bañado.
+1. Moler 60% del pistacho a harina fina y picar grueso el 40% restante: la harina da estructura y el picado da mordida.
+2. Batir el aceite de oliva con el piloncillo y la pasta de dátil 2 min hasta emulsionar; añadir huevo de lino.
+3. Incorporar la mezcla de harinas, el pistacho molido, la sal y el bicarbonato solo hasta integrar.
+4. Añadir a mano el pistacho picado y la frambuesa liofilizada en trozos. REPOSAR 30 min a 4 °C.
+5. Porcionar a 72 g y hornear 11-13 min a 175 °C. Enfriar en rejilla.
 
-**Equipo** Procesador de alimentos robusto tipo cutter de 5 L · Marco de acero de 30x20 cm y prensa o rodillo · Cuchillo largo o guitarra · Temperadora o baño maría con termómetro y superficie fría · Empaque individual sellado con etiqueta de alérgenos · Vitrina de barra a 18-20 °C
+**Endulzante** Piloncillo rallado y pasta de dátil, igual que PS-01. La frambuesa liofilizada aporta acidez, no dulzor.
 
-**Alérgenos** frutos secos (nuez) · semillas (pepita) · coco · leche (aislado de suero; la cobertura puede contener trazas) · soya (lecitina de la cobertura)
+**Equipo** Batidora de pala · Molino o procesador para el pistacho · Báscula de 1 g · Horno de convección · Charolas con papel siliconado
 
-**Vida útil** 21 días a 18-20 °C en empaque individual; 40 días en refrigeración. El límite es la actividad de agua del dátil, no el enranciamiento. Abierta, 5 días. El brillo del baño se pierde a los 10 días si el templado falló.
+**Alérgenos** Frutos secos (almendra, pistacho) · Ajonjolí por contaminación cruzada de obrador · Sin gluten certificado · Sin lácteo, sin huevo
 
-**Punto crítico de control** Producto listo para comer sin cocción: cutter, marco, guitarra y manos se sanitizan antes, y pepita y nuez entran ya tostadas. Templado de la cobertura: fundir a 45-50 °C, bajar a 27-28 °C y subir a 31-32 °C; mal templada la barra no truena, se blanquea y se derrite en la mano. Etiquetado obligatorio de nuez, leche y soya por pieza: es la única pieza de la carta que sale del local sin que nadie explique qué trae.
+**Vida útil** 3 días en mostrador bajo campana; 7 en hermético. La frambuesa liofilizada absorbe humedad del ambiente y se ablanda: es lo primero que se pierde.
 
-**Escalado** Batch de 1.91 kg de masa = 1.853 kg cortados = 24 barras de 77 g. Un templado de 1 kg de cobertura baña 80 barras. Se produce una vez por semana en bloque y se guarda: no ocupa cocina en servicio ni pase, va en la vitrina de la barra de café. Es lo que sostiene el ticket promedio a la hora del café sin sumar una sola persona a la línea.
+**Punto crítico de control** Contaminación cruzada con gluten, igual que PS-01. Además: la frambuesa liofilizada debe incorporarse ENTERA y al final; si se muele con la masa suelta color y tiñe la galleta de rosa uniforme, perdiendo el veteado que la hace reconocible.
 
-**Etiqueta** `408 kcal · P 14 g · C 32 g · G 24.6 g`
+**Rendimiento por batch** Batch de 2.2 kg rinde 30 galletas de 72 g crudas → 65 g horneadas. Se hornea junto con PS-01 en el mismo turno.
+
+**Diferencia respecto al original** Piloncillo en vez de azúcar de coco, por la regla de endulzantes de la casa. El resto respeta la composición declarada.
+
+**Etiqueta** `326 kcal · P 5.3 g · C 32 g · G 19.7 g`
+
+**Notas de insumo**
+
+- **Mezcla de harinas sin gluten COSECHA (sub-receta)** — 40% almendra, 35% arroz, 25% tapioca. Ninguna harina sola funciona: la almendra sola se derrite, el arroz solo queda arenoso.
+- **Pistacho pelado crudo** — Es el insumo que manda en el costo de esta pieza. A 850 MXN/kg cada gramo cuenta: 11 g es el punto donde se saborea sin disparar el precio.
+- **Pasta de dátil (sub-receta)** — Endulza y aporta humedad. Sin ella la pieza sin gluten queda seca, no solo menos dulce.
+- **Huevo de lino (sub-receta)** — Ligante vegano. Sin huevo y sin gluten no hay red que sostenga la miga: esto la sostiene.
+- **Frambuesa liofilizada** — Liofilizada y NO fresca: la fresca suelta agua y arruina la textura. Es lo que hace Honest Greens.
 
 **Supuestos**
 
-- [SUPUESTO] carb_100 es carbohidrato neto y kcal_100 = 4P + 4C + 9G (convención de carta declarada en PS-01).
-- [SUPUESTO] AZÚCAR DE LA COBERTURA: 3.4 g por barra provienen del azúcar propia de la cobertura 72%, no añadida por la casa. Se declara en carta. Si la dirección quiere cero azúcar de cualquier origen en esta pieza, se rueda la barra en cacao y coco tostado en vez de bañarla: el costo baja ~4 MXN y el resto de la ficha no cambia.
-- [SUPUESTO] RIESGO OPERATIVO: requiere saber templar chocolate y tener superficie fría. Si no se puede garantizar, es el fallo más visible de la carta porque se blanquea en vitrina a los 10 días a la vista del cliente. El plan B es el mismo del punto anterior: sin baño, rodada en cacao y coco.
-- [SUPUESTO] EMPAQUE NO CONTABILIZADO: es la única pieza que sale del local y necesita empaque individual sellado con etiqueta de alérgenos (~1.5 MXN/pieza [SUPUESTO]). No está en el costo de insumos porque la regla de precio de la casa cuenta insumos, no empaque. Hay que decidirlo antes de listarla.
-- [SUPUESTO] Etiqueta pública: 91 g, 408 kcal, 14.3 g de proteína, 32.4 g de carbohidrato, 24.6 g de grasa. Es la pieza de recuperación: dátil y cacao para el carbohidrato, pepita, nuez y aislado para la proteína, en formato que se come caminando después de entrenar.
-- [SUPUESTO] 14.3 g de proteína es lo más alto que se puede llegar sin que sepa a barra de gimnasio. Subirlo significa más aislado, y más aislado significa exactamente lo que este postre no debe ser.
-- [SUPUESTO] Es el único de los cinco cuyo precio de fórmula, ceil(24.58 × 1.40 / 0.85) = 41 MXN, es coherente con lo que la gente ya paga por una barra en mostrador; precisamente porque es formato de barra y no de plato. Los otros cuatro exponen el problema de la fórmula descrito en PS-01.
+- [SUPUESTO] Pistacho [SUPUESTO] 850 MXN/kg, rango 700-1100. Los $28/kg que devolvió el scraping de mayoreo.online son un dato roto y se descartaron.
+- [SUPUESTO] Frambuesa liofilizada [SUPUESTO] 1800 MXN/kg, rango 1200-2500. Es el insumo más caro de la línea y solo lo usa esta pieza y PS-05.
+
+**Fuentes**
+
+- honestgreens.com/en/blog/honest-bites-new-kind-of-sweet — composición declarada: aceite de oliva, azúcar de coco, mezcla de harinas sin gluten
+
+---
+
+## Panes
+
+### PS-03® BANANA BREAD
+
+**Pieza** 95 g · **Tiempo de pase** 15 s · **Insumos por pieza** 109 g crudos
+
+*Plátano muy maduro hace el trabajo. Casi sin endulzante añadido.*
+
+| insumo | cantidad | merma % | costo unitario | costo en la pieza | fuente del precio |
+|---|---:|---:|---:|---:|---|
+| Plátano Tabasco muy maduro | 52 g | 35 % | $25.00/kg | $2.00 | SUPUESTO — rango 18-35 según temporada |
+| Mezcla de harinas sin gluten COSECHA (sub-receta) | 22 g | 0 % | $104.35/kg | $2.30 | sub-receta de casa; costo derivado de sus insumos |
+| Avena en hojuela certificada sin gluten | 9 g | 0 % | $110.00/kg | $0.99 | SUPUESTO — la avena normal va a 25-40 pero la CERTIFICADA sin gluten paga premium: rango 90-140 |
+| Aceite de oliva virgen extra | 7 g | 0 % | $210.00/kg | $1.47 | SUPUESTO — rango 180-260/L en lata de 5 L, mayoreo Puebla |
+| Pasta de dátil (sub-receta) | 5 g | 0 % | $140.79/kg | $0.70 | sub-receta de casa |
+| Huevo de lino (sub-receta) | 5 g | 0 % | $14.38/kg | $0.07 | sub-receta de casa |
+| Nuez pecana | 6 g | 0 % | $280.00/kg | $1.68 | js/data.js — ya en almacén de COSECHA |
+| Cáscara de psyllium en polvo | 1.2 g | 0 % | $320.00/kg | $0.38 | SUPUESTO — rango 250-450 |
+| Mezcla de especias chai molida (canela, jengibre, cardamomo, clavo, pimienta) | 0.6 g | 0 % | $320.00/kg | $0.19 | SUPUESTO — rango 200-600 según proporción de cardamomo |
+| Sal fina de mar | 0.4 g | 0 % | $16.00/kg | $0.01 | SUPUESTO — a granel |
+| Bicarbonato de sodio | 0.5 g | 0 % | $45.00/kg | $0.02 | SUPUESTO — rango 30-60 |
+| **Total insumos** | | | | **$9.82** | |
+
+**Preparación**
+
+1. Machacar el plátano muy maduro con tenedor, dejando trozos: el puré liso da un pan uniforme y aburrido.
+2. Mezclar plátano, aceite de oliva, pasta de dátil y huevo de lino.
+3. Incorporar la mezcla de harinas, la avena, el psyllium, la canela, la sal y el bicarbonato solo hasta integrar.
+4. REPOSAR la masa 20 min: el psyllium y la avena necesitan hidratar o el pan se desmorona al cortarlo.
+5. Hornear 45-50 min a 170 °C hasta que la brocheta salga limpia. Enfriar COMPLETAMENTE antes de cortar: en caliente se desmigaja.
+
+**Endulzante** Plátano muy maduro como endulzante principal, más 5 g de pasta de dátil. Es la pieza con MENOS endulzante añadido de las cinco y el argumento de marca más limpio: la fruta entera está primero en la lista permitida de la casa.
+
+**Equipo** Batidora de pala · Molde de plum cake · Báscula de 1 g · Horno de convección · Rejilla de enfriado
+
+**Alérgenos** Frutos secos (almendra, nuez) · Ajonjolí por contaminación cruzada de obrador · Cereal: avena certificada sin gluten · Sin lácteo, sin huevo
+
+**Vida útil** 2 días en mostrador bajo campana; 4 en hermético a 2-4 °C. Es la pieza más húmeda de la línea y por eso la de vida útil más corta: la humedad que la hace buena es la que la echa a perder.
+
+**Punto crítico de control** Contaminación cruzada con gluten: la avena debe ser CERTIFICADA sin gluten, no avena normal — la avena convencional se procesa con trigo y no vale para una carta que declara sin gluten. Exigir certificado de lote al proveedor.
+
+**Rendimiento por batch** Un molde de 1.1 kg de masa rinde 950 g horneados = 10 rebanadas de 95 g. Se hornean 3 moldes por la mañana.
+
+**Diferencia respecto al original** El blog de Honest Bites no publica la composición de su Banana Bread, así que esta fórmula es reconstrucción propia siguiendo su filosofía declarada (aceite de oliva en vez de mantequilla, sin azúcar refinada, sin gluten, vegano).
+
+**Etiqueta** `320 kcal · P 5.3 g · C 36 g · G 17.2 g`
+
+**Notas de insumo**
+
+- **Plátano Tabasco muy maduro** — Merma 35% de cáscara. Muy maduro, con la piel manchada: es cuando el almidón ya se convirtió en azúcar.
+- **Mezcla de harinas sin gluten COSECHA (sub-receta)** — 40% almendra, 35% arroz, 25% tapioca. Ninguna harina sola funciona: la almendra sola se derrite, el arroz solo queda arenoso.
+- **Avena en hojuela certificada sin gluten** — Certificada sin gluten. Da mordida y estructura.
+- **Pasta de dátil (sub-receta)** — Endulza y aporta humedad. Sin ella la pieza sin gluten queda seca, no solo menos dulce.
+- **Huevo de lino (sub-receta)** — Ligante vegano. Sin huevo y sin gluten no hay red que sostenga la miga: esto la sostiene.
+- **Nuez pecana** — Ya está en almacén de COSECHA a 280 MXN/kg: reutilizar SKU es ventaja operativa real.
+- **Cáscara de psyllium en polvo** — Sin gluten el pan de plátano se desmorona al cortar; el psyllium es lo que sostiene la rebanada.
+- **Mezcla de especias chai molida (canela, jengibre, cardamomo, clavo, pimienta)** — Solo canela de la mezcla.
+
+**Supuestos**
+
+- [SUPUESTO] Composición reconstruida, no copiada: Honest Greens no publica esta receta.
+- [SUPUESTO] Es la candidata natural a llevar el add-on de proteína sin que se note, por su humedad y su miga cerrada. Sin validar en cata.
+
+**Fuentes**
+
+- Foto de carta de Honest Greens aportada por el cliente — Banana Bread, 3,45 €
+- honestcooking.com/gluten-free-banana-tahini-bread — referencia técnica de pan de plátano sin gluten
+
+---
+
+## Pasteles
+
+### PS-04® CARROT CHAI CAKE
+
+**Pieza** 110 g · **Tiempo de pase** 20 s · **Insumos por pieza** 134 g crudos
+
+*Zanahoria y especias chai. Glaseado de anacardo, pepita y nibs.*
+
+| insumo | cantidad | merma % | costo unitario | costo en la pieza | fuente del precio |
+|---|---:|---:|---:|---:|---|
+| Zanahoria | 45 g | 20 % | $18.00/kg | $1.01 | SUPUESTO — rango 12-25. Zanahoria AMARILLA no se consigue en Puebla: se usa naranja |
+| Mezcla de harinas sin gluten COSECHA (sub-receta) | 26 g | 0 % | $104.35/kg | $2.71 | sub-receta de casa; costo derivado de sus insumos |
+| Aceite de oliva virgen extra | 9 g | 0 % | $210.00/kg | $1.89 | SUPUESTO — rango 180-260/L en lata de 5 L, mayoreo Puebla |
+| Pasta de dátil (sub-receta) | 9 g | 0 % | $140.79/kg | $1.27 | sub-receta de casa |
+| Piloncillo rallado | 6 g | 0 % | $25.00/kg | $0.15 | mayoreo.online — caja 18 kg $450 |
+| Huevo de lino (sub-receta) | 6 g | 0 % | $14.38/kg | $0.09 | sub-receta de casa |
+| Nuez pecana | 7 g | 0 % | $280.00/kg | $1.96 | js/data.js — ya en almacén de COSECHA |
+| Anacardo crudo | 10 g | 0 % | $340.00/kg | $3.40 | SUPUESTO — rango 280-450 |
+| Agua purificada | 6 g | 0 % | $2.50/kg | $0.02 | precio único de casa: garrafón 20 L a 50 MXN |
+| Pepita verde sin cáscara | 4 g | 0 % | $260.00/kg | $1.04 | SUPUESTO — rango 220-320 |
+| Nibs de cacao tostados | 3 g | 0 % | $350.00/kg | $1.05 | SUPUESTO — rango 300-420, nib mexicano de Tabasco/Chiapas |
+| Mezcla de especias chai molida (canela, jengibre, cardamomo, clavo, pimienta) | 1.5 g | 0 % | $320.00/kg | $0.48 | SUPUESTO — rango 200-600 según proporción de cardamomo |
+| Extracto de vainilla de Papantla | 0.5 g | 0 % | $1800.00/kg | $0.90 | SUPUESTO — rango 1200-3000/L de extracto puro |
+| Sal fina de mar | 0.5 g | 0 % | $16.00/kg | $0.01 | SUPUESTO — a granel |
+| Bicarbonato de sodio | 0.5 g | 0 % | $45.00/kg | $0.02 | SUPUESTO — rango 30-60 |
+| **Total insumos** | | | | **$15.99** | |
+
+**Preparación**
+
+1. Rallar la zanahoria grueso y escurrirla apretando: si entra mojada el pastel no cuaja en el centro.
+2. Mezclar aceite de oliva, pasta de dátil, piloncillo y huevo de lino; añadir la zanahoria.
+3. Incorporar la mezcla de harinas, las especias chai, la sal y el bicarbonato solo hasta integrar. Añadir la nuez picada.
+4. Hornear 35-40 min a 170 °C. Enfriar POR COMPLETO: glasear en tibio derrite el glaseado y escurre.
+5. Extender el glaseado de anacardo frío con espátula y terminar con pepita y nibs de cacao.
+
+**Endulzante** Pasta de dátil y piloncillo. La zanahoria aporta dulzor propio al hornearse.
+
+**Equipo** Batidora de pala · Rallador grueso · Licuadora de alta potencia para el glaseado · Molde cuadrado · Horno de convección · Espátula acodada
+
+**Alérgenos** Frutos secos (almendra, nuez, anacardo) · Semillas (pepita) · Ajonjolí por contaminación cruzada de obrador · Sin gluten certificado · Sin lácteo, sin huevo
+
+**Vida útil** 3 días a 2-4 °C. El glaseado de anacardo NO aguanta 8 h a temperatura ambiente: la pieza va en vitrina refrigerada y se saca al pase.
+
+**Punto crítico de control** El glaseado de anacardo es el punto crítico: sin azúcar glas que lo estabilice, es una emulsión de fruto seco y agua con actividad de agua alta, y a temperatura ambiente es medio de cultivo. Vitrina a 2-4 °C obligatoria, descarte a las 72 h, y el anacardo debe remojarse en agua REFRIGERADA 8 h, nunca a temperatura ambiente.
+
+**Rendimiento por batch** Un molde de 2.4 kg de masa rinde 2.0 kg horneados = 18 porciones de 110 g con glaseado. Se hornea una vez por la mañana y se glasea en frío.
+
+**Diferencia respecto al original** Dos cambios declarados: (1) zanahoria NARANJA en vez de amarilla, porque la amarilla no se consigue en Puebla — no se finge lo contrario. (2) El glaseado de vainilla del original es casi con seguridad azúcar glas; aquí es de anacardo remojado, que es vegano y sin azúcar refinada pero NO cristaliza igual y obliga a cadena de frío.
+
+**Etiqueta** `427 kcal · P 7.6 g · C 37 g · G 27.8 g`
+
+**Notas de insumo**
+
+- **Zanahoria** — Merma 20% de pelado y puntas. Zanahoria NARANJA: la amarilla del original no se consigue en Puebla.
+- **Mezcla de harinas sin gluten COSECHA (sub-receta)** — 40% almendra, 35% arroz, 25% tapioca. Ninguna harina sola funciona: la almendra sola se derrite, el arroz solo queda arenoso.
+- **Pasta de dátil (sub-receta)** — Endulza y aporta humedad. Sin ella la pieza sin gluten queda seca, no solo menos dulce.
+- **Huevo de lino (sub-receta)** — Ligante vegano. Sin huevo y sin gluten no hay red que sostenga la miga: esto la sostiene.
+- **Nuez pecana** — Ya en almacén COSECHA.
+- **Anacardo crudo** — Base del glaseado vegano. Remojado y licuado con agua y vainilla.
+- **Agua purificada** — Del glaseado.
+- **Mezcla de especias chai molida (canela, jengibre, cardamomo, clavo, pimienta)** — Canela, jengibre, cardamomo, clavo y pimienta.
+
+**Supuestos**
+
+- [SUPUESTO] Glaseado de anacardo [SUPUESTO] en cuanto a estabilidad: no se ha probado su comportamiento en vitrina 8 h. Es el mayor riesgo técnico de la pieza.
+- [SUPUESTO] Anacardo 340 MXN/kg [SUPUESTO], rango 280-450.
+
+**Fuentes**
+
+- honestgreens.com/en/blog/honest-bites-new-kind-of-sweet — composición declarada: zanahoria amarilla, especias chai, nuez, glaseado de vainilla, pepitas de calabaza, nibs de cacao, aceite de oliva, mezcla de harinas sin gluten
+
+---
+
+### PS-05® MARBLED CHOCOLATE & TAHINI CAKE
+
+**Pieza** 105 g · **Tiempo de pase** 20 s · **Insumos por pieza** 97 g crudos
+
+*Veteado de tahini y cacao. Glaseado de café, frambuesa liofilizada.*
+
+| insumo | cantidad | merma % | costo unitario | costo en la pieza | fuente del precio |
+|---|---:|---:|---:|---:|---|
+| Mezcla de harinas sin gluten COSECHA (sub-receta) | 30 g | 0 % | $104.35/kg | $3.13 | sub-receta de casa; costo derivado de sus insumos |
+| Tahini (pasta de ajonjolí) | 14 g | 0 % | $250.00/kg | $3.50 | SUPUESTO — rango 180-320. El ajonjolí en semilla va a 11-30/kg: molerlo en casa baja el costo a ~60/kg si hay molino |
+| Cacao en polvo natural sin azúcar | 7 g | 0 % | $240.00/kg | $1.68 | SUPUESTO — rango 180-300 a granel |
+| Aceite de oliva virgen extra | 8 g | 0 % | $210.00/kg | $1.68 | SUPUESTO — rango 180-260/L en lata de 5 L, mayoreo Puebla |
+| Pasta de dátil (sub-receta) | 10 g | 0 % | $140.79/kg | $1.41 | sub-receta de casa |
+| Piloncillo rallado | 6 g | 0 % | $25.00/kg | $0.15 | mayoreo.online — caja 18 kg $450 |
+| Huevo de lino (sub-receta) | 7 g | 0 % | $14.38/kg | $0.10 | sub-receta de casa |
+| Anacardo crudo | 6 g | 0 % | $340.00/kg | $2.04 | SUPUESTO — rango 280-450 |
+| Café de especialidad molido (el de la casa) | 1.2 g | 0 % | $380.00/kg | $0.46 | SUPUESTO — mismo grano que la barra BE-07 a BE-14: sinergia de almacén |
+| Agua purificada | 5 g | 0 % | $2.50/kg | $0.01 | precio único de casa: garrafón 20 L a 50 MXN |
+| Frambuesa liofilizada | 2 g | 0 % | $1800.00/kg | $3.60 | SUPUESTO — rango 1200-2500. Es el insumo más caro de la línea |
+| Sal fina de mar | 0.5 g | 0 % | $16.00/kg | $0.01 | SUPUESTO — a granel |
+| Bicarbonato de sodio | 0.5 g | 0 % | $45.00/kg | $0.02 | SUPUESTO — rango 30-60 |
+| **Total insumos** | | | | **$17.79** | |
+
+**Preparación**
+
+1. Preparar la masa base y dividirla en dos mitades EXACTAS por peso: si difieren, una se hunde y no hay veteado.
+2. A una mitad añadir el tahini; a la otra el cacao y 8 g más de agua, porque el cacao absorbe y sin ese ajuste queda más densa que la de tahini.
+3. Alternar cucharadas de cada masa en el molde y pasar una brocheta UNA sola vez en zigzag. Más pasadas mezclan los colores y se pierde el veteado.
+4. Hornear 40-45 min a 170 °C. Enfriar por completo.
+5. Glasear con el glaseado de café y coronar con la frambuesa liofilizada AL PASE, nunca antes.
+
+**Endulzante** Pasta de dátil y piloncillo. El tahini aporta amargor y grasa: es lo que evita que sepa a bizcocho saludable.
+
+**Equipo** Batidora de pala · Dos bowls para las dos masas · Molde de plum cake · Brocheta para el veteado · Horno de convección
+
+**Alérgenos** AJONJOLÍ (tahini) — alérgeno de declaración obligatoria y el que más se olvida · Frutos secos (almendra) · Sin gluten certificado · Sin lácteo, sin huevo
+
+**Vida útil** 3 días a 2-4 °C con el glaseado puesto; 4 días sin glasear. La frambuesa liofilizada se pone encima AL PASE, no antes: en el glaseado húmedo se disuelve en una hora.
+
+**Punto crítico de control** Ajonjolí y gluten. El tahini hace de este obrador un obrador con ajonjolí: cualquier pieza producida el mismo día arrastra la declaración de contaminación cruzada, y por eso PS-01 a PS-04 la llevan. No es exceso de celo, es lo que exige compartir mesa.
+
+**Rendimiento por batch** Molde de 2.3 kg de masa rinde 1.95 kg horneados = 18 porciones de 105 g. Se hornea con PS-04 en el mismo turno.
+
+**Diferencia respecto al original** Se respeta la composición declarada íntegra. El glaseado de café se hace con anacardo y el mismo café de la barra de COSECHA, que es sinergia de almacén que el original no tiene.
+
+**Etiqueta** `429 kcal · P 8.6 g · C 40 g · G 26.1 g`
+
+**Notas de insumo**
+
+- **Mezcla de harinas sin gluten COSECHA (sub-receta)** — 40% almendra, 35% arroz, 25% tapioca. Ninguna harina sola funciona: la almendra sola se derrite, el arroz solo queda arenoso.
+- **Tahini (pasta de ajonjolí)** — Mitad de la masa. Aporta la grasa y el amargor que sostienen la pieza.
+- **Cacao en polvo natural sin azúcar** — Otra mitad de la masa.
+- **Pasta de dátil (sub-receta)** — Endulza y aporta humedad. Sin ella la pieza sin gluten queda seca, no solo menos dulce.
+- **Huevo de lino (sub-receta)** — Ligante vegano. Sin huevo y sin gluten no hay red que sostenga la miga: esto la sostiene.
+- **Anacardo crudo** — Base del glaseado de café.
+- **Café de especialidad molido (el de la casa)** — El mismo grano de la barra de COSECHA: sinergia de almacén con BE-07 a BE-14.
+- **Agua purificada** — Del glaseado.
+- **Frambuesa liofilizada** — Al pase, no antes.
+
+**Supuestos**
+
+- [SUPUESTO] El café aporta color y sabor pero ~0 macros en 1.2 g: se declara 0.
+- [SUPUESTO] Frambuesa liofilizada [SUPUESTO] 1800 MXN/kg.
+
+**Fuentes**
+
+- honestgreens.com/en/blog/honest-bites-new-kind-of-sweet — composición declarada: bizcocho marmoleado de tahini y chocolate, glaseado de café, frambuesa liofilizada, aceite de oliva, mezcla de harinas sin gluten
 
 ---

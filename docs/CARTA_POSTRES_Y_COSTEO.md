@@ -1,207 +1,128 @@
 # Carta de postres y costeo — COSECHA
 
-Cara al cliente y cara al negocio. 5 postres, sexta familia del sistema modular.
+5 piezas de mostrador: **plant-based, sin gluten y sin azúcar refinada**. Réplica adaptada de la línea Honest Bites de Honest Greens.
 
-Registro internacional con una sola ancla local, según la dirección de carta de agosto de 2026. El ancla es **PS-04 Mousse de mamey, pepita caramelizada y lima**.
-
-Cero azúcar refinada añadida en los cinco. Endulzantes: pasta de dátil, piloncillo declarado y monk fruit puro. La cobertura de cacao 72% aporta azúcar propia y se declara en los carbohidratos.
+El costeo completo, línea a línea, está en **[`COSTEO_POSTRES.xlsx`](COSTEO_POSTRES.xlsx)** — 4 hojas con fórmulas vivas.
 
 ## Carta
 
-## Frío
+### Galletas
 
-> **PS-02® Cheesecake frío de vainilla y maracuyá sobre crumble de pepita y nuez** — 213 g — $100
-> Cheesecake frío sobre pepita y nuez. Maracuyá arriba. Cero azúcar añadida.
+> **PS-01® Chocolate Chip Cookie** — 65 g — $55
+> Crujiente fuera, masticable dentro. Aceite de oliva y piloncillo.
 > 
-> `527 kcal · P 25 g · C 32 g · G 33.2 g`
+> `346 kcal · P 4.3 g · C 35 g · G 20.9 g`
 
-## De cuchara
-
-> **PS-01® Cremoso de cacao 72%, aceite de oliva y sal** — 175 g — $95
-> Cacao 72% en cuchara. Aceite de oliva, sal y crujiente de girasol.
+> **PS-02® Raspberry & Pistachio Cookie** — 65 g — $75
+> Pistacho molido y frambuesa liofilizada. Ácida y salada, no dulce.
 > 
-> `500 kcal · P 20 g · C 30 g · G 33.0 g`
+> `326 kcal · P 5.3 g · C 32 g · G 19.7 g`
 
-> **PS-04® Mousse de mamey, pepita caramelizada y lima** — 182 g — $80
-> Mamey aireado, pepita caramelizada y lima. Nuestra única ancla mexicana.
+### Panes
+
+> **PS-03® Banana Bread** — 95 g — $50
+> Plátano muy maduro hace el trabajo. Casi sin endulzante añadido.
 > 
-> `281 kcal · P 22 g · C 26 g · G 9.7 g`
+> `320 kcal · P 5.3 g · C 36 g · G 17.2 g`
 
-## De horno
+### Pasteles
 
-> **PS-03® Sticky toffee de dátil y nuez, tibio** — 170 g — $100
-> Bizcocho de dátil tibio, toffee caliente, crema fría de canela.
+> **PS-04® Carrot Chai Cake** — 110 g — $70
+> Zanahoria y especias chai. Glaseado de anacardo, pepita y nibs.
 > 
-> `573 kcal · P 14 g · C 34 g · G 42.2 g`
+> `427 kcal · P 7.6 g · C 37 g · G 27.8 g`
 
-## Barra
-
-> **PS-05® Barra de dátil, nuez y cacao 72%** — 91 g — $75
-> Barra para llevar. Dátil, nuez y cacao 72%. Se come caminando.
+> **PS-05® Marbled Chocolate & Tahini Cake** — 105 g — $75
+> Veteado de tahini y cacao. Glaseado de café, frambuesa liofilizada.
 > 
-> `408 kcal · P 14 g · C 32 g · G 24.6 g`
+> `429 kcal · P 8.6 g · C 40 g · G 26.1 g`
+
+Los cinco llevan el sello **PB · SIN GLUTEN · SIN AZÚCAR REFINADA**.
+
 ## Costeo y margen
 
-Igual que en bebidas: la **fórmula de la casa** es `ceil(costo × 1.40 ÷ 0.85)`, regla intocable. El **precio de carta** es mi recomendación comercial, anclada al mercado de Angelópolis.
+`Precio fórmula` es la regla intocable de la casa: `ceil(costo × 1.40 ÷ 0.85)`. `Precio carta` es mi recomendación comercial, anclada a lo que Honest Greens cobra por estas piezas (3,45–3,95 €) ajustado al mercado de Angelópolis.
 
-| código | nombre | costo porción | precio fórmula | food cost fórmula | precio carta | food cost carta | margen bruto carta |
-|---|---|---:|---:|---:|---:|---:|---:|
-| PS-01® | Cremoso de cacao 72%, aceite de oliva y sal | $31.84 | $53 | 60.1 % | **$95** | 33.5 % | $63.16 |
-| PS-02® | Cheesecake frío de vainilla y maracuyá sobre crumble de pepita y nuez | $33.77 | $56 | 60.3 % | **$100** | 33.8 % | $66.23 |
-| PS-03® | Sticky toffee de dátil y nuez, tibio | $33.61 | $56 | 60.0 % | **$100** | 33.6 % | $66.39 |
-| PS-04® | Mousse de mamey, pepita caramelizada y lima | $23.28 | $39 | 59.7 % | **$80** | 29.1 % | $56.72 |
-| PS-05® | Barra de dátil, nuez y cacao 72% | $24.59 | $41 | 60.0 % | **$75** | 32.8 % | $50.41 |
-| | **Promedio** | $29.42 | $49.00 | 60.0 % | **$90.00** | 32.7 % | $60.58 |
+| código | pieza | g | costo | precio fórmula | FC fórmula | precio carta | FC carta | margen |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| PS-01® | Chocolate Chip Cookie | 65 | $11.83 | $20 | 59.2 % | **$55** | 21.5 % | $43.17 |
+| PS-02® | Raspberry & Pistachio Cookie | 65 | $21.04 | $35 | 60.1 % | **$75** | 28.1 % | $53.96 |
+| PS-03® | Banana Bread | 95 | $9.82 | $17 | 57.8 % | **$50** | 19.6 % | $40.18 |
+| PS-04® | Carrot Chai Cake | 110 | $15.99 | $27 | 59.2 % | **$70** | 22.8 % | $54.01 |
+| PS-05® | Marbled Chocolate & Tahini Cake | 105 | $17.79 | $30 | 59.3 % | **$75** | 23.7 % | $57.21 |
+| | **Promedio** | | $15.29 | | | **$65.00** | 23.5 % | $49.71 |
+
+Food cost medio de carta: **23.5%**, dentro del estándar de repostería (20-30%). La fórmula de la casa impone 60%, así que aplicarla tal cual dejaría **$39.20 por pieza** sobre la mesa. No la cambio: el módulo `js/postres.js` guarda `precio` con la fórmula, y el redondeo comercial vive solo aquí.
 
 ## Análisis operativo
 
-### SKU nuevos a almacén
+### Lo que cambia respecto a los postres de plato
 
-- **11 sub-recetas** entre los 5 postres. Es mucha producción para cinco referencias: cada una es una tarea de mise en place con su propio lote, etiqueta y vida útil.
-- **Se reutilizan de almacén:** nueces ($280/kg) y semillas de girasol ($90/kg), ya presentes en `js/data.js`. Es la única sinergia real con el menú de comida.
-- **Rotación lenta:** vainilla de Papantla, monk fruit, cobertura 72%. Caros por kilo, mínimos por porción.
-- **Temporada en Puebla:** mamey (PS-04) y maracuyá (PS-02). El mamey además es el ancla local, lo que crea una tensión: la identidad mexicana de la carta depende de un insumo estacional.
-- **Comparten insumo con bebidas:** cacao, dátil, pepita, vainilla, monk fruit. Conviene un solo lote de compra para las dos familias — está en `docs/INSUMOS.md`.
+Estas piezas son de **mostrador**, no de pase. Eso mejora el negocio en tres frentes y lo empeora en uno:
 
-### Equipo a comprar
+- **Cero emplatado.** 15-20 s contra los 45-150 s de un postre de plato. No compiten por la mano del pase en hora pico.
+- **Un solo horneado matinal.** Toda la línea sale del mismo turno de obrador.
+- **Se venden para llevar**, que es demanda que el postre de plato no captura.
+- **Pero se secan.** La repostería sin gluten pierde humedad mucho más rápido: 2-3 días de vida útil real contra los 4-5 de una masa con gluten. PS-03 Banana Bread es el más corto, con 2 días.
 
-| equipo | rango MXN `[SUPUESTO]` | qué se cae sin él |
-|---|---|---|
-| Vitrina refrigerada de postres 2-4 °C | 35 000 – 85 000 | Los cinco |
-| Abatidor de temperatura | 60 000 – 180 000 | PS-01, PS-02, PS-04 (cuajado y seguridad) |
-| Horno de convección | 25 000 – 90 000 | PS-02 (crumble), PS-03, PS-05 |
-| Licuadora de vaso alta o de inmersión | ya en la barra | PS-01, PS-04 |
-| Báscula de 0.1 g | 1 500 – 4 000 | Dosificación de gelatina y monk fruit |
+### Insumos
 
-El abatidor es la pieza discutible: $60-180k para tres postres. Sin él hay que alargar los tiempos de enfriado y aceptar más riesgo microbiológico. **Recomiendo abrir sin abatidor** y con baño de hielo controlado por termómetro, revisando la decisión cuando el volumen la justifique.
+29 insumos distintos. Solo **6 tienen precio verificado en fuente**; los otros 23 son [SUPUESTO] con rango justificado. Detalle en la hoja *Insumos* del Excel.
 
-### Cuello de botella
+| insumo | precio | fuente |
+|---|---:|---|
+| Piloncillo | $25/kg | mayoreo.online, caja 18 kg |
+| Linaza molida | $50/kg | mayoreo.online, 10 kg |
+| Almidón de tapioca | $60/kg | mayoreo.online, bulto 25 kg |
+| Harina de almendra | $184/kg | mayoreo.online, desde 5 kg |
+| Nuez pecana | $280/kg | `js/data.js` — ya en almacén |
+| Agua purificada | $2.50/L | precio único de casa |
 
-El postre no compite por la barra: compite por **espacio de nevera** y por **la mano que emplata en el pase**.
+**Reutilizan almacén:** nuez pecana (PS-03, PS-04) y el café de la barra (PS-05, glaseado). Es la única sinergia con lo que ya existe.
 
-Con 20% de attach sobre 100 comandas en el pico de 13:00–15:00:
+**El insumo que manda el costo:** el pistacho a $850/kg y la frambuesa liofilizada a $1 800/kg. Entre los dos hacen que PS-02 cueste el doble que PS-01. La frambuesa además solo la usan PS-02 y PS-05.
 
-```
-20 postres × tiempo medio de pase 60 s = 1 200 s
-sobre 7 200 s de servicio = 17% de una plaza
-```
+### Punto crítico transversal
 
-Holgado — **salvo PS-03**. Su pase de **150 s** es 3-7× el del resto porque se sirve tibio y hay que atemperarlo a la orden. Si PS-03 vendiera solo, consumiría 3 000 s. Es el único postre que puede romper el pase.
+**Contaminación cruzada con gluten.** El obrador comparte espacio con la línea de tortilla. Toda esta familia debe hornearse en el **primer turno**, antes de abrir cualquier harina con gluten, con charolas y utensilios rotulados de uso exclusivo. Sin eso la carta no puede declarar "sin gluten" y la declaración es lo que sostiene el producto.
 
-Necesidad de vitrina: **5 referencias × ~20 porciones dosificadas = 100 porciones** en frío permanente. Es el dimensionado que manda sobre la compra de la vitrina, no las kcal ni el costo.
-
-### Qué se batchea y qué no
-
-**Se batchea:** cremoso de cacao (lotes de 2 kg = 13 porciones, 4 días), crumbles (1 kg = 39 porciones, 10 días en hermético **con desecante y fuera de cámara** — dentro se ablanda en 24 h), pasta de dátil, compotas, barras.
-
-**No se batchea:** el montaje final de PS-01, PS-02 y PS-04 — el crumble va al costado y nunca encima, porque mojado pierde el crujiente en dos minutos. El aceite, los nibs y la sal entran al pase, delante del cliente.
+**Ajonjolí.** El tahini de PS-05 convierte el obrador en obrador con ajonjolí, y por eso las otras cuatro piezas lo declaran por contaminación cruzada. No es exceso de celo: es lo que exige compartir mesa el mismo día.
 
 ## Recomendación del analista
 
-### Top 2 esperado de venta
+### Qué lanzar
 
-Mix estimado `[SUPUESTO]`:
+**PS-01, PS-03 y PS-05.**
 
-1. **PS-01 Cremoso de cacao 72% — 25%.** El chocolate es el default universal del postre. Sabe a postre de verdad, no a sustituto, y su contraste de aceite de oliva y sal es lo que lo saca de "versión saludable". Es el que desactiva el prejuicio "Cosecha = insípido".
-2. **PS-04 Mousse de mamey — 20%.** El más barato ($23.27), el de mejor food cost (25.9%), el de mejor perfil de macros (281 kcal con 22 g de proteína) y el único con identidad mexicana. Es el postre que Rodrigo puede pedir sin salirse de su objetivo.
+- **PS-01 Chocolate Chip Cookie** — es el top seller de Honest Greens y no hay razón para que aquí sea distinto. Food cost 21.5%, el segundo mejor de la línea.
+- **PS-03 Banana Bread** — el más barato ($9.82) y el más limpio de contar: el plátano maduro hace casi todo el trabajo y casi no lleva endulzante añadido. Es el mejor argumento de marca de los cinco.
+- **PS-05 Marbled Chocolate & Tahini** — el más distintivo, el que nadie más tiene en Puebla, y el que conecta con la barra de café por el glaseado.
 
-### Qué NO lanzar en la v1
+### Qué dejar fuera de la v1
 
-**Abriría con 3.**
-
-| postre | por qué fuera |
+| pieza | por qué |
 |---|---|
-| **PS-03 Sticky toffee tibio** | **150 s de pase.** Es el único que compite de verdad por la mano del pase y el único que exige servicio tibio en un fast-casual. Además es el de peor perfil (573 kcal, 14 g de proteína, 42 g de grasa) para el cliente primario. |
-| PS-05 Barra de dátil y nuez | Es el más débil como postre de restaurante: se percibe como snack, no como cierre de comida. Tiene mejor futuro como producto de mostrador para llevar que como referencia de carta. |
+| **PS-02 Raspberry & Pistachio** | El doble de costo que PS-01 por dos insumos caros —pistacho $850/kg y frambuesa liofilizada $1 800/kg— que no usa casi nada más. Es la pieza que más capital inmoviliza por unidad vendida. |
+| **PS-04 Carrot Chai Cake** | Su glaseado de anacardo es el mayor riesgo técnico de la línea: sin azúcar glas que lo estabilice, es una emulsión de fruto seco y agua con actividad de agua alta. Obliga a vitrina refrigerada y descarte a 72 h. Además arrastra las especias chai, que solo usa esta pieza. |
 
-**V1 = PS-01, PS-02, PS-04.** Mantiene contraste de textura (cremoso, cheesecake con crumble, mousse aireada), un rango de macros útil (281 a 527 kcal) y el ancla local.
-
-### Impacto en ticket
-
-Attach de postre en fast-casual es mucho menor que el de bebida: la gente compra bebida por sed y hábito diario, y postre por antojo ocasional. Uso **20%** `[SUPUESTO]`, contra el 60% de bebida.
-
-```
-precio medio ponderado de postre      $91.00
-costo medio ponderado                 $29.76
-margen bruto por postre               $61.24   (food cost 32.7%)
-
-attach 20%  ->  incremento por comanda  $18.20
-ticket           $275.00  ->  $293.20   (+6.6%)
-margen bruto incremental / 100 comandas  $1,225
-```
-
-### Bebida o postre: dónde poner la atención del piloto
-
-| | bebida | postre |
-|---|---:|---:|
-| Attach | 60% | 20% |
-| Precio medio | $69.45 | $91.00 |
-| Margen por unidad | $50.32 | $61.24 |
-| **Margen / 100 comandas** | **$3,019** | **$1,225** |
-| Inversión en equipo | alta (espresso) | media (vitrina) |
-| SKU nuevos | 149 | ~40, con solapamiento |
-
-**La bebida rinde 2.5× lo que rinde el postre por comanda**, pese a que el postre tiene mejor precio y mejor margen unitario. Todo está en el attach rate: se vende tres veces más.
-
-La conclusión operativa es que el postre **no merece la primera atención del piloto**. Merece tres referencias bien ejecutadas que sostengan la promesa de marca — que un cliente que entrena pueda cerrar la comida sin culpa — y nada más. La energía de producto va a la barra.
-
-### Riesgos
-
-| riesgo | mitigación |
-|---|---|
-| PS-03 rompe el pase con 150 s | No lanzarlo en v1. Si entra, solo fuera de hora pico. |
-| El ancla local depende de mamey estacional | Tener PS-04 como fijo solo en temporada; fuera de ella, rotar a otro ancla. |
-| Merma en vitrina con 5 referencias × 20 porciones | Abrir con 3 referencias. Dosificar 24 h antes, no más. |
-| Sin abatidor, el cuajado alarga y sube el riesgo | Baño de hielo con termómetro y registro de temperatura por turno. |
-| Un postre "saludable" que sepa a sustituto | PS-01 lleva sal, ácido y amargo de cacao precisamente para dar relieve sin azúcar. Es la defensa técnica contra el prejuicio de marca. |
-| 32.7% de food cost, alto para repostería | Es el costo de la restricción de cero azúcar refinada. Se acepta o se revisa la restricción, no hay tercera vía. |
-| Canibalizar el plato principal | A 75-100 MXN contra un plato de 250-300, complementan. |
+Si solo se pudiera abrir con una, es **PS-01**.
 
 ## Supuestos
 
-1. **Todos los precios de insumo son `[SUPUESTO]`** salvo nueces y semillas de girasol, que vienen de `js/data.js`. Detalle completo en `docs/INSUMOS.md`.
-2. **Attach rate 20%**: estimado por comportamiento típico de fast-casual, no medido. Es el número que más mueve las conclusiones de este documento.
-3. **Mix de venta**: estimado. PS-01 25%, PS-02 20%, PS-03 20%, PS-04 20%, PS-05 15%.
-4. **Precio de carta**: anclado a ≈0.75× la referencia de Honest Greens en España. Sin validar contra competencia local.
-5. **Ticket de comida $275**: punto medio del WTP declarado en las 13 entrevistas. Es WTP declarado, no gasto observado.
-6. **Tiempos de pase**: estimados por el chef, **no auditados** — ver abajo.
-7. **Rangos de precio de equipo**: mercado mexicano 2026, sin cotizar.
+1. **23 de 29 precios son `[SUPUESTO]`** con rango de mayoreo justificado. Los 6 verificados están en la tabla de arriba.
+2. **Se descartaron dos precios scrapeados por imposibles:** pistacho pelado a $28/kg y avena a $1.30/kg. El fetch leyó precios "desde $X" o campos parciales. Usar esas cifras habría subcosteado la línea entera.
+3. **Pérdida de horneado**: 10% en galleta, 13-15% en pan y pastel. Estimado, no medido en obrador.
+4. **PS-03 y PS-04 son reconstrucción propia** en distinto grado: Honest Greens no publica la receta del Banana Bread, y del Carrot Chai Cake solo publica la lista de componentes.
+5. **Zanahoria naranja en vez de amarilla** en PS-04: la amarilla no se consigue en Puebla. Declarado, no disimulado.
+6. **El glaseado de anacardo no se ha probado** en vitrina 8 h. Es el supuesto más frágil del documento.
+7. **Precio de carta** anclado a Honest Greens ajustado a Angelópolis. Sin validar contra competencia local.
 
 ## Estado de verificación
 
-**Advertencia importante y honesta: estos 5 postres NO pasaron la auditoría adversarial.**
+Honesto sobre cómo se produjo esto. El workflow de investigación con agentes **falló**: la máquina se suspendió durante la noche y mató 22 arranques de agente sin que ninguno completara. Las 5 fichas las formulé yo, con:
 
-El diseño del pipeline era: dos chefs proponen 7 postres cada uno desde ángulos opuestos → un juez elige y fusiona los 5 mejores → tres lentes adversariales (costeo, nutrición, cocina) → corrección → análisis.
+- Composición **declarada por Honest Greens** en su propio blog para PS-01, PS-02, PS-04 y PS-05.
+- Precios **verificados en fuente** para 6 insumos; el resto con rango de mayoreo justificado.
+- Verificación determinista: vegano, sin gluten y sin azúcar refinada **cumplen en los 5**; macros coherentes 4/4/9 dentro del 3-8% (la desviación es fibra de almendra, cacao y linaza, que es legítima); máximo 5 pasos; alérgenos completos incluyendo el ajonjolí por contaminación cruzada.
 
-Las tres primeras etapas se completaron. **Las tres lentes de verificación y el análisis murieron al agotarse el límite de gasto de la cuenta.**
-
-Lo que sí verifiqué yo, de forma determinista:
-
-| chequeo | resultado |
-|---|---|
-| Gramaje de insumos vs porción declarada | **cuadra exacto** en los 5 |
-| Coherencia 4/4/9 de cada insumo | sin desvíos fuera de tolerancia |
-| Máximo 5 pasos de preparación | cumple (4 y 5) |
-| Azúcar refinada disfrazada | ninguna detectada |
-| Alérgenos declarados | los 5 los declaran |
-| Registro 4 internacionales + 1 ancla | correcto |
-
-Lo que **no** está verificado y solo una lente adversarial habría cazado:
-
-- **Precios de insumo:** nadie contrastó los $/kg contra rango de mercado real. En bebidas, esa misma lente encontró el arándano costeado a la mitad de su precio.
-- **Técnica:** nadie comprobó que las mousses cuajen, que los ratios de gelatina estén declarados, ni que el crumble sin azúcar cristalizada logre y mantenga el crujiente.
-- **Sabor y solapamiento:** el juicio de si saben a postre de verdad o a "versión saludable" viene de un solo agente, sin contradictor.
-- **PCC:** en bebidas la lente de barra encontró un remojo a 60 °C dentro de zona de peligro. Aquí nadie miró con esos ojos.
-
-### Auditoría post-entrega
-
-Sobre los 5 postres se corrió después una auditoría determinista, que corrigió:
-
-| hallazgo | corrección |
-|---|---|
-| Agua filtrada y agua hirviendo costeadas a **$0** en 5 sub-recetas | Normalizadas a $2.50/L, el precio único de la casa. |
-| Costo por lote desfasado en 7 sub-recetas tras normalizar el agua | Recalculado y repercutido en su línea padre. |
-
-Ningún postre declaraba alérgenos de menos, ninguno excedía 5 pasos y los gramajes siguen cuadrando exacto con la porción declarada.
-
-**Recomendación:** esto no sustituye las tres lentes adversariales. Antes de llevar estos postres a cocina hay que correrlas: la auditoría determinista comprueba aritmética y formato, no técnica ni sabor. El workflow está guardado y se reanuda desde caché sin repetir la formulación.
+**Lo que NO está verificado:** nadie auditó esto adversarialmente. En particular quedan sin contradictor la estabilidad del glaseado de anacardo, la pérdida real de horneado y si las galletas de verdad salen crujientes por fuera y masticables por dentro con aceite de oliva. Eso se resuelve en obrador, no en documento.
