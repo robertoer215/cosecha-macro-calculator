@@ -83,7 +83,7 @@ Registro internacional con una sola ancla local por familia, según la direcció
 ## Smoothies con proteína
 
 > **BE-15® Berry Protein** — 470 ml — $125
-> Fresa, frambuesa y requeson. 34 g de proteina, 267 kcal.
+> Fresa, frambuesa y requesón poblano. 28 g de proteína, 289 kcal.
 > 
 > `289 kcal · P 28 g · C 24 g · G 8.9 g`
 
