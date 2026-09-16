@@ -1,6 +1,6 @@
 import { ING, SIZES, OBJ_LABEL, CATS, CAT_LABEL, IMG_DIR } from './data.js';
 import { precio, mac, calcularMeta, metaManualComida, metaManualTotal,
-         porcionar, explicarCambio, UMBRAL_G } from './calc.js';
+         porcionar, explicarCambio, proponerCierre, UMBRAL_G } from './calc.js';
 
 let meta = {}, selBase = {}, szBase = {}, selExtra = {}, szExtra = {};
 
@@ -253,10 +253,59 @@ function renderBase() {
   let html = renderSubNav();
   html += `<div class="cat-sec"><div class="cat-hd"><span class="cat-nm">${CAT_LABEL[cat]}</span><span class="cat-ht">Elige uno o más${selCount ? ` · ${selCount} elegido${selCount>1?'s':''}` : ''}</span></div><div class="items-grid">`;
   items.forEach(it => { html += tarjetaHTML(it, cat); });
-  html += `</div></div>`;
+  html += `</div></div><div id="cierre-wrap"></div>`;
   $('base-mods').innerHTML = html;
+  renderCierre();
   renderPlatoButtons();
   updateGlobalTracker();
+}
+
+// ── FASE B · LA PROPUESTA DE CIERRE ──────────────────────────────────────────
+// El cuello de botella del modo IA no es el algoritmo, es el inventario: el
+// techo de carbohidratos con un solo módulo en Grande son 57 g contra una meta
+// media de 96 g por comida, y a 1.346 de 1.600 perfiles (84%) no le alcanza
+// ninguno por sí solo. La app ya soportaba varios módulos por categoría
+// (selBase[cat] es un arreglo) y porcionar() los maneja sin cambios.
+//
+// No se impone: se propone, con lo que aporta y lo que cuesta, y acepta el
+// usuario tocando "Añadir" —que es exactamente lo mismo que tocar la tarjeta.
+function renderCierre() {
+  const wrap = $('cierre-wrap');
+  if (!wrap) return;
+  const cat = CATS_STEPS[platoCatIdx];
+  const elegidos = itemsElegidos();
+
+  // Solo donde el inventario se queda corto de verdad, y solo con al menos un
+  // módulo de la categoría ya elegido: si no, esto sería la carta otra vez.
+  if (cat !== 'carbohidrato' || !(selBase[cat] || []).length) { wrap.innerHTML = ''; return; }
+
+  const candidatos = ING.filter(i => i.cat === 'carbohidrato');
+  const p = proponerCierre(elegidos, meta, candidatos, { fijos: fijosVigentes(elegidos) });
+  if (!p) { wrap.innerHTML = ''; return; }
+
+  const actual = ultimoPorc ? ultimoPorc.desviacion : null;
+  const falta = actual ? Math.abs(Math.round(actual[p.macro] * 10) / 10) : null;
+  const verbo = actual && actual[p.macro] > 0 ? 'Te sobran' : 'Te faltan';
+  const lbl = SIZES.find(s => s.k === p.tamano)?.l || 'Estándar';
+  const quedaria = Math.abs(Math.round(p.desviacion[p.macro] * 10) / 10);
+  const aportaG = p.macro === 'gras' ? p.aporta.gras : p.aporta[p.macro];
+
+  wrap.innerHTML = `<div class="sugg-box">
+    <div class="sugg-hd"><span class="sugg-badge">Cierre sugerido</span>
+      <span class="sugg-desc">${falta !== null ? `${verbo} ${falta} g de ${MACRO_CORTO[p.macro]}` : 'Para acercarte a tu meta'}</span></div>
+    <div class="sugg-item">
+      <div class="sugg-thumb">${foto(p.it, 'sugg-img')}</div>
+      <div class="sugg-main">
+        <div class="sugg-macro-tag">Segundo ${CAT_LABEL[p.it.cat].toLowerCase()}</div>
+        <div class="sugg-name">${p.it.nombre}</div>
+        <div class="sugg-why">${lbl} · ${p.g} g · aporta ${aportaG} g de ${MACRO_CORTO[p.macro]}. Te dejaría a ${quedaria} g de tu meta${p.dentroDeUmbral ? ', dentro del umbral' : ''}.</div>
+        <div class="sugg-controls">
+          <div class="sugg-price">${p.deltaPrecio >= 0 ? '+' : '−'}$${Math.abs(p.deltaPrecio)}</div>
+          <button class="btn-add off" onclick="event.stopPropagation();selBI('${p.it.id}','${p.it.cat}')">+ Añadir</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
 }
 
 // La tarjeta ya no pregunta "¿cuánto?" sino "¿qué tan cerca me deja?".
@@ -341,6 +390,7 @@ function refrescarTarjetas() {
     card.classList.remove('recalc');
     if (idsRecalc.includes(id)) { void card.offsetWidth; card.classList.add('recalc'); }
   });
+  renderCierre();
   renderPorque();
   updateGlobalTracker();
 }

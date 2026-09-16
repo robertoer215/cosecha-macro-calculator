@@ -1,7 +1,7 @@
 // Tests del porcionado conjunto del MODO IA — correr con: npm test
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { porcionar, mac, precio, recomendarSize, calcularMeta, PESO_MACRO, UMBRAL_G, explicarCambio, nombreCorto } from '../js/calc.js';
+import { porcionar, mac, precio, recomendarSize, calcularMeta, PESO_MACRO, UMBRAL_G, explicarCambio, nombreCorto, proponerCierre } from '../js/calc.js';
 import { ING, SIZES } from '../js/data.js';
 
 const F = SIZES.map(s => s.k);
@@ -293,4 +293,86 @@ test('el tamaño se nombra con su etiqueta de la carta, en mayúscula', () => {
     assert.ok(!/ a (pequeña|estándar|grande)\b/.test(ex.texto), `minúscula indebida: ${ex.texto}`);
   }
   assert.ok(visto > 0, 'ningún caso produjo línea: el test no prueba nada');
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FASE B — la propuesta de cierre
+// ─────────────────────────────────────────────────────────────────────────────
+
+const CARB = ING.filter(i => i.cat === 'carbohidrato');
+
+test('el inventario es el cuello de botella: un solo carbohidrato no llega', () => {
+  const techo = Math.max(...CARB.map(c => Math.round(c.carb * 1.5)));
+  assert.equal(techo, 57, 'el techo con un módulo en Grande son 57 g de carbohidrato');
+  // La meta media por comida está muy por encima de ese techo.
+  const metas = [];
+  for (const peso of [55, 75, 95]) for (const obj of ['perder_grasa','mantener','ganar_musculo','rendimiento'])
+    metas.push(calcularMeta({ sexo:'masculino', edad:30, peso, altura:175, comidas:3, objetivo:obj, actividad:'moderado' }));
+  const media = metas.reduce((a, m) => a + m.carb, 0) / metas.length;
+  assert.ok(media > techo, `la meta media (${media.toFixed(0)} g) debe superar el techo (${techo} g)`);
+});
+
+test('proponerCierre acerca a la meta: nunca propone algo que empeore el ajuste', () => {
+  let propuestas = 0;
+  for (const prot of [30, 45, 60]) for (const carb of [60, 95, 130]) for (const gras of [12, 20, 28]) {
+    const meta = { prot, carb, gras };
+    const items = [id('P01'), id('C01'), id('V01'), id('G01')];
+    const base = porcionar(items, meta);
+    const p = proponerCierre(items, meta, CARB);
+    if (!p) continue;
+    propuestas++;
+    assert.ok(p.resultado.coste < base.coste, 'una propuesta debe bajar el coste, nunca subirlo');
+    assert.ok(!items.some(i => i.id === p.it.id), 'no puede proponer un módulo que ya está en el plato');
+    assert.ok(F.includes(p.tamano), 'el tamaño propuesto debe ser uno de los tres');
+  }
+  assert.ok(propuestas > 0, 'ningún perfil generó propuesta: el test no prueba nada');
+});
+
+test('no propone nada cuando el plato ya cae dentro del umbral', () => {
+  const items = [id('P01')];
+  const r = porcionar(items, { prot: 47, carb: 0, gras: 5 });
+  // metas construidas para que el plato de un solo módulo ya cierre
+  const meta = { prot: r.macros.prot, carb: r.macros.carb, gras: r.macros.gras };
+  const base = porcionar(items, meta);
+  assert.equal(base.dentroDeUmbral, true, 'el montaje del test exige un plato que ya cierre');
+  assert.equal(proponerCierre(items, meta, CARB), null);
+});
+
+test('la propuesta respeta los tamaños clavados a mano', () => {
+  const meta = { prot: 45, carb: 120, gras: 18 };
+  const items = [id('P01'), id('C01')];
+  for (const k of F) {
+    const p = proponerCierre(items, meta, CARB, { fijos: { C01: k } });
+    if (!p) continue;
+    assert.equal(p.resultado.tamanos.C01, k, `C01 estaba clavado a ${k} y la propuesta lo movió`);
+  }
+});
+
+test('el segundo carbohidrato reduce el desvío de carbos sin empeorar proteína ni grasa', () => {
+  let n = 0, c1 = 0, c2 = 0, p1 = 0, p2 = 0, g1 = 0, g2 = 0;
+  for (const peso of [55, 65, 75, 85, 95]) for (const obj of ['perder_grasa','mantener','ganar_musculo','rendimiento'])
+  for (const act of ['sedentario','moderado','atleta']) {
+    const meta = calcularMeta({ sexo:'masculino', edad:30, peso, altura:175, comidas:3, objetivo:obj, actividad:act });
+    const items = [id('P01'), id('C01'), id('V01'), id('G01')];
+    const a = porcionar(items, meta);
+    const p = proponerCierre(items, meta, CARB);
+    const b = p ? p.resultado : a;
+    c1 += Math.abs(a.desviacion.carb); c2 += Math.abs(b.desviacion.carb);
+    p1 += Math.abs(a.desviacion.prot); p2 += Math.abs(b.desviacion.prot);
+    g1 += Math.abs(a.desviacion.gras); g2 += Math.abs(b.desviacion.gras);
+    n++;
+  }
+  assert.ok(c2 < c1 * 0.6, `el desvío de carbos debe bajar bastante: ${(c1/n).toFixed(1)} → ${(c2/n).toFixed(1)}`);
+  assert.ok(p2 <= p1, `la proteína no puede empeorar: ${(p1/n).toFixed(1)} → ${(p2/n).toFixed(1)}`);
+  assert.ok(g2 <= g1, `la grasa no puede empeorar: ${(g1/n).toFixed(1)} → ${(g2/n).toFixed(1)}`);
+});
+
+test('el precio anunciado es el del plato entero reajustado, no el del módulo suelto', () => {
+  const meta = { prot: 45, carb: 120, gras: 18 };
+  const items = [id('P01'), id('C01')];
+  const base = porcionar(items, meta);
+  const p = proponerCierre(items, meta, CARB);
+  assert.ok(p, 'este montaje debe producir propuesta');
+  assert.equal(p.precio, p.resultado.precio);
+  assert.equal(p.deltaPrecio, p.resultado.precio - base.precio);
 });

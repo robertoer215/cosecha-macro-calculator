@@ -219,3 +219,68 @@ export function explicarCambio(antes, despues, items, meta) {
 
   return { texto: `${sujeto} ${fin}.`, ids: cambios.map(c => c.id), macro, ganancia };
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// LA PROPUESTA DE CIERRE
+//
+// El cuello de botella del modo IA no es el algoritmo: es el inventario. El
+// techo de carbohidratos con un solo módulo en Grande son 57 g, contra una meta
+// media de 96 g por comida. Medido sobre 1,600 perfiles, al 84% no le alcanza
+// ningún módulo por sí solo.
+//
+// Cuando la mejor combinación no llega, el sistema ni fuerza el número ni se
+// calla: PROPONE el módulo que cierra el hueco, con lo que aporta y lo que
+// cuesta. Se propone; acepta el usuario. Es a la vez el manejo del error y el
+// upsell más natural del negocio.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export function proponerCierre(items, meta, candidatos, opts = {}) {
+  const base = items && items.length ? porcionar(items, meta, opts) : null;
+  // Si el plato ya cae dentro del umbral no hay nada que cerrar: proponer aquí
+  // sería vender por vender, no resolver un problema del usuario.
+  if (base && base.dentroDeUmbral) return null;
+  if (!candidatos || !candidatos.length) return null;
+
+  const yaEsta = new Set((items || []).map(i => i.id));
+  let mejor = null;
+
+  for (const c of candidatos) {
+    if (yaEsta.has(c.id)) continue;
+    const con = [...(items || []), c];
+    const r = porcionar(con, meta, opts);
+    if (!mejor || r.coste < mejor.r.coste - 1e-9) mejor = { c, r };
+  }
+  if (!mejor) return null;
+
+  // Solo se propone si de verdad acerca a la meta. Un módulo que empeora el
+  // ajuste no es una propuesta de cierre: es ruido.
+  if (base && mejor.r.coste >= base.coste - 1e-9) return null;
+
+  const tamano = mejor.r.tamanos[mejor.c.id];
+  const aporta = mac(mejor.c, tamano);
+
+  // ¿Qué macro cierra? El que más reduce su desviación al aceptar la propuesta.
+  let macro = 'carb', ganancia = -Infinity;
+  if (base) {
+    for (const k of ['prot', 'carb', 'gras']) {
+      const g = Math.abs(base.desviacion[k]) - Math.abs(mejor.r.desviacion[k]);
+      if (g > ganancia) { ganancia = g; macro = k; }
+    }
+  }
+
+  return {
+    it: mejor.c,
+    tamano,
+    g: aporta.g,
+    aporta,
+    // El precio que se anuncia es el del plato ENTERO, no el del módulo suelto:
+    // aceptar la propuesta también reajusta los demás y puede abaratarlos.
+    precio: mejor.r.precio,
+    deltaPrecio: base ? mejor.r.precio - base.precio : mejor.r.precio,
+    macro,
+    ganancia: base ? ganancia : null,
+    desviacion: mejor.r.desviacion,
+    dentroDeUmbral: mejor.r.dentroDeUmbral,
+    resultado: mejor.r
+  };
+}
