@@ -7,7 +7,8 @@ y la app calcula macros personalizados, sugiere extras y genera un QR para cocin
 - `src/index.html` — markup, sin lógica inline salvo onclick que llaman funciones globales
 - `src/css/styles.css` — todos los estilos. Paleta crema + acento naranja (#C05A1F)
 - `src/js/data.js` — datos: ingredientes, precios (pKg), factores, constantes
-- `src/js/calc.js` — funciones puras: precio(), mac(), calcularMeta()
+- `src/js/calc.js` — funciones puras: precio(), mac(), calcularMeta(), y el MODO IA:
+  porcionar(), explicarCambio(), proponerCierre()
 - `src/js/app.js` — estado y render de la UI; expone funciones a window
 - `assets/ingredientes/` — foto de cada ingrediente, 600×600 JPEG (~110 KB). Son
   derivadas con `sips` de las fotos de la landing (repo cosecha-landing/assets).
@@ -26,6 +27,26 @@ y la app calcula macros personalizados, sugiere extras y genera un QR para cocin
 Los 5 archivos de `src/` y la raíz son copias idénticas: `npm run dev` sirve `src/`,
 los tests importan de `../js/` y GitHub Pages sirve la raíz. Al tocar código hay que
 copiar a las dos. Pendiente decidir si se colapsa en una sola ubicación.
+
+## Modo IA — el tamaño es una respuesta, no una pregunta
+El usuario elige QUÉ comer (proteína → carbohidrato → vegetal → grasa, mismas
+tarjetas, mismo orden). El CUÁNTO lo resuelve `porcionar()`, que recorre las 3^n
+combinaciones de tamaños de todos los módulos elegidos y devuelve el óptimo
+global, no una heurística. Corre en local, en cada toque, sin red: 0.375 ms.
+- Función objetivo: suma de desviaciones absolutas normalizadas por la meta de
+  cada macro, con la proteína a peso doble (PESO_MACRO). Desempata por precio.
+- `szManual` son los overrides de "Ajustar": se clavan (`opts.fijos`) y el resto
+  se optimiza alrededor. `szBase` es un CACHÉ derivado del porcionado, y por eso
+  el resumen, el QR y el ticket siguieron funcionando sin enterarse del cambio.
+- Los extras del paso 5 entran en el porcionado clavados a su tamaño: si no, la
+  tarjeta afirma "Cierra tu meta" mientras la barra marca otra cosa.
+- La línea de porqué se deriva del DIFF del porcionado, nunca de un modelo. Mide
+  contra un CONTRAFACTUAL (el plato de ahora con los módulos previos clavados) y
+  excluye lo que movió el usuario: la app no firma acciones ajenas. Si el coste
+  ponderado no mejora, se calla.
+- Nunca animar width ni height, solo opacity y transform. Las barras del tracker
+  usan `transform:scaleX` por eso; su estilo inline es `transform:scaleX(0)`, no
+  `width:0%`.
 
 ## Reglas de negocio (NO cambiar sin avisar)
 - Macros: Mifflin-St Jeor → TDEE → kcal objetivo → reparto por comida
@@ -52,7 +73,14 @@ copiar a las dos. Pendiente decidir si se colapsa en una sola ubicación.
 ## Tareas pendientes / ideas
 - [ ] Backend para guardar perfiles
 - [ ] Base de datos real de ingredientes
-- [ ] Integrar API de Anthropic para sugerencias inteligentes de extras
+- [x] Integrar API de Anthropic — flujo n8n `Xv459ruzH0Ag71qY` (ver `n8n/README.md`)
 - [ ] Vista de cocina que lea el QR
 - [x] Tests de las funciones de calc.js (tests/calc.test.mjs — `npm test`)
 - [ ] Decidir destino de cosecha-standalone.html (tiene la lógica VIEJA pre-fix)
+- [ ] Alérgenos VERIFICADOS por cocina: hoy el catálogo de n8n los deriva del
+      nombre del plato y lo declara fila a fila. No es una garantía alérgica.
+- [ ] El inventario de carbohidratos se queda corto: techo de 48 g con un módulo
+      en Grande y 90 g con dos, contra una meta media de 96 g por comida. Ni con
+      dos módulos alcanza el 52% de los perfiles.
+- [ ] El recetario declara porción de 150 g para arroz y esquites; la app
+      declara 120 y 100. Cerrar el conflicto antes de publicar carta.
