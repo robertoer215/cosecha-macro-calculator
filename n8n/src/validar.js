@@ -22,7 +22,7 @@ const seleccion = sel.map((s, i) => {
   if (!s || typeof s.id !== 'string' || !/^[A-Z]\d{2}$/.test(s.id)) { err.push(`seleccion[${i}].id inválido`); return null; }
   // El tamaño es OPCIONAL: si viene, se clava; si no, lo resuelve el porcionador.
   let t = s.tamano;
-  if (t != null && ![0.5, 1, 1.5].includes(Number(t))) { err.push(`seleccion[${i}].tamano ${t}: debe ser 0.5, 1 o 1.5`); return null; }
+  if (t != null && ![0.5, 1, 1.5, 2, 3, 4].includes(Number(t))) { err.push(`seleccion[${i}].tamano ${t}: debe ser 0.5, 1, 1.5, 2, 3 o 4`); return null; }
   return { id: s.id, tamano: t == null ? null : Number(t) };
 }).filter(Boolean);
 const ids = seleccion.map(s => s.id);

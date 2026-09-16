@@ -1,6 +1,6 @@
 import { ING, SIZES, OBJ_LABEL, CATS, CAT_LABEL, IMG_DIR } from './data.js';
 import { precio, mac, calcularMeta, metaManualComida, metaManualTotal,
-         porcionar, explicarCambio, proponerCierre, UMBRAL_G } from './calc.js';
+         porcionar, explicarCambio, proponerCierre, tamanosPermitidos, UMBRAL_G } from './calc.js';
 
 let meta = {}, selBase = {}, szBase = {}, selExtra = {}, szExtra = {};
 
@@ -189,6 +189,15 @@ function hipotetico(it) {
 
 const MACRO_CORTO = { prot: 'proteína', carb: 'carbos', gras: 'grasas' };
 
+// Etiqueta del tamaño para la tarjeta. A partir de 2 porciones el número va en
+// negrita: es la respuesta a "¿cuántas de esto llevo?" y tiene que leerse de un
+// vistazo, no descifrarse.
+function etiquetaTamano(k) {
+  const sv = SIZES.find(s => s.k === k);
+  if (!sv) return 'Estándar';
+  return k >= 2 ? `<b>${k}</b> porciones` : sv.l;
+}
+
 // "¿Qué tan cerca me deja?" — el macro que quedaría MÁS lejos de la meta, que es
 // el que de verdad limita el plato. Si los tres caben en el umbral, lo dice.
 function textoCercania(r) {
@@ -364,20 +373,21 @@ function tarjetaHTML(it, cat) {
         <div class="i-price">$${pr} MXN</div>
         <div class="i-fit${fit.cierra?' cierra':''}">${fit.txt}</div>
         <div class="i-foot">
-          <div class="i-size-val">${lbl} · ${m.g} g</div>
+          <div class="i-size-val">${etiquetaTamano(sz)} · ${m.g} g</div>
           <button type="button" class="btn-ajustar" aria-expanded="${abierto}" aria-controls="pills-${it.id}"
             aria-label="Ajustar el tamaño de ${it.nombre}"
             onclick="event.stopPropagation();toggleAjuste('${it.id}')">Ajustar</button>
         </div>
-        <div class="size-pills" id="pills-${it.id}" role="group" aria-label="Tamaño de ${it.nombre}">${SIZES.map(sv=>{
+        <div class="size-pills" id="pills-${it.id}" role="group" aria-label="Tamaño de ${it.nombre}">${tamanosPermitidos(it).map(k=>{
+          const sv = SIZES.find(s=>s.k===k);
           const esResuelto = ultimoPorc && ultimoPorc.tamanos[it.id] === sv.k && szManual[it.id] == null;
           // role="button" promete teclado: Enter y Espacio tienen que funcionar, o
           // el foco entra en un callejón sin salida (WCAG 2.1.1). aria-pressed dice
           // cuál está activo a quien no ve el relleno negro.
-          return `<div class="sz-pill${sz===sv.k?' sz-on':''}${esResuelto?' sz-rec':''}" role="button" tabindex="0"
+          return `<div class="sz-pill${sz===sv.k?' sz-on':''}${esResuelto?' sz-rec':''}" role="button" tabindex="0" data-k="${sv.k}"
             aria-pressed="${sz===sv.k}" aria-label="${sv.l}, ${mac(it,sv.k).g} gramos"
             onclick="event.stopPropagation();setSzB('${it.id}','${cat}',${sv.k})"
-            onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();setSzB('${it.id}','${cat}',${sv.k});}">${sv.l}${esResuelto?'<span class="rec-lbl">Resuelto</span>':''}</div>`;
+            onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();setSzB('${it.id}','${cat}',${sv.k});}">${sv.c||sv.l}${esResuelto?'<span class="rec-lbl">Resuelto</span>':''}</div>`;
         }).join('')}</div>
       </div>
     </div>`;
@@ -409,15 +419,15 @@ function refrescarTarjetas() {
     card.classList.toggle('sel', isSel);
     card.classList.toggle('ajustando', !!ajustando[id]);
     setTexto(card.querySelector('.i-price'), `$${pr} MXN`);
-    setTexto(card.querySelector('.i-size-val'), `${lbl} · ${m.g} g`);
+    setTexto(card.querySelector('.i-size-val'), `${etiquetaTamano(sz)} · ${m.g} g`, true);
     const elFit = card.querySelector('.i-fit');
     setTexto(elFit, fit.txt);
     if (elFit) elFit.classList.toggle('cierra', fit.cierra);
     card.querySelectorAll('.mp').forEach((el,i) => {
       setTexto(el, `<b>${[m.prot,m.carb,m.gras][i]}g</b> ${['P','C','G'][i]}`, true);
     });
-    card.querySelectorAll('.sz-pill').forEach((pill,i) => {
-      const k = SIZES[i].k;
+    card.querySelectorAll('.sz-pill').forEach(pill => {
+      const k = Number(pill.dataset.k);
       const esResuelto = ultimoPorc && ultimoPorc.tamanos[id] === k && szManual[id] == null;
       pill.classList.toggle('sz-on', sz === k);
       pill.classList.toggle('sz-rec', esResuelto);
@@ -554,7 +564,7 @@ function renderSugg() {
         <div class="sugg-name">${s.it.nombre}</div>
         <div class="sugg-why">${s.why}</div>
         <div class="sugg-controls">
-          <div class="sugg-sizes">${SIZES.map(sv=>`<div class="ss-pill${sz===sv.k?' ss-on':''}" onclick="setSzE('${s.it.id}',${sv.k})">${sv.l}</div>`).join('')}</div>
+          <div class="sugg-sizes">${SIZES.filter(sv=>sv.k<=1.5).map(sv=>`<div class="ss-pill${sz===sv.k?' ss-on':''}" onclick="setSzE('${s.it.id}',${sv.k})">${sv.l}</div>`).join('')}</div>
           <div class="sugg-price">$${pr}</div>
           <button class="btn-add ${isOn?'on':'off'}" onclick="toggleE('${s.it.id}')">${isOn?'Quitar':'+ Agregar'}</button>
         </div>

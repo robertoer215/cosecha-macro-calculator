@@ -67,7 +67,7 @@ const respuesta = {
   coincide_con_la_app: (() => {
     const pedidos = d.seleccion.filter(s => s.tamano != null);
     if (!pedidos.length) return null;
-    const ETQ = { 0.5: 'Pequeña', 1: 'Estándar', 1.5: 'Grande' };
+    const ETQ = { 0.5: 'Pequeña', 1: 'Estándar', 1.5: 'Grande', 2: '2 porciones', 3: '3 porciones', 4: '4 porciones' };
     return pedidos.every(s => {
       const l = d.lineas.find(x => x.id === s.id);
       return l && l.tamano === ETQ[s.tamano];

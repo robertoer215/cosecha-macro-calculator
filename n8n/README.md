@@ -54,9 +54,19 @@ Webhook · plato
 ```
 
 `Resolver plato` lleva embebido `src/motor.js`, réplica exacta de `js/calc.js`.
-Verificado: **432 platos comparados app contra n8n, 0 divergencias**. Es lo que
+Verificado: **540 platos comparados app contra n8n con los seis tamaños, 0 divergencias**. Es lo que
 permite que `coincide_con_la_app` signifique algo. Si discrepan, gana n8n y la
 discrepancia queda registrada.
+
+## Porciones múltiples
+
+`seleccion[].tamano` acepta `0.5 · 1 · 1.5 · 2 · 3 · 4`. A partir de 2 el módulo se
+repite ("3 porciones" = tres raciones Estándar) y **cuesta N × precio_estandar**
+del catálogo, la misma regla que la app. Cada categoría tiene tope
+(proteína 3, carbohidrato 4, vegetal 2, grasa 2): un tamaño por encima no se
+clava en silencio, va a `rechazados` con su motivo y el módulo se resuelve
+automáticamente. Sin `tamano`, el porcionador decide dentro del tope. Verificado
+app contra n8n: 540 platos con los seis tamaños y tamaños clavados, 0 divergencias.
 
 ## Hojas
 

@@ -1,8 +1,8 @@
 // Tests del porcionado conjunto del MODO IA — correr con: npm test
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { porcionar, mac, precio, recomendarSize, calcularMeta, PESO_MACRO, UMBRAL_G, explicarCambio, nombreCorto, proponerCierre } from '../js/calc.js';
-import { ING, SIZES } from '../js/data.js';
+import { porcionar, mac, precio, recomendarSize, calcularMeta, PESO_MACRO, UMBRAL_G, explicarCambio, nombreCorto, proponerCierre, tamanosPermitidos } from '../js/calc.js';
+import { ING, SIZES, MAX_PORCIONES, COSTOS_OPERATIVOS, MARGEN_DIVISOR } from '../js/data.js';
 
 const F = SIZES.map(s => s.k);
 const id = x => ING.find(i => i.id === x);
@@ -24,14 +24,18 @@ function evaluar(items, factores, meta) {
               + PESO_MACRO.gras * Math.abs(gras - meta.gras) / den('gras');
   return { coste, precio: pr, prot, carb, gras };
 }
-function* combinaciones(n) {
-  const total = F.length ** n;
+// Réplica independiente de la enumeración: cada módulo recorre SU dominio (el
+// tope de porciones de su categoría), en mixto-radix, igual que hace porcionar.
+function* combinacionesDe(items) {
+  const doms = items.map(it => tamanosPermitidos(it));
+  const total = doms.reduce((a, d) => a * d.length, 1);
   for (let c = 0; c < total; c++) {
     const f = []; let r = c;
-    for (let i = 0; i < n; i++) { f.push(F[r % F.length]); r = Math.floor(r / F.length); }
+    for (let i = 0; i < items.length; i++) { f.push(doms[i][r % doms[i].length]); r = Math.floor(r / doms[i].length); }
     yield f;
   }
 }
+const esperadas = (items, fijos = {}) => items.reduce((a, it) => a * (fijos[it.id] != null ? 1 : tamanosPermitidos(it).length), 1);
 const desvTotal = d => Math.abs(d.prot) + Math.abs(d.carb) + Math.abs(d.gras);
 
 // 1 ─ un solo módulo: elige el tamaño que más se acerca (verificado a mano)
@@ -61,7 +65,7 @@ test('porcionar devuelve el óptimo global en 200 perfiles distintos', () => {
     const meta = { prot, carb, gras };
     const r = porcionar(PLATO, meta);
     let min = Infinity, precioMin = Infinity;
-    for (const f of combinaciones(PLATO.length)) {
+    for (const f of combinacionesDe(PLATO)) {
       const e = evaluar(PLATO, f, meta);
       if (e.coste < min - 1e-9) { min = e.coste; precioMin = e.precio; }
       else if (Math.abs(e.coste - min) < 1e-9) precioMin = Math.min(precioMin, e.precio);
@@ -123,7 +127,7 @@ test('los macros del resultado cuadran con los tamaños que devuelve', () => {
 });
 
 // 8 ─ solo devuelve tamaños que existen en la carta
-test('todo tamaño devuelto es uno de los tres de SIZES', () => {
+test('todo tamaño devuelto es uno de SIZES y respeta el tope de su categoría', () => {
   for (const meta of [{ prot: 10, carb: 10, gras: 5 }, { prot: 90, carb: 150, gras: 40 }]) {
     const r = porcionar(PLATO, meta);
     Object.values(r.tamanos).forEach(k => assert.ok(F.includes(k), `tamaño inválido: ${k}`));
@@ -131,9 +135,9 @@ test('todo tamaño devuelto es uno de los tres de SIZES', () => {
 });
 
 // 9 ─ el espacio recorrido es exhaustivo
-test('recorre 3^n combinaciones, ni una menos', () => {
-  assert.equal(porcionar(PLATO, { prot: 40, carb: 60, gras: 15 }).combinacionesEvaluadas, 81);
-  assert.equal(porcionar([...PLATO, id('V03')], { prot: 40, carb: 60, gras: 15 }).combinacionesEvaluadas, 243);
+test('recorre el producto de los dominios de cada módulo, ni una menos', () => {
+  assert.equal(porcionar(PLATO, { prot: 40, carb: 60, gras: 15 }).combinacionesEvaluadas, esperadas(PLATO));
+  assert.equal(porcionar([...PLATO, id('V03')], { prot: 40, carb: 60, gras: 15 }).combinacionesEvaluadas, esperadas([...PLATO, id('V03')]));
 });
 
 // 10 ─ meta de carbohidratos en 0 (déficit agresivo) no rompe el cálculo
@@ -165,7 +169,7 @@ test('sin `fijos` el resultado es idéntico al de antes: el parámetro no cambia
   const c = porcionar(PLATO, meta, { fijos: {} });
   assert.deepEqual(b, a);
   assert.deepEqual(c, a);
-  assert.equal(a.combinacionesEvaluadas, 81);
+  assert.equal(a.combinacionesEvaluadas, esperadas(PLATO));
 });
 
 test('un tamaño fijado se respeta exactamente y recorta el espacio de búsqueda', () => {
@@ -173,7 +177,7 @@ test('un tamaño fijado se respeta exactamente y recorta el espacio de búsqueda
   for (const k of F) {
     const r = porcionar(PLATO, meta, { fijos: { C01: k } });
     assert.equal(r.tamanos.C01, k, `C01 fijado a ${k} debe salir ${k}`);
-    assert.equal(r.combinacionesEvaluadas, 27, 'un módulo fijado deja 3^3 combinaciones');
+    assert.equal(r.combinacionesEvaluadas, esperadas(PLATO, { C01: k }), 'un módulo fijado sale del producto');
   }
 });
 
@@ -182,7 +186,7 @@ test('con un módulo fijado, los demás siguen siendo el óptimo global para ESE
   const fijo = 0.5;
   const r = porcionar(PLATO, meta, { fijos: { P01: fijo } });
   let mejor = Infinity;
-  for (const f of combinaciones(PLATO.length)) {
+  for (const f of combinacionesDe(PLATO)) {
     if (f[0] !== fijo) continue;           // P01 es el primero de PLATO
     mejor = Math.min(mejor, evaluar(PLATO, f, meta).coste);
   }
@@ -318,24 +322,17 @@ test('el tamaño se nombra con su etiqueta de la carta, en mayúscula', () => {
 
 const CARB = ING.filter(i => i.cat === 'carbohidrato');
 
-test('el inventario es el cuello de botella: un solo carbohidrato no llega', () => {
-  // El techo se DERIVA de la carta vigente: los macros de los módulos se corrigen
-  // (se rederivaron desde receta el 15-sep-2026) y el test debe seguir probando el
-  // hecho —un módulo no alcanza— y no el número que tenía ese día.
-  const techo = Math.max(...CARB.map(c => Math.round(c.carb * Math.max(...F))));
+test('con Grande un solo carbohidrato no llega; con porciones múltiples, sí', () => {
   const metas = [];
   for (const peso of [55, 75, 95]) for (const obj of ['perder_grasa','mantener','ganar_musculo','rendimiento'])
     metas.push(calcularMeta({ sexo:'masculino', edad:30, peso, altura:175, comidas:3, objetivo:obj, actividad:'moderado' }));
   const media = metas.reduce((a, m) => a + m.carb, 0) / metas.length;
-  assert.ok(media > techo, `la meta media (${media.toFixed(0)} g) debe superar el techo de un módulo (${techo} g)`);
-
-  // Y el segundo módulo da holgura de verdad, aunque tras la rederivación de los
-  // macros (15-sep-2026) tampoco baste: el techo de dos módulos cayó de 110 g a
-  // 90 g contra una meta media de 96 g. Lo que el test fija es que el segundo
-  // módulo MÁS QUE DUPLICA el techo, no que lo resuelva — porque ya no lo hace.
-  const ordenados = CARB.map(c => Math.round(c.carb * Math.max(...F))).sort((a,b) => b-a);
-  const techo2 = ordenados[0] + ordenados[1];
-  assert.ok(techo2 > techo * 1.5, `dos módulos (${techo2} g) deben ampliar bastante el techo de uno (${techo} g)`);
+  // El techo con Grande (×1.5) era el cuello de botella medido: 48 g contra ~96 g.
+  const techoGrande = Math.max(...CARB.map(c => Math.round(c.carb * 1.5)));
+  assert.ok(media > techoGrande, `la meta media (${media.toFixed(0)} g) supera el techo de Grande (${techoGrande} g)`);
+  // Con el tope de porciones de la categoría, un solo módulo ya alcanza la meta media.
+  const techoPorciones = Math.max(...CARB.map(c => Math.round(c.carb * MAX_PORCIONES.carbohidrato)));
+  assert.ok(techoPorciones > media, `el tope de porciones (${techoPorciones} g) debe superar la meta media (${media.toFixed(0)} g)`);
 });
 
 test('proponerCierre acerca a la meta: nunca propone algo que empeore el ajuste', () => {
@@ -406,4 +403,60 @@ test('el precio anunciado es el del plato entero reajustado, no el del módulo s
   assert.ok(p, 'este montaje debe producir propuesta');
   assert.equal(p.precio, p.resultado.precio);
   assert.equal(p.deltaPrecio, p.resultado.precio - base.precio);
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PORCIONES MÚLTIPLES — "tres de camote" en vez de un solo módulo en Grande
+// ─────────────────────────────────────────────────────────────────────────────
+
+test('cada módulo busca solo hasta el tope de porciones de su categoría', () => {
+  for (const it of ING) {
+    const dom = tamanosPermitidos(it);
+    assert.ok(dom.includes(0.5) && dom.includes(1) && dom.includes(1.5), `${it.id} debe conservar los tres tamaños de siempre`);
+    assert.equal(Math.max(...dom), MAX_PORCIONES[it.cat], `${it.id} (${it.cat}) debe llegar justo a su tope`);
+    for (const k of dom) assert.ok(SIZES.some(s => s.k === k), `el tamaño ${k} no tiene etiqueta en SIZES`);
+  }
+});
+
+test('una meta alta de carbohidratos se cierra repitiendo el mismo módulo', () => {
+  const meta = { prot: 50, carb: 130, gras: 25 };
+  const items = ['P01','C02','V01','G01'].map(id);
+  const libre = porcionar(items, meta);
+  const capado = porcionar(items, meta, { fijos: { C02: 1.5 } });   // el mundo de antes: Grande como máximo
+  assert.ok(libre.tamanos.C02 >= 2, `el camote debería ir en 2+ porciones, salió ${libre.tamanos.C02}`);
+  assert.ok(Math.abs(libre.desviacion.carb) < Math.abs(capado.desviacion.carb),
+    `con porciones múltiples el desvío de carbos debe bajar: ${capado.desviacion.carb} → ${libre.desviacion.carb}`);
+  assert.ok(libre.coste <= capado.coste + 1e-9, 'ampliar el dominio nunca puede empeorar el óptimo');
+});
+
+test('a partir de 2 porciones el precio es exactamente N veces la Estándar', () => {
+  for (const it of ING) {
+    for (const k of [2, 3, 4]) assert.equal(precio(it, k), k * precio(it, 1), `${it.id} ×${k}`);
+    // y los tres tamaños de siempre no cambian: siguen con la fórmula
+    for (const f of [0.5, 1, 1.5]) {
+      const esperado = Math.ceil((it.pKg * it.g / 1000) * COSTOS_OPERATIVOS / MARGEN_DIVISOR * f);
+      assert.equal(precio(it, f), esperado, `${it.id} ×${f} cambió de precio`);
+    }
+  }
+});
+
+test('la línea de porqué habla de porciones cuando el tamaño pasa de Grande', () => {
+  let visto = 0;
+  for (const carb of [110, 130, 150]) for (const c of ['C01','C02','C03']) for (const g of ['G01','G02','G03']) {
+    const meta = { prot: 45, carb, gras: 20 };
+    const base = [id('P01'), id(c), id('V01')], con = [...base, id(g)];
+    const ex = explicarCambio(porcionar(base, meta), porcionar(con, meta), con, meta);
+    if (ex && / a \d porciones/.test(ex.texto)) visto++;
+    if (ex) assert.ok(!/ a (2|3|4)\b(?! porciones)/.test(ex.texto), `tamaño sin etiqueta: ${ex.texto}`);
+  }
+  assert.ok(visto > 0, 'ningún caso nombró porciones: el test no prueba nada');
+});
+
+test('los tamaños fijados con Ajustar pueden ir hasta el tope, y se respetan', () => {
+  const meta = { prot: 50, carb: 130, gras: 25 };
+  const items = ['P01','C02','V01','G01'].map(id);
+  for (const k of tamanosPermitidos(id('C02'))) {
+    const r = porcionar(items, meta, { fijos: { C02: k } });
+    assert.equal(r.tamanos.C02, k);
+  }
 });

@@ -28,7 +28,18 @@ export const ING = [
   {cat:'vegetal',id:'V04',nombre:'Verduras tatemadas con cacahuate',g:120,kcal:90,prot:3,carb:10,gras:4,pKg:45,img:'verduras-tatemadas.jpg',foco:'52% 47%'},
 ];
 export const IMG_DIR = 'assets/ingredientes/';
-export const SIZES = [{k:0.5,l:'Pequeña'},{k:1,l:'Estándar'},{k:1.5,l:'Grande'}];
+// Los tres primeros son los tamaños de siempre. A partir de 2 el módulo se REPITE:
+// "3 porciones" son tres raciones Estándar del mismo módulo (3 × 130 g de camote),
+// que es como lo pide un cliente y como lo emplata cocina. `c` es la etiqueta corta
+// de las píldoras de "Ajustar"; la larga va en la tarjeta, el resumen y el ticket.
+export const SIZES = [
+  {k:0.5,l:'Pequeña'},{k:1,l:'Estándar'},{k:1.5,l:'Grande'},
+  {k:2,l:'2 porciones',c:'×2'},{k:3,l:'3 porciones',c:'×3'},{k:4,l:'4 porciones',c:'×4'}
+];
+// Tope de porciones por categoría. Es una regla de producto, no del algoritmo:
+// cuatro raciones de camote son un plato; cuatro de salmón o de nueces, no. El
+// porcionador solo busca dentro de este tope y "Ajustar" solo ofrece hasta aquí.
+export const MAX_PORCIONES = {proteina:3, carbohidrato:4, vegetal:2, grasa:2};
 export const FACT_ACTIVIDAD = {sedentario:1.2,ligero:1.375,moderado:1.55,alto:1.725,atleta:1.9};
 export const FACT_OBJETIVO  = {perder_grasa:-0.15,mantener:0,ganar_musculo:0.10,rendimiento:0.05};
 export const FACT_MACRO = {

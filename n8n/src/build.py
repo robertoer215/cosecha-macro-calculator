@@ -1,7 +1,12 @@
 import json
 import os
 SP=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-R=lambda f: open(SP+'/src/'+f).read()
+def R(f):
+    s = open(SP+'/src/'+f).read()
+    # resolver.js lleva el motor embebido: se inyecta al construir, de una sola fuente
+    if '__MOTOR__' in s:
+        s = s.replace('__MOTOR__', open(SP+'/src/motor.js').read())
+    return s
 CAT='1mTLfnFkM6bnoODaKPCe56jcrPDwODrPyvB0ci4QgDBI'
 PED='1GuJ25cpQqYdW-K9gVaX2cEF8B0jtgS0_T-kCnqL3XlU'
 GS={'googleSheetsOAuth2Api':{'id':'2jLqaszHBvu2H5h8','name':'Google Sheets account'}}
@@ -68,7 +73,7 @@ nodes.append({'id':'leercat','name':'Leer catálogo','type':'n8n-nodes-base.http
     'authentication':'predefinedCredentialType','nodeCredentialType':'googleSheetsOAuth2Api',
     'options':{'timeout':8000}},
   'credentials':GS})
-nodes.append(code('Resolver plato','resolver.full.js',-20,300))
+nodes.append(code('Resolver plato','resolver.js',-20,300))
 nodes.append({'id':'siok','name':'¿Entrada válida?','type':'n8n-nodes-base.if','typeVersion':2.2,
   'position':[200,300],
   'parameters':{'conditions':{'options':{'caseSensitive':True,'typeValidation':'loose','version':2},

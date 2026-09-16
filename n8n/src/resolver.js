@@ -46,6 +46,13 @@ for (const s of v.seleccion) {
   if (!it.disponible) { rechazados.push({ id: s.id, nombre: it.nombre, motivo: 'no disponible hoy' }); continue; }
   const choca = v.sin.filter(a => it.alergenos.includes(a));
   if (choca.length) { rechazados.push({ id: s.id, nombre: it.nombre, motivo: `contiene ${choca.join(', ')}` }); continue; }
+  // Un tamaño por encima del tope de su categoría no se clava en silencio: se rechaza
+  // con su motivo, y el módulo entra libre para que el porcionador lo resuelva.
+  if (s.tamano != null && !tamanosPermitidos(it).includes(s.tamano)) {
+    rechazados.push({ id: s.id, nombre: it.nombre, motivo: `tamaño ${s.tamano} supera el tope de ${MAX_PORCIONES[it.categoria]} porciones para ${it.categoria}; se resolvió automáticamente` });
+    items.push(it);
+    continue;
+  }
   items.push(it);
   if (s.tamano != null) fijos[it.id] = s.tamano;
 }
@@ -59,7 +66,7 @@ if (!items.length) {
 
 // ── porcionar: recalcula y CONFIRMA lo que la app ya resolvió ──
 const r = porcionar(items, v.meta, { fijos });
-const ETQ = { 0.5: 'Pequeña', 1: 'Estándar', 1.5: 'Grande' };
+const ETQ = ETIQUETA;
 
 // ── armar_ticket: aplica los precios del catálogo y totaliza ──
 const lineas = items.map(it => {

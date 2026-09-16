@@ -1,8 +1,12 @@
 // ══ MOTOR DETERMINISTA — réplica exacta de js/calc.js de la app ══
 // Ni un número de aquí sale de un modelo de lenguaje. Si esto y la app
 // discrepan, es un bug que hay que ver, no un redondeo que tolerar.
-const FACTORES = [0.5, 1, 1.5];
-const ETIQUETA = { 0.5: 'Pequeña', 1: 'Estándar', 1.5: 'Grande' };
+// Tope de porciones por categoría: réplica de MAX_PORCIONES de data.js. A partir
+// de 2 el módulo se repite ("3 porciones" = tres raciones Estándar).
+const MAX_PORCIONES = { proteina: 3, carbohidrato: 4, vegetal: 2, grasa: 2 };
+const TODOS = [0.5, 1, 1.5, 2, 3, 4];
+function tamanosPermitidos(it) { const tope = MAX_PORCIONES[it.categoria] ?? 1.5; return TODOS.filter(k => k <= tope); }
+const ETIQUETA = { 0.5: 'Pequeña', 1: 'Estándar', 1.5: 'Grande', 2: '2 porciones', 3: '3 porciones', 4: '4 porciones' };
 const PESO_MACRO = { prot: 2, carb: 1, gras: 1 };
 const UMBRAL_G = 4;
 
@@ -19,6 +23,8 @@ function mac(it, f) {
 // El precio sale del catálogo por tamaño, no de una fórmula: el catálogo es la
 // fuente única y sus precios pueden haberse editado a mano.
 function precioDe(it, f) {
+  // A partir de 2 porciones cada una cuesta lo que la Estándar: misma regla que la app.
+  if (f >= 2) return f * it.precio_estandar;
   return f === 0.5 ? it.precio_pequena : f === 1.5 ? it.precio_grande : it.precio_estandar;
 }
 
@@ -27,7 +33,7 @@ function porcionar(items, meta, opts) {
   if (!items || !items.length) return null;
   const den = k => Math.max(meta[k] || 0, 1);
   const fijos = opts.fijos || {};
-  const dominios = items.map(it => (fijos[it.id] != null ? [fijos[it.id]] : FACTORES));
+  const dominios = items.map(it => (fijos[it.id] != null ? [fijos[it.id]] : tamanosPermitidos(it)));
   const total = dominios.reduce((a, d) => a * d.length, 1);
   let mejor = null;
   for (let combo = 0; combo < total; combo++) {

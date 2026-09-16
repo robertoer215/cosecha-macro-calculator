@@ -1,5 +1,9 @@
-import { FACT_ACTIVIDAD, FACT_OBJETIVO, FACT_MACRO, COSTOS_OPERATIVOS, MARGEN_DIVISOR, SIZES } from './data.js';
+import { FACT_ACTIVIDAD, FACT_OBJETIVO, FACT_MACRO, COSTOS_OPERATIVOS, MARGEN_DIVISOR, SIZES, MAX_PORCIONES } from './data.js';
 export function precio(it, f = 1) {
+  // A partir de 2 porciones cada una cuesta lo que la Estándar: es lo que espera
+  // quien pide "tres de camote", y evita que el ceil de la fórmula dé un precio
+  // distinto de tres veces la carta. Pequeña, Estándar y Grande no cambian.
+  if (f >= 2) return f * precio(it, 1);
   return Math.ceil((it.pKg * it.g / 1000) * COSTOS_OPERATIVOS / MARGEN_DIVISOR * f);
 }
 export function mac(it, f = 1) {
@@ -73,13 +77,20 @@ export function metaManualTotal({ protTotal, carbTotal, grasTotal, comidas }) {
 // porcionar() recorre TODAS las combinaciones de tamaños de los módulos elegidos
 // y devuelve la que menos se desvía de los tres macros a la vez.
 //
-// Coste: 3^n combinaciones. Con la plantilla de plato (1 proteína + 1 carbo +
-// 1-2 vegetales + 1 grasa) son 81 o 243: microsegundos. Es búsqueda exhaustiva,
+// Coste: el producto de los dominios de cada módulo (ver tamanosPermitidos):
+// cientos o pocos miles de combinaciones, milisegundos. Es búsqueda exhaustiva,
 // así que el resultado es el óptimo global, no una aproximación.
 // ─────────────────────────────────────────────────────────────────────────────
 
-// Los tres tamaños salen de SIZES en data.js: una sola fuente de verdad.
-const FACTORES = SIZES.map(s => s.k);
+// Los tamaños salen de SIZES en data.js: una sola fuente de verdad. Cada módulo
+// busca solo hasta el tope de porciones de su categoría (MAX_PORCIONES): con
+// 1P + 1C + 1V + 1G son 5·6·4·4 = 480 combinaciones; con dos carbohidratos y dos
+// vegetales, 11.520. Sigue siendo búsqueda exhaustiva: el óptimo global dentro
+// del tope, no una heurística.
+export function tamanosPermitidos(it) {
+  const tope = MAX_PORCIONES[it.cat] ?? 1.5;
+  return SIZES.filter(s => s.k <= tope).map(s => s.k);
+}
 
 // La proteína pesa el doble que carbohidrato y grasa: es la condición de compra
 // que la investigación cualitativa situó como no negociable.
@@ -100,7 +111,7 @@ export function porcionar(items, meta, opts = {}) {
   // override o sacar el módulo de la cuenta. Sin `fijos` el dominio de cada
   // módulo son los tres tamaños de siempre y el resultado no cambia.
   const fijos = opts.fijos || {};
-  const dominios = items.map(it => (fijos[it.id] != null ? [fijos[it.id]] : FACTORES));
+  const dominios = items.map(it => (fijos[it.id] != null ? [fijos[it.id]] : tamanosPermitidos(it)));
   const total = dominios.reduce((a, d) => a * d.length, 1);
   let mejor = null;
 

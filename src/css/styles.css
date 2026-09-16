@@ -106,11 +106,14 @@ select option{font-family:sans-serif;background:#FAFAF8}
 /* MODO IA — el tamaño dejó de ser una pregunta y pasó a ser una respuesta.
    Las píldoras ya no se abren al SELECCIONAR (eso hacía crecer la tarjeta 47 px):
    ahora solo las revela "Ajustar", que es una acción aparte y deliberada. */
-.size-pills{display:none;gap:8px;margin-top:10px}
-.icard.ajustando .size-pills{display:flex}
+/* Hasta seis opciones (Pequeña · Estándar · Grande · ×2 · ×3 · ×4) en una rejilla
+   de tres columnas: a 375 px la tarjeta va a una columna y cada píldora mide ~83 px,
+   44 de alto, con 8 px de separación. Sigue siendo revelación progresiva. */
+.size-pills{display:none;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.icard.ajustando .size-pills{display:grid}
 /* 12px reales y 44px de alto: antes eran 9px en un target de 24px, que incumplía
    readable-font-size y touch-target-size a la vez. */
-.sz-pill{flex:1;min-height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 4px;text-align:center;background:var(--bg);border:1px solid var(--border);cursor:pointer;font-size:12px;letter-spacing:.5px;text-transform:uppercase;font-family:'Inter',sans-serif;color:var(--muted-ink);transition:background .2s}
+.sz-pill{min-height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 4px;text-align:center;background:var(--bg);border:1px solid var(--border);cursor:pointer;font-size:12px;letter-spacing:.5px;text-transform:uppercase;font-family:'Inter',sans-serif;color:var(--muted-ink);transition:background .2s}
 .sz-pill:hover{background:var(--surface)}
 .sz-pill.sz-on{background:var(--text);color:#fff}
 .sz-pill.sz-rec{border-top:2px solid var(--accent)}
@@ -255,6 +258,8 @@ select option{font-family:sans-serif;background:#FAFAF8}
   border-top:2px solid var(--accent);padding-top:5px}
 /* En la tarjeta no elegida el filete se apaga: el tamaño aún es una hipótesis. */
 .icard:not(.sel) .i-size-val{border-top-color:var(--border);color:var(--muted-ink)}
+/* El número de porciones en negrita: "3 PORCIONES · 390 G" se lee de un vistazo. */
+.i-size-val b{font-weight:600}
 
 /* A6 · "Ajustar" — revelación progresiva. Quien no lo toque nunca sabrá que
    existe; quien lo toque recupera el control completo. 44×44 reales. */

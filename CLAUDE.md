@@ -30,9 +30,11 @@ copiar a las dos. Pendiente decidir si se colapsa en una sola ubicación.
 
 ## Modo IA — el tamaño es una respuesta, no una pregunta
 El usuario elige QUÉ comer (proteína → carbohidrato → vegetal → grasa, mismas
-tarjetas, mismo orden). El CUÁNTO lo resuelve `porcionar()`, que recorre las 3^n
-combinaciones de tamaños de todos los módulos elegidos y devuelve el óptimo
-global, no una heurística. Corre en local, en cada toque, sin red: 0.375 ms.
+tarjetas, mismo orden). El CUÁNTO lo resuelve `porcionar()`, que recorre TODAS las
+combinaciones de tamaños de los módulos elegidos —cada uno dentro del tope de
+porciones de su categoría, `tamanosPermitidos()`— y devuelve el óptimo global, no
+una heurística. Corre en local, en cada toque, sin red: 0.4 ms en un plato de 4,
+~47 ms en el peor caso medido (6 elegidos y una tarjeta hipotética: 69.120 combos).
 - Función objetivo: suma de desviaciones absolutas normalizadas por la meta de
   cada macro, con la proteína a peso doble (PESO_MACRO). Desempata por precio.
 - `szManual` son los overrides de "Ajustar": se clavan (`opts.fijos`) y el resto
@@ -51,7 +53,11 @@ global, no una heurística. Corre en local, en cada toque, sin red: 0.375 ms.
 ## Reglas de negocio (NO cambiar sin avisar)
 - Macros: Mifflin-St Jeor → TDEE → kcal objetivo → reparto por comida
 - Precio: ceil((pKg × g/1000) × 1.40 / 0.85 × factorTamaño)
-- Tamaños: Pequeña 0.5, Estándar 1, Grande 1.5
+- Tamaños: Pequeña 0.5, Estándar 1, Grande 1.5, y a partir de ahí PORCIONES
+  MÚLTIPLES del mismo módulo (×2, ×3, ×4 = raciones Estándar repetidas), con tope
+  por categoría en MAX_PORCIONES (proteína 3, carbohidrato 4, vegetal 2, grasa 2).
+  Precio de 2+ porciones = N × precio Estándar (no la fórmula con ceil): es lo que
+  espera quien pide "tres de camote" y coincide con el catálogo de n8n.
 - Las kcal de la meta (fórmula y manual-total) se DERIVAN de los macros por comida
   ya redondeados (4P+4C+9G): el panel siempre cuadra. Carbos = residuo, nunca <0;
   si quedan en 0 g/comida se muestra el aviso .meta-warn (flag ajusteCarb).
@@ -79,8 +85,9 @@ global, no una heurística. Corre en local, en cada toque, sin red: 0.375 ms.
 - [ ] Decidir destino de cosecha-standalone.html (tiene la lógica VIEJA pre-fix)
 - [ ] Alérgenos VERIFICADOS por cocina: hoy el catálogo de n8n los deriva del
       nombre del plato y lo declara fila a fila. No es una garantía alérgica.
-- [ ] El inventario de carbohidratos se queda corto: techo de 48 g con un módulo
-      en Grande y 90 g con dos, contra una meta media de 96 g por comida. Ni con
-      dos módulos alcanza el 52% de los perfiles.
+- [x] El inventario de carbohidratos se quedaba corto (48 g con un módulo en
+      Grande contra 96 g de meta media): resuelto con porciones múltiples (×2, ×3,
+      ×4 del mismo módulo). Ojo: tras la rederivación el camote lleva 7.5 g de
+      grasa por ración, así que el porcionador prefiere cerrar carbos con arroz.
 - [ ] El recetario declara porción de 150 g para arroz y esquites; la app
       declara 120 y 100. Cerrar el conflicto antes de publicar carta.
