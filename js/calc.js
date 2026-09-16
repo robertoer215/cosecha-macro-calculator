@@ -1,4 +1,4 @@
-import { FACT_ACTIVIDAD, FACT_OBJETIVO, FACT_MACRO, COSTOS_OPERATIVOS, MARGEN_DIVISOR } from './data.js';
+import { FACT_ACTIVIDAD, FACT_OBJETIVO, FACT_MACRO, COSTOS_OPERATIVOS, MARGEN_DIVISOR, SIZES } from './data.js';
 export function precio(it, f = 1) {
   return Math.ceil((it.pKg * it.g / 1000) * COSTOS_OPERATIVOS / MARGEN_DIVISOR * f);
 }
@@ -61,4 +61,80 @@ export function metaManualTotal({ protTotal, carbTotal, grasTotal, comidas }) {
   // Igual que calcularMeta: kcal derivadas de los macros por comida ya redondeados,
   // para que el panel siempre cuadre aunque las kcal tecleadas no coincidan con los macros.
   return { kcal: prot * 4 + carb * 4 + gras * 9, prot, carb, gras, comidas, objetivo: 'manual', actividad: 'manual', peso: 0 };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MODO IA — porcionado conjunto
+//
+// Sustituye a recomendarSize() para el modo en que el usuario elige QUÉ comer y
+// el sistema decide CUÁNTO. recomendarSize mira cada módulo en aislamiento y
+// contra un solo macro, así que ignora las contribuciones cruzadas: el guacamole
+// aporta carbohidratos, el pollo aporta grasa, los esquites aportan proteína.
+// porcionar() recorre TODAS las combinaciones de tamaños de los módulos elegidos
+// y devuelve la que menos se desvía de los tres macros a la vez.
+//
+// Coste: 3^n combinaciones. Con la plantilla de plato (1 proteína + 1 carbo +
+// 1-2 vegetales + 1 grasa) son 81 o 243: microsegundos. Es búsqueda exhaustiva,
+// así que el resultado es el óptimo global, no una aproximación.
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Los tres tamaños salen de SIZES en data.js: una sola fuente de verdad.
+const FACTORES = SIZES.map(s => s.k);
+
+// La proteína pesa el doble que carbohidrato y grasa: es la condición de compra
+// que la investigación cualitativa situó como no negociable.
+export const PESO_MACRO = { prot: 2, carb: 1, gras: 1 };
+
+// El mismo ±4 g por macro que ya usa el resumen para pintar "En tu meta".
+export const UMBRAL_G = 4;
+
+export function porcionar(items, meta) {
+  if (!items || !items.length) return null;
+  // Meta 0 (pasa con los carbos en déficit agresivo): evita dividir entre cero
+  // sin distorsionar el peso relativo de los demás macros.
+  const den = k => Math.max(meta[k] || 0, 1);
+  const n = items.length;
+  const total = FACTORES.length ** n;
+  let mejor = null;
+
+  for (let combo = 0; combo < total; combo++) {
+    const factores = new Array(n);
+    let resto = combo;
+    for (let i = 0; i < n; i++) {
+      factores[i] = FACTORES[resto % FACTORES.length];
+      resto = Math.floor(resto / FACTORES.length);
+    }
+    let prot = 0, carb = 0, gras = 0, kcal = 0, pr = 0;
+    for (let i = 0; i < n; i++) {
+      // mac() redondea: sumamos lo MISMO que la app enseña en pantalla, así la
+      // barra de macros y el resultado del porcionador nunca se contradicen.
+      const m = mac(items[i], factores[i]);
+      prot += m.prot; carb += m.carb; gras += m.gras; kcal += m.kcal;
+      pr += precio(items[i], factores[i]);
+    }
+    gras = Math.round(gras * 10) / 10;
+    const desviacion = { prot: prot - meta.prot, carb: carb - meta.carb, gras: gras - meta.gras };
+    const coste = PESO_MACRO.prot * Math.abs(desviacion.prot) / den('prot')
+                + PESO_MACRO.carb * Math.abs(desviacion.carb) / den('carb')
+                + PESO_MACRO.gras * Math.abs(desviacion.gras) / den('gras');
+    // Desempate: a igual ajuste nutricional, el plato más barato.
+    const mejora = !mejor
+      || coste < mejor.coste - 1e-9
+      || (Math.abs(coste - mejor.coste) < 1e-9 && pr < mejor.precio);
+    if (mejora) mejor = { coste, precio: pr, factores, macros: { kcal, prot, carb, gras }, desviacion };
+  }
+
+  const tamanos = {};
+  items.forEach((it, i) => { tamanos[it.id] = mejor.factores[i]; });
+  return {
+    tamanos,
+    macros: mejor.macros,
+    desviacion: mejor.desviacion,
+    precio: mejor.precio,
+    coste: mejor.coste,
+    dentroDeUmbral: Math.abs(mejor.desviacion.prot) <= UMBRAL_G
+                 && Math.abs(mejor.desviacion.carb) <= UMBRAL_G
+                 && Math.abs(mejor.desviacion.gras) <= UMBRAL_G,
+    combinacionesEvaluadas: total
+  };
 }
