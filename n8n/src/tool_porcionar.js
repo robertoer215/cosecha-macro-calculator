@@ -8,5 +8,5 @@ return JSON.stringify({
   desviacion: d.desviacion,
   dentro_de_umbral: d.dentro_de_umbral,
   combinaciones_evaluadas: d.combinaciones_evaluadas,
-  nota: 'resultado del porcionado exhaustivo: optimo global sobre 3^n combinaciones, proteina a peso doble'
+  nota: 'optimo global por busqueda exhaustiva sobre el producto de los dominios de cada modulo (hasta 4 porciones segun categoria), proteina a peso doble; combinaciones_evaluadas dice cuantas se recorrieron'
 });

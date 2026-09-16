@@ -92,7 +92,11 @@ if (!cuadra) avisos.push('DISCREPANCIA: la suma de las líneas no cuadra con el 
 // ── propuesta de cierre: el error, el valor percibido y el upsell, a la vez ──
 let propuesta = null;
 if (!r.dentroDeUmbral) {
-  const candidatos = consultarMenu({ sin: v.sin }).filter(c => !items.some(i => i.id === c.id));
+  const porCat = {};
+  items.forEach(i => { porCat[i.categoria] = (porCat[i.categoria] || 0) + 1; });
+  const candidatos = consultarMenu({ sin: v.sin })
+    .filter(c => !items.some(i => i.id === c.id))
+    .filter(c => (porCat[c.categoria] || 0) < MAX_MODULOS_CAT);
   propuesta = proponerCierre(items, v.meta, candidatos, { fijos });
 }
 

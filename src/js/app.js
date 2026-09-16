@@ -1,4 +1,4 @@
-import { ING, SIZES, OBJ_LABEL, CATS, CAT_LABEL, IMG_DIR } from './data.js';
+import { ING, SIZES, OBJ_LABEL, CATS, CAT_LABEL, IMG_DIR, MAX_MODULOS_CAT } from './data.js';
 import { precio, mac, calcularMeta, metaManualComida, metaManualTotal,
          porcionar, explicarCambio, proponerCierre, tamanosPermitidos, UMBRAL_G } from './calc.js';
 
@@ -318,14 +318,17 @@ function renderCierre() {
   const wrap = $('cierre-wrap');
   if (!wrap) return;
   const cat = CATS_STEPS[platoCatIdx];
-  const elegidos = itemsElegidos();
+  // El plato ENTERO, extras incluidos: es el mismo plato que porciona "+ Añadir".
+  // Calcularlo sin los extras prometía un tamaño y un precio que no ocurrían.
+  const plato = itemsPlato();
 
-  // Solo donde el inventario se queda corto de verdad, y solo con al menos un
-  // módulo de la categoría ya elegido: si no, esto sería la carta otra vez.
-  if (cat !== 'carbohidrato' || !(selBase[cat] || []).length) { wrap.innerHTML = ''; return; }
+  // Solo donde el inventario se queda corto de verdad, con al menos un módulo de
+  // la categoría ya elegido y sitio para otro: si no, esto sería la carta otra vez.
+  const nCat = (selBase[cat] || []).length;
+  if (cat !== 'carbohidrato' || !nCat || nCat >= MAX_MODULOS_CAT) { wrap.innerHTML = ''; return; }
 
-  const candidatos = ING.filter(i => i.cat === 'carbohidrato');
-  const p = proponerCierre(elegidos, meta, candidatos, { fijos: fijosVigentes(elegidos) });
+  const candidatos = ING.filter(i => i.cat === 'carbohidrato' && !selExtra[i.id]);
+  const p = proponerCierre(plato, meta, candidatos, { fijos: fijosVigentes(plato) });
   if (!p) { wrap.innerHTML = ''; return; }
 
   const actual = ultimoPorc ? ultimoPorc.desviacion : null;
@@ -356,16 +359,29 @@ function renderCierre() {
 // La tarjeta ya no pregunta "¿cuánto?" sino "¿qué tan cerca me deja?".
 // El tamaño que enseña es el que se aplicará al tocarla: elegida, el resuelto;
 // sin elegir, el que tendría si entrara al plato.
-function tarjetaHTML(it, cat) {
-  const isSel = (selBase[cat]||[]).includes(it.id);
-  const r = isSel ? ultimoPorc : hipotetico(it);
-  const sz = isSel ? (szBase[it.id] ?? 1) : (r ? r.tamanos[it.id] : 1);
+// Estado de una tarjeta. Un módulo agregado como EXTRA en el paso 5 ya está en el
+// plato: se pinta elegido y tocarlo lo quita, igual que a cualquier otro. Si no,
+// la tarjeta prometía un tamaño, el toque lo duplicaba en selBase y el resumen y
+// el QR lo listaban dos veces. Y cuando la categoría llega a su tope de módulos,
+// las demás tarjetas lo dicen en vez de prometer un hipotético que no ocurrirá.
+function estadoTarjeta(it, cat) {
+  const esExtra = !!selExtra[it.id];
+  const isSel = esExtra || (selBase[cat]||[]).includes(it.id);
+  const tope = !isSel && (selBase[cat]||[]).length >= MAX_MODULOS_CAT;
+  const r = isSel || tope ? ultimoPorc : hipotetico(it);
+  const sz = esExtra ? (szExtra[it.id] ?? 1) : isSel ? (szBase[it.id] ?? 1) : (!tope && r ? r.tamanos[it.id] : 1);
   const m = mac(it, sz), pr = precio(it, sz);
-  const lbl = SIZES.find(s => s.k === sz)?.l || 'Estándar';
-  const fit = isSel ? { txt:'', cierra:false } : textoCercania(r);
+  const fit = esExtra ? { txt:'En tu plato como extra', cierra:false }
+            : tope    ? { txt:`Máximo ${MAX_MODULOS_CAT} por categoría`, cierra:false }
+            : isSel   ? { txt:'', cierra:false } : textoCercania(r);
+  return { isSel, esExtra, tope, sz, m, pr, fit };
+}
+
+function tarjetaHTML(it, cat) {
+  const { isSel, esExtra, tope, sz, m, pr, fit } = estadoTarjeta(it, cat);
   const abierto = !!ajustando[it.id];
 
-  return `<div class="icard${isSel?' sel':''}${abierto?' ajustando':''}${idsRecalc.includes(it.id)?' recalc':''}" data-id="${it.id}" onclick="selBI('${it.id}','${cat}')">
+  return `<div class="icard${isSel?' sel':''}${tope?' tope':''}${abierto?' ajustando':''}${idsRecalc.includes(it.id)?' recalc':''}" data-id="${it.id}"${tope?' aria-disabled="true"':''} onclick="selBI('${it.id}','${cat}')">
       <div class="i-photo">${foto(it,'i-img')}<div class="i-check"></div></div>
       <div class="i-body">
         <div class="i-top"><div class="i-name">${it.nombre}</div></div>
@@ -374,7 +390,7 @@ function tarjetaHTML(it, cat) {
         <div class="i-fit${fit.cierra?' cierra':''}">${fit.txt}</div>
         <div class="i-foot">
           <div class="i-size-val">${etiquetaTamano(sz)} · ${m.g} g</div>
-          <button type="button" class="btn-ajustar" aria-expanded="${abierto}" aria-controls="pills-${it.id}"
+          <button type="button" class="btn-ajustar"${esExtra?' hidden':''} aria-expanded="${abierto}" aria-controls="pills-${it.id}"
             aria-label="Ajustar el tamaño de ${it.nombre}"
             onclick="event.stopPropagation();toggleAjuste('${it.id}')">Ajustar</button>
         </div>
@@ -409,14 +425,12 @@ function refrescarTarjetas() {
     const id = card.dataset.id;
     const it = ING.find(i => i.id === id);
     if (!it) return;
-    const isSel = (selBase[cat]||[]).includes(id);
-    const r = isSel ? ultimoPorc : hipotetico(it);
-    const sz = isSel ? (szBase[id] ?? 1) : (r ? r.tamanos[id] : 1);
-    const m = mac(it, sz), pr = precio(it, sz);
-    const lbl = SIZES.find(s => s.k === sz)?.l || 'Estándar';
-    const fit = isSel ? { txt:'', cierra:false } : textoCercania(r);
+    const { isSel, esExtra, tope, sz, m, pr, fit } = estadoTarjeta(it, cat);
 
     card.classList.toggle('sel', isSel);
+    card.classList.toggle('tope', tope);
+    if (tope) card.setAttribute('aria-disabled', 'true'); else card.removeAttribute('aria-disabled');
+    const btnA = card.querySelector('.btn-ajustar'); if (btnA) btnA.hidden = esExtra;
     card.classList.toggle('ajustando', !!ajustando[id]);
     setTexto(card.querySelector('.i-price'), `$${pr} MXN`);
     setTexto(card.querySelector('.i-size-val'), `${etiquetaTamano(sz)} · ${m.g} g`, true);
@@ -498,8 +512,17 @@ window.prevCat = function() {
 };
 
 window.selBI = function(id,cat) {
+  // Un extra del paso 5 ya está en el plato: tocarlo lo quita, no lo duplica.
+  if (selExtra[id]) {
+    delete selExtra[id]; delete szExtra[id];
+    recalcular();
+    refrescarTarjetas();
+    return;
+  }
   if(!selBase[cat]) selBase[cat]=[];
   const idx=selBase[cat].indexOf(id);
+  // Al tope de módulos de la categoría la tarjeta ya lo dice; el toque no hace nada.
+  if (idx === -1 && selBase[cat].length >= MAX_MODULOS_CAT) return;
   if(idx>-1){
     selBase[cat].splice(idx,1);
     if(!selBase[cat].length) delete selBase[cat];
@@ -577,14 +600,17 @@ function renderSugg() {
 window.setSzE = function(id,k){ szExtra[id]=k; recalcular([id]); renderSugg(); updateGlobalTracker(); };
 window.toggleE = function(id){ if(selExtra[id])delete selExtra[id]; else{selExtra[id]=true;if(!szExtra[id])szExtra[id]=1;} recalcular([id]); renderSugg(); updateGlobalTracker(); };
 
+// El texto del QR es COMPACTO y solo ASCII: qrcodejs 1.0.0 calcula mal el tamaño
+// en cuanto hay un carácter fuera de ASCII (un acento bastaba para desbordar) y
+// con nombres largos superaba su capacidad. Cocina lee el ticket; el QR lleva
+// ids, factor y gramos, que es lo que caja necesita escanear.
 function buildQRText() {
-  const lines=['COSECHA — ORDEN DE COCINA',''];
   const ts=new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
-  lines.push('Hora: '+ts,'Objetivo: '+(meta.objetivo==='manual'?'Macros personalizados':OBJ_LABEL[meta.objetivo]),'','--- PORCIONES ---');
-  CATS.forEach(cat=>{ (selBase[cat]||[]).forEach(id=>{ const it=ING.find(i=>i.id===id);const sz=szBase[id]||1,m=mac(it,sz);lines.push(it.nombre+' ('+SIZES.find(s=>s.k===sz).l+'): '+m.g+'g'); }); });
-  Object.keys(selExtra).forEach(id=>{ const it=ING.find(i=>i.id===id);const sz=szExtra[id]||1,m=mac(it,sz);lines.push('[EXTRA] '+it.nombre+' ('+SIZES.find(s=>s.k===sz).l+'): '+m.g+'g'); });
+  const lines=['COSECHA '+ts];
+  CATS.forEach(cat=>{ (selBase[cat]||[]).forEach(id=>{ const it=ING.find(i=>i.id===id);const sz=szBase[id]||1,m=mac(it,sz);lines.push(id+' x'+sz+' '+m.g+'g'); }); });
+  Object.keys(selExtra).forEach(id=>{ const it=ING.find(i=>i.id===id);const sz=szExtra[id]||1,m=mac(it,sz);lines.push('E:'+id+' x'+sz+' '+m.g+'g'); });
   const t=totals();
-  lines.push('','--- MACROS TOTALES ---','Proteina: '+t.prot+'g | Carbos: '+t.carb+'g | Grasas: '+t.gras+'g | Kcal: '+t.kcal);
+  lines.push('P'+t.prot+' C'+t.carb+' G'+t.gras+' K'+t.kcal);
   return lines.join('\n');
 }
 
@@ -635,7 +661,11 @@ window.goResumen = function() {
   goStep(2);
   setTimeout(()=>{
     const el=$('qr-canvas');
-    if(el && window.QRCode){ el.innerHTML=''; new QRCode(el,{text:buildQRText(),width:120,height:120,colorDark:'#1a1a18',colorLight:'#F4F2EE',correctLevel:QRCode.CorrectLevel.M}); }
+    if(el && window.QRCode){
+      el.innerHTML='';
+      try { new QRCode(el,{text:buildQRText(),width:120,height:120,colorDark:'#1a1a18',colorLight:'#F4F2EE',correctLevel:QRCode.CorrectLevel.M}); }
+      catch(e){ el.innerHTML='<div class="qr-fallo">QR no disponible</div>'; console.warn('QR:', e.message); }
+    }
   },200);
 };
 

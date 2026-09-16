@@ -26,10 +26,18 @@ const add = n => {
 [d.meta.kcal, d.meta.prot, d.meta.carb, d.meta.gras, d.total,
  d.macros_totales.kcal, d.macros_totales.prot, d.macros_totales.carb, d.macros_totales.gras,
  d.desviacion.prot, d.desviacion.carb, d.desviacion.gras].forEach(add);
-(d.lineas || []).forEach(l => { add(l.g); add(l.precio); Object.values(l.macros).forEach(add); });
+// El número de porciones de cada línea ("3 porciones") también es una cifra que
+// el modelo puede citar con razón: sale de las herramientas tal cual.
+const K_DE = { 'Pequeña': 0.5, 'Estándar': 1, 'Grande': 1.5, '2 porciones': 2, '3 porciones': 3, '4 porciones': 4 };
+(d.lineas || []).forEach(l => { add(l.g); add(l.precio); Object.values(l.macros).forEach(add); if (K_DE[l.tamano] >= 2) add(K_DE[l.tamano]); });
+add(d.lineas ? d.lineas.length : null);
+// combinaciones_evaluadas también viaja al agente: es un número del cálculo, no inventado.
+add(d.combinaciones_evaluadas);
 if (d.propuesta_cierre) {
   const p = d.propuesta_cierre;
   add(p.g); add(p.precio_extra); add(p.precio_total_con_propuesta);
+  if (K_DE[p.tamano] >= 2) add(K_DE[p.tamano]);
+  Object.values(p.tamanos_resultantes || {}).forEach(t => { if (K_DE[t] >= 2) add(K_DE[t]); });
   Object.values(p.aporta || {}).forEach(add);
   Object.values(p.macros_resultantes || {}).forEach(add);
   Object.values(p.desviacion_resultante || {}).forEach(add);

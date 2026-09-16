@@ -284,7 +284,10 @@ test('la atribución del porqué se mide contra el contrafactual, no contra el p
     // La ganancia declarada es EXACTAMENTE la del contrafactual —el mismo plato
     // con los módulos previos clavados—, no la del plato anterior. Es la
     // propiedad que hace defendible la frase.
-    const congelado = porcionar(con, meta, { fijos: antes.tamanos });
+    // el contrafactual clava los previos donde estaban Y el módulo nuevo en su valor final
+    const fijos = { ...antes.tamanos };
+    for (const id of Object.keys(despues.tamanos)) if (antes.tamanos[id] === undefined) fijos[id] = despues.tamanos[id];
+    const congelado = porcionar(con, meta, { fijos });
     const real = Math.abs(congelado.desviacion[honesto.macro]) - Math.abs(despues.desviacion[honesto.macro]);
     assert.ok(Math.abs(honesto.ganancia - real) < 1e-9,
       `ganancia declarada ${honesto.ganancia} ≠ la del contrafactual ${real}`);
@@ -459,4 +462,79 @@ test('los tamaños fijados con Ajustar pueden ir hasta el tope, y se respetan', 
     const r = porcionar(items, meta, { fijos: { C02: k } });
     assert.equal(r.tamanos.C02, k);
   }
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Lo que la revisión adversarial encontró en cfbc3fd
+// ─────────────────────────────────────────────────────────────────────────────
+
+test('cada cambio citado en el porqué acerca de verdad SU macro, aplicado él solo sobre el contrafactual', () => {
+  let citados = 0;
+  for (const peso of [55, 75, 95]) for (const obj of ['perder_grasa','mantener','ganar_musculo','rendimiento'])
+  for (const c of ['C01','C02','C03']) for (const g of ['G01','G02','G03']) for (const p of ['P01','P02']) {
+    const meta = calcularMeta({ sexo:'masculino', edad:30, peso, altura:175, comidas:3, objetivo:obj, actividad:'moderado' });
+    const base = [id(p), id(c), id('V01')], con = [...base, id(g)];
+    const antes = porcionar(base, meta), despues = porcionar(con, meta);
+    const ex = explicarCambio(antes, despues, con, meta);
+    if (!ex) continue;
+    const fijos = { ...antes.tamanos, [g]: despues.tamanos[g] };
+    const ref = porcionar(con, meta, { fijos }).desviacion;
+    assert.ok(ex.tramos && ex.tramos.length >= 1 && ex.tramos.length <= 2);
+    for (const t of ex.tramos) {
+      for (const c2 of t.cambios) {
+        const it = con.find(i => i.id === c2.id);
+        const delta = mac(it, c2.a)[t.macro] - mac(it, c2.de)[t.macro];
+        assert.ok(Math.abs(ref[t.macro]) - Math.abs(ref[t.macro] + delta) > 0,
+          `"${ex.texto}" — ${c2.id} ${c2.de}→${c2.a} no acerca ${t.macro} (delta ${delta}, ref ${ref[t.macro]})`);
+        // y la frase nombra ese módulo con su etiqueta de tamaño
+        assert.ok(ex.texto.includes(`${nombreCorto(it)} a ${SIZES.find(s => s.k === c2.a).l}`), `la frase no nombra ${c2.id}: ${ex.texto}`);
+        citados++;
+      }
+      // el fin de cada tramo coincide con el signo de la referencia
+      const fin = ref[t.macro] < 0 ? 'para cerrar' : 'para no pasarte de';
+      assert.ok(ex.texto.includes(fin), `fin incorrecto para ${t.macro}: ${ex.texto}`);
+    }
+  }
+  assert.ok(citados > 20, `pocos cambios citados para probar nada: ${citados}`);
+});
+
+test('el motor por encuentro en el medio da lo mismo que la enumeración plana', () => {
+  // Réplica plana e independiente, sobre el producto de dominios.
+  const plano = (items, meta) => {
+    const den = k => Math.max(meta[k] || 0, 1);
+    let mejor = null;
+    for (const f of combinacionesDe(items)) {
+      let prot = 0, carb = 0, gras = 0, kcal = 0, pr = 0;
+      items.forEach((it, i) => { const m = mac(it, f[i]); prot += m.prot; carb += m.carb; gras += m.gras; kcal += m.kcal; pr += precio(it, f[i]); });
+      gras = Math.round(gras * 10) / 10;
+      const coste = PESO_MACRO.prot * Math.abs(prot - meta.prot) / den('prot') + PESO_MACRO.carb * Math.abs(carb - meta.carb) / den('carb') + PESO_MACRO.gras * Math.abs(gras - meta.gras) / den('gras');
+      if (!mejor || coste < mejor.coste - 1e-9 || (Math.abs(coste - mejor.coste) < 1e-9 && pr < mejor.precio)) mejor = { coste, precio: pr, prot, carb, gras, kcal };
+    }
+    return mejor;
+  };
+  let n = 0;
+  for (const prot of [30, 50, 75]) for (const carb of [40, 95, 160]) for (const gras of [12, 22]) {
+    const meta = { prot, carb, gras };
+    for (const items of [PLATO, [id('P02'), id('C02'), id('C03'), id('V02'), id('G02')], [id('P01'), id('P03'), id('C01'), id('C02'), id('V01'), id('V04'), id('G01'), id('G03')]]) {
+      const r = porcionar(items, meta), b = plano(items, meta);
+      assert.ok(Math.abs(r.coste - b.coste) < 1e-9, `coste ${r.coste} vs plano ${b.coste}`);
+      assert.equal(r.precio, b.precio, 'a igual coste, el mismo precio mínimo');
+      assert.deepEqual(r.macros, { kcal: b.kcal, prot: b.prot, carb: b.carb, gras: b.gras });
+      n++;
+    }
+  }
+  assert.equal(n, 54);
+});
+
+test('un toque con el plato al tope de módulos baja de 100 ms (recalcular + tres hipotéticos)', () => {
+  // 2P+2C+2V+1G elegidos y tres tarjetas de grasa sin elegir: 7 módulos libres más
+  // tres porcionados de 8. Era el caso que la revisión midió en 188 ms.
+  const meta = { prot: 45, carb: 95, gras: 18 };
+  const sel = ['P01','P02','C01','C02','V01','V02','G01'].map(id);
+  porcionar(sel, meta); // calienta el JIT
+  const t0 = performance.now();
+  porcionar(sel, meta);
+  for (const g of ['G02','G03']) porcionar([...sel, id(g)], meta);
+  const ms = performance.now() - t0;
+  assert.ok(ms < 100, `un toque al tope tardó ${ms.toFixed(0)} ms`);
 });

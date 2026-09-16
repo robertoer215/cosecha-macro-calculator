@@ -4,7 +4,8 @@ Flujo `Xv459ruzH0Ag71qY` en `https://n8n.srv1683942.hstgr.cloud`, **activo**.
 Webhook: `POST https://n8n.srv1683942.hstgr.cloud/webhook/cosecha-plato`
 
 Se llama **una sola vez, al cerrar el plato**. El porcionado de cada toque corre
-en local, en el navegador, sin red: son 81 o 243 combinaciones de aritmética.
+en local, en el navegador, sin red: cientos o miles de combinaciones de aritmética,
+milisegundos.
 
 ## La regla que ordena todo el diseño
 
@@ -54,7 +55,7 @@ Webhook · plato
 ```
 
 `Resolver plato` lleva embebido `src/motor.js`, réplica exacta de `js/calc.js`.
-Verificado: **540 platos comparados app contra n8n con los seis tamaños, 0 divergencias**. Es lo que
+Verificado tras cada cambio de motor con platos de 4 a 8 módulos: **0 divergencias**. Es lo que
 permite que `coincide_con_la_app` signifique algo. Si discrepan, gana n8n y la
 discrepancia queda registrada.
 
@@ -62,11 +63,19 @@ discrepancia queda registrada.
 
 `seleccion[].tamano` acepta `0.5 · 1 · 1.5 · 2 · 3 · 4`. A partir de 2 el módulo se
 repite ("3 porciones" = tres raciones Estándar) y **cuesta N × precio_estandar**
-del catálogo, la misma regla que la app. Cada categoría tiene tope
+del catálogo, la misma regla que la app. Cada categoría tiene tope de porciones
 (proteína 3, carbohidrato 4, vegetal 2, grasa 2): un tamaño por encima no se
 clava en silencio, va a `rechazados` con su motivo y el módulo se resuelve
-automáticamente. Sin `tamano`, el porcionador decide dentro del tope. Verificado
-app contra n8n: 540 platos con los seis tamaños y tamaños clavados, 0 divergencias.
+automáticamente. Sin `tamano`, el porcionador decide dentro del tope. Y hay tope
+de **2 módulos distintos por categoría** (400 si se supera), el mismo que la app.
+
+El motor busca por **encuentro en el medio** (enumera las dos mitades del plato y
+las cruza): mismo espacio de búsqueda y mismo óptimo que la enumeración plana,
+pero 8 módulos libres —230.400 combinaciones— se resuelven en milisegundos donde
+la plana tumbaba el task runner de n8n (>30 s, respuesta 200 vacía). Verificado
+app contra n8n: 45 platos de 4 a 8 módulos con los seis tamaños y tamaños
+clavados, 0 divergencias. `propuesta_cierre.tamanos_resultantes` dice qué tamaño
+tendría CADA línea si se acepta, para que el agente no invente el mecanismo.
 
 ## Hojas
 

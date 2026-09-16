@@ -258,6 +258,13 @@ select option{font-family:sans-serif;background:#FAFAF8}
   border-top:2px solid var(--accent);padding-top:5px}
 /* En la tarjeta no elegida el filete se apaga: el tamaño aún es una hipótesis. */
 .icard:not(.sel) .i-size-val{border-top-color:var(--border);color:var(--muted-ink)}
+/* Categoría al tope de módulos: la tarjeta no promete nada y lo dice. */
+.icard.tope{cursor:default}
+.icard.tope .i-photo,.icard.tope .i-body>*:not(.i-fit){opacity:.55}
+.icard.tope .i-fit{color:var(--muted-ink)}
+.icard.tope:hover{background:var(--bg)}
+.icard.tope:hover .i-img{transform:none}
+.qr-fallo{font-family:'Inter',sans-serif;font-size:10px;color:var(--muted-ink);padding:1rem;text-align:center}
 /* El número de porciones en negrita: "3 PORCIONES · 390 G" se lee de un vistazo. */
 .i-size-val b{font-weight:600}
 

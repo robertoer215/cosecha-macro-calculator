@@ -1,4 +1,4 @@
-import { FACT_ACTIVIDAD, FACT_OBJETIVO, FACT_MACRO, COSTOS_OPERATIVOS, MARGEN_DIVISOR, SIZES, MAX_PORCIONES } from './data.js';
+import { FACT_ACTIVIDAD, FACT_OBJETIVO, FACT_MACRO, COSTOS_OPERATIVOS, MARGEN_DIVISOR, SIZES, MAX_PORCIONES, MAX_MODULOS_CAT } from './data.js';
 export function precio(it, f = 1) {
   // A partir de 2 porciones cada una cuesta lo que la Estándar: es lo que espera
   // quien pide "tres de camote", y evita que el ceil de la fórmula dé un precio
@@ -104,56 +104,69 @@ export function porcionar(items, meta, opts = {}) {
   // Meta 0 (pasa con los carbos en déficit agresivo): evita dividir entre cero
   // sin distorsionar el peso relativo de los demás macros.
   const den = k => Math.max(meta[k] || 0, 1);
-  const n = items.length;
+  const wp = PESO_MACRO.prot / den('prot'), wc = PESO_MACRO.carb / den('carb'), wg = PESO_MACRO.gras / den('gras');
 
   // Tamaños fijados a mano con "Ajustar": ese módulo deja de ser una variable y
-  // el porcionado optimiza los DEMÁS a su alrededor, en vez de ignorar el
-  // override o sacar el módulo de la cuenta. Sin `fijos` el dominio de cada
-  // módulo son los tres tamaños de siempre y el resultado no cambia.
+  // el porcionado optimiza los DEMÁS a su alrededor. Sin `fijos` el dominio de
+  // cada módulo es el de su categoría y el resultado no cambia.
   const fijos = opts.fijos || {};
-  const dominios = items.map(it => (fijos[it.id] != null ? [fijos[it.id]] : tamanosPermitidos(it)));
-  const total = dominios.reduce((a, d) => a * d.length, 1);
-  let mejor = null;
+  // Cada módulo, cada tamaño: lo que aporta, ya redondeado como lo enseña la app
+  // (mac()), para que barra y porcionado nunca se contradigan. La grasa viaja en
+  // décimas enteras: sumar enteros no arrastra error binario.
+  const opciones = items.map(it => (fijos[it.id] != null ? [fijos[it.id]] : tamanosPermitidos(it)).map(f => {
+    const m = mac(it, f);
+    return { f, prot: m.prot, carb: m.carb, gras10: Math.round(m.gras * 10), kcal: m.kcal, precio: precio(it, f) };
+  }));
+  const total = opciones.reduce((a, d) => a * d.length, 1);
 
-  for (let combo = 0; combo < total; combo++) {
-    const factores = new Array(n);
-    let resto = combo;
-    for (let i = 0; i < n; i++) {
-      const d = dominios[i];
-      factores[i] = d[resto % d.length];
-      resto = Math.floor(resto / d.length);
+  // ENCUENTRO EN EL MEDIO. Se enumeran las dos mitades del plato por separado y
+  // se cruzan: es el MISMO espacio de búsqueda y el mismo óptimo global, pero cada
+  // combinación cuesta tres sumas en vez de n llamadas a mac(). Con ocho módulos
+  // (2P+2C+2V+2G) son 1,7 M de cruces en ~15 ms; la enumeración plana tardaba
+  // segundos y con 3P+3C+3V un solo toque llegaba a 3,6 s.
+  const enumerar = doms => {
+    let acc = [{ prot: 0, carb: 0, gras10: 0, kcal: 0, precio: 0, fs: [] }];
+    for (const dom of doms) {
+      const sig = [];
+      for (const a of acc) for (const o of dom)
+        sig.push({ prot: a.prot + o.prot, carb: a.carb + o.carb, gras10: a.gras10 + o.gras10,
+                   kcal: a.kcal + o.kcal, precio: a.precio + o.precio, fs: a.fs.concat(o.f) });
+      acc = sig;
     }
-    let prot = 0, carb = 0, gras = 0, kcal = 0, pr = 0;
-    for (let i = 0; i < n; i++) {
-      // mac() redondea: sumamos lo MISMO que la app enseña en pantalla, así la
-      // barra de macros y el resultado del porcionador nunca se contradicen.
-      const m = mac(items[i], factores[i]);
-      prot += m.prot; carb += m.carb; gras += m.gras; kcal += m.kcal;
-      pr += precio(items[i], factores[i]);
+    return acc;
+  };
+  const corte = Math.ceil(opciones.length / 2);
+  const A = enumerar(opciones.slice(0, corte)), B = enumerar(opciones.slice(corte));
+
+  let mejorCoste = Infinity, mejorPrecio = Infinity, ia = -1, ib = -1;
+  for (let i = 0; i < A.length; i++) {
+    const a = A[i];
+    const pa = a.prot - meta.prot, ca = a.carb - meta.carb;
+    for (let j = 0; j < B.length; j++) {
+      const b = B[j];
+      const dp = pa + b.prot, dc = ca + b.carb, dg = (a.gras10 + b.gras10) / 10 - meta.gras;
+      const coste = wp * (dp < 0 ? -dp : dp) + wc * (dc < 0 ? -dc : dc) + wg * (dg < 0 ? -dg : dg);
+      // Desempate: a igual ajuste nutricional, el plato más barato.
+      if (coste < mejorCoste - 1e-9 || (coste - mejorCoste < 1e-9 && coste - mejorCoste > -1e-9 && a.precio + b.precio < mejorPrecio)) {
+        mejorCoste = coste; mejorPrecio = a.precio + b.precio; ia = i; ib = j;
+      }
     }
-    gras = Math.round(gras * 10) / 10;
-    const desviacion = { prot: prot - meta.prot, carb: carb - meta.carb, gras: gras - meta.gras };
-    const coste = PESO_MACRO.prot * Math.abs(desviacion.prot) / den('prot')
-                + PESO_MACRO.carb * Math.abs(desviacion.carb) / den('carb')
-                + PESO_MACRO.gras * Math.abs(desviacion.gras) / den('gras');
-    // Desempate: a igual ajuste nutricional, el plato más barato.
-    const mejora = !mejor
-      || coste < mejor.coste - 1e-9
-      || (Math.abs(coste - mejor.coste) < 1e-9 && pr < mejor.precio);
-    if (mejora) mejor = { coste, precio: pr, factores, macros: { kcal, prot, carb, gras }, desviacion };
   }
 
+  const a = A[ia], b = B[ib];
+  const factores = a.fs.concat(b.fs);
+  const gras = (a.gras10 + b.gras10) / 10;
+  const macros = { kcal: a.kcal + b.kcal, prot: a.prot + b.prot, carb: a.carb + b.carb, gras };
+  const desviacion = { prot: macros.prot - meta.prot, carb: macros.carb - meta.carb, gras: gras - meta.gras };
   const tamanos = {};
-  items.forEach((it, i) => { tamanos[it.id] = mejor.factores[i]; });
+  items.forEach((it, i) => { tamanos[it.id] = factores[i]; });
   return {
-    tamanos,
-    macros: mejor.macros,
-    desviacion: mejor.desviacion,
-    precio: mejor.precio,
-    coste: mejor.coste,
-    dentroDeUmbral: Math.abs(mejor.desviacion.prot) <= UMBRAL_G
-                 && Math.abs(mejor.desviacion.carb) <= UMBRAL_G
-                 && Math.abs(mejor.desviacion.gras) <= UMBRAL_G,
+    tamanos, macros, desviacion,
+    precio: mejorPrecio,
+    coste: mejorCoste,
+    dentroDeUmbral: Math.abs(desviacion.prot) <= UMBRAL_G
+                 && Math.abs(desviacion.carb) <= UMBRAL_G
+                 && Math.abs(desviacion.gras) <= UMBRAL_G,
     combinacionesEvaluadas: total
   };
 }
@@ -188,51 +201,54 @@ export function explicarCambio(antes, despues, items, meta, opts = {}) {
   const cambios = Object.keys(despues.tamanos)
     .filter(id => !manual.has(id))
     .filter(id => antes.tamanos[id] !== undefined && antes.tamanos[id] !== despues.tamanos[id])
-    .map(id => ({
-      id,
-      it: porId(id),
-      de: antes.tamanos[id],
-      a: despues.tamanos[id],
-      subio: despues.tamanos[id] > antes.tamanos[id]
-    }))
+    .map(id => ({ id, it: porId(id), de: antes.tamanos[id], a: despues.tamanos[id], subio: despues.tamanos[id] > antes.tamanos[id] }))
     .filter(c => c.it);
-
   if (!cambios.length) return null;
 
-  // ¿Qué macro justifica el REAJUSTE? No basta comparar contra el plato anterior:
-  // entre los dos porcionados también entró un módulo nuevo —o el usuario clavó
-  // un tamaño— y su aportación se llevaría el mérito. El punto de comparación
-  // honesto es el contrafactual: el mismo plato de ahora, con los módulos previos
-  // clavados donde estaban Y los que movió el usuario ya en su valor NUEVO. Así
-  // la ganancia que quede es la del reajuste automático y de nadie más.
+  // EL CONTRAFACTUAL: el mismo plato de ahora con los módulos previos clavados
+  // donde estaban, y TODO lo demás —el módulo recién añadido y lo que movió el
+  // usuario— clavado en su valor final. Así la única diferencia entre el
+  // contrafactual y el plato real es el reajuste automático de los previos, y la
+  // ganancia que quede es suya y de nadie más. Dejar libre el módulo nuevo (como
+  // antes) mezclaba dos movimientos y la frase se llevaba el mérito del otro.
   let referencia = antes.desviacion, costeRef = antes.coste;
   if (meta) {
     const fijos = {};
-    for (const id of Object.keys(antes.tamanos)) if (!manual.has(id)) fijos[id] = antes.tamanos[id];
-    for (const id of manual) if (despues.tamanos[id] !== undefined) fijos[id] = despues.tamanos[id];
+    for (const id of Object.keys(despues.tamanos)) {
+      fijos[id] = (manual.has(id) || antes.tamanos[id] === undefined) ? despues.tamanos[id] : antes.tamanos[id];
+    }
     const contra = porcionar(items, meta, { fijos });
     referencia = contra.desviacion;
     costeRef = contra.coste;
   }
-
-  // Un tamaño clavado a mano puede estrechar el dominio hasta que el mejor
-  // reajuste posible siga siendo peor que el punto de partida. Ahí no hay
-  // ningún fin nutricional que contar: mirar un solo macro diría que mejoró
-  // mientras el plato entero empeora.
+  // Si el reajuste no mejora el plato entero, no hay fin nutricional que contar.
   if (despues.coste > costeRef + 1e-9) return null;
 
-  let macro = null, ganancia = -Infinity;
-  for (const k of ['prot', 'carb', 'gras']) {
-    const g = Math.abs(referencia[k]) - Math.abs(despues.desviacion[k]);
-    if (g > ganancia) { ganancia = g; macro = k; }
-  }
-  // El reajuste no mejoró ningún macro (vino del desempate por precio): sin
-  // porqué nutricional que contar, y mentir uno sería peor que callar.
-  if (ganancia <= 0) return null;
+  // Cada cambio se atribuye SOLO al macro que ese cambio, aplicado por sí solo
+  // sobre el contrafactual, acerca de verdad a la meta. Un cambio que no acerca
+  // ninguno (vino del desempate por precio) no se cuenta: mentir un porqué sería
+  // peor que callar. "Bajé guacamole a Pequeña para no pasarte de tu proteína"
+  // no puede volver a salir cuando ese cambio movió 0 g de proteína.
+  const MACROS = ['prot', 'carb', 'gras'];
+  const atribuir = c => {
+    const de = mac(c.it, c.de), a = mac(c.it, c.a);
+    let macro = null, mejor = 1e-9;
+    for (const k of MACROS) {
+      const delta = a[k] - de[k];
+      if (Math.abs(delta) < 1e-9) continue;
+      const gan = Math.abs(referencia[k]) - Math.abs(referencia[k] + delta);
+      if (gan > mejor) { mejor = gan; macro = k; }
+    }
+    return macro;
+  };
+  const utiles = cambios.map(c => ({ ...c, macro: atribuir(c) })).filter(c => c.macro);
+  if (!utiles.length) return null;
 
-  // "cerrar" cuando veníamos cortos, "no pasarte de" cuando veníamos largos.
-  const faltaba = referencia[macro] < 0;
-  const fin = faltaba ? `para cerrar ${MACRO_LBL[macro]}` : `para no pasarte de ${MACRO_LBL[macro]}`;
+  // Ganancia agregada del macro principal, contra el contrafactual: es la cifra
+  // que los tests contrastan y la que justifica hablar.
+  const macro = utiles[0].macro;
+  const ganancia = Math.abs(referencia[macro]) - Math.abs(despues.desviacion[macro]);
+  if (ganancia <= 0) return null;
 
   // El nombre del tamaño conserva su mayúscula ("Grande"): es una etiqueta de la
   // carta, no una palabra corriente de la frase.
@@ -241,13 +257,31 @@ export function explicarCambio(antes, despues, items, meta, opts = {}) {
     const verbo = c.subio ? 'Subí' : 'Bajé';
     return `${inicial ? verbo : verbo.toLowerCase()} ${nombreCorto(c.it)} a ${lbl}`;
   };
+  // "cerrar" cuando veníamos cortos, "no pasarte de" cuando veníamos largos.
+  const fin = k => (referencia[k] < 0 ? `para cerrar ${MACRO_LBL[k]}` : `para no pasarte de ${MACRO_LBL[k]}`);
 
-  let sujeto;
-  if (cambios.length === 1) sujeto = frase(cambios[0], true);
-  else if (cambios.length === 2) sujeto = `${frase(cambios[0], true)} y ${frase(cambios[1], false)}`;
-  else sujeto = `Reajusté ${cambios.length} módulos`;
-
-  return { texto: `${sujeto} ${fin}.`, ids: cambios.map(c => c.id), macro, ganancia };
+  // Un tramo de frase por macro, en el orden en que aparecen; como mucho dos.
+  const grupos = [];
+  for (const c of utiles) {
+    let g = grupos.find(x => x.macro === c.macro);
+    if (!g) { g = { macro: c.macro, cambios: [] }; grupos.push(g); }
+    g.cambios.push(c);
+  }
+  const tramo = (g, inicial) => {
+    const cs = g.cambios;
+    let sujeto;
+    if (cs.length === 1) sujeto = frase(cs[0], inicial);
+    else if (cs.length === 2) sujeto = `${frase(cs[0], inicial)} y ${frase(cs[1], false)}`;
+    else sujeto = `${inicial ? 'Reajusté' : 'reajusté'} ${cs.length} módulos`;
+    return `${sujeto} ${fin(g.macro)}`;
+  };
+  const usados = grupos.slice(0, 2);
+  const texto = usados.map((g, i) => tramo(g, i === 0)).join(' y ') + '.';
+  const ids = usados.flatMap(g => g.cambios.map(c => c.id));
+  // `tramos` expone la estructura de la frase: qué cambios se atribuyen a qué
+  // macro. Es lo que los tests contrastan, en vez de volver a parsear la prosa.
+  const tramos = usados.map(g => ({ macro: g.macro, cambios: g.cambios.map(c => ({ id: c.id, de: c.de, a: c.a })) }));
+  return { texto, ids, macro, ganancia, tramos };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

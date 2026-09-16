@@ -40,6 +40,10 @@ export const SIZES = [
 // cuatro raciones de camote son un plato; cuatro de salmón o de nueces, no. El
 // porcionador solo busca dentro de este tope y "Ajustar" solo ofrece hasta aquí.
 export const MAX_PORCIONES = {proteina:3, carbohidrato:4, vegetal:2, grasa:2};
+// Tope de MÓDULOS distintos por categoría. Con porciones múltiples un segundo
+// módulo ya cubre cualquier meta; un tercero no aporta y dispara la búsqueda
+// (con 3P+3C+3V un solo toque tardaba 3,6 s). n8n aplica el mismo tope.
+export const MAX_MODULOS_CAT = 2;
 export const FACT_ACTIVIDAD = {sedentario:1.2,ligero:1.375,moderado:1.55,alto:1.725,atleta:1.9};
 export const FACT_OBJETIVO  = {perder_grasa:-0.15,mantener:0,ganar_musculo:0.10,rendimiento:0.05};
 export const FACT_MACRO = {

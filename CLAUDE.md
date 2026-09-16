@@ -33,19 +33,30 @@ El usuario elige QUÉ comer (proteína → carbohidrato → vegetal → grasa, m
 tarjetas, mismo orden). El CUÁNTO lo resuelve `porcionar()`, que recorre TODAS las
 combinaciones de tamaños de los módulos elegidos —cada uno dentro del tope de
 porciones de su categoría, `tamanosPermitidos()`— y devuelve el óptimo global, no
-una heurística. Corre en local, en cada toque, sin red: 0.4 ms en un plato de 4,
-~47 ms en el peor caso medido (6 elegidos y una tarjeta hipotética: 69.120 combos).
+una heurística. Lo hace por ENCUENTRO EN EL MEDIO: enumera las dos mitades del
+plato y las cruza, así cada combinación cuesta tres sumas y no n llamadas a mac().
+Corre en local, en cada toque, sin red: un plato de 4 son 480 combos en 0.2 ms;
+el peor caso permitido (2P+2C+2V+1G y tres hipotéticos de 8 = 750.000 combos) son
+~5 ms por toque medidos en Chrome. La enumeración plana tardaba 188 ms ahí y 3.6 s
+con 3P+3C+3V; por eso además hay tope de módulos por categoría (MAX_MODULOS_CAT=2).
 - Función objetivo: suma de desviaciones absolutas normalizadas por la meta de
   cada macro, con la proteína a peso doble (PESO_MACRO). Desempata por precio.
 - `szManual` son los overrides de "Ajustar": se clavan (`opts.fijos`) y el resto
   se optimiza alrededor. `szBase` es un CACHÉ derivado del porcionado, y por eso
   el resumen, el QR y el ticket siguieron funcionando sin enterarse del cambio.
 - Los extras del paso 5 entran en el porcionado clavados a su tamaño: si no, la
-  tarjeta afirma "Cierra tu meta" mientras la barra marca otra cosa.
+  tarjeta afirma "Cierra tu meta" mientras la barra marca otra cosa. Y en el paso 2
+  su tarjeta se pinta ELEGIDA ("En tu plato como extra"): tocarla lo quita, no lo
+  duplica. El "Cierre sugerido" también se calcula sobre el plato con extras.
+- Tope de 2 módulos distintos por categoría: la tercera tarjeta dice "Máximo 2 por
+  categoría", no promete hipotético y el toque no hace nada. n8n devuelve 400.
 - La línea de porqué se deriva del DIFF del porcionado, nunca de un modelo. Mide
-  contra un CONTRAFACTUAL (el plato de ahora con los módulos previos clavados) y
-  excluye lo que movió el usuario: la app no firma acciones ajenas. Si el coste
-  ponderado no mejora, se calla.
+  contra un CONTRAFACTUAL (el plato de ahora con los previos clavados donde estaban
+  y el módulo nuevo y lo manual clavados en su valor FINAL) y excluye lo que movió
+  el usuario. Cada cambio se atribuye solo al macro que ese cambio, aplicado él
+  solo, acerca a la meta; un cambio que no acerca ninguno no se cita. Hasta dos
+  tramos ("…para no pasarte de tu proteína y subí camote a 3 porciones para cerrar
+  tus carbohidratos"). `tramos` en el retorno expone esa estructura para los tests.
 - Nunca animar width ni height, solo opacity y transform. Las barras del tracker
   usan `transform:scaleX` por eso; su estilo inline es `transform:scaleX(0)`, no
   `width:0%`.
@@ -70,11 +81,12 @@ una heurística. Corre en local, en cada toque, sin red: 0.4 ms en un plato de 4
   apilarse más allá de los 68 kcal y aún pintar la kcal en rojo con macros en meta.
 
 ## Bugs conocidos
-- El QR del resumen NO se genera con platos de ~4 items o más: qrcodejs lanza
-  `code length overflow (7908>2920)` porque buildQRText() supera la capacidad de la
-  librería. El recuadro del QR queda vacío. Anterior a las fotos (verificado contra
-  el commit 0f73bb7). Arreglo: acortar el texto (IDs y gramos en vez de nombres y
-  encabezados) o subir correctLevel/versión.
+- (Resuelto 16-sep-2026) El QR del resumen no se dibujaba NUNCA, ni con un módulo:
+  qrcodejs 1.0.0 calcula mal el tamaño en cuanto hay un carácter fuera de ASCII y
+  el texto siempre llevaba "—" y acentos. Ahora buildQRText() emite solo ASCII y
+  compacto (`P01 x1.5 225g`, `E:C01 x1 120g`, `P47 C93 G20 K752`) y la creación va
+  en try/catch con un texto de respaldo. La nota anterior ("falla con ~4 items")
+  era incorrecta.
 
 ## Tareas pendientes / ideas
 - [ ] Backend para guardar perfiles

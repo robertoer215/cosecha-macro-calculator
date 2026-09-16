@@ -27,6 +27,12 @@ const seleccion = sel.map((s, i) => {
 }).filter(Boolean);
 const ids = seleccion.map(s => s.id);
 if (new Set(ids).size !== ids.length) err.push('seleccion: hay ids repetidos');
+// Tope de módulos DISTINTOS por categoría (la letra del id): con porciones múltiples
+// un segundo módulo cubre cualquier meta y un tercero solo dispara la búsqueda.
+const porCat = {};
+ids.forEach(i => { porCat[i[0]] = (porCat[i[0]] || 0) + 1; });
+const CAT = { P: 'proteína', C: 'carbohidrato', V: 'vegetal', G: 'grasa' };
+Object.entries(porCat).forEach(([c, n]) => { if (n > 2) err.push(`seleccion: ${n} módulos de ${CAT[c] || c}; el máximo son 2 por categoría`); });
 const sin = ((body.restricciones || {}).sin || []).map(x => String(x).toLowerCase().trim()).filter(Boolean);
 
 return [{ json: {
