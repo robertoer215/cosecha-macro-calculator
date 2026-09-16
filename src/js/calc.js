@@ -165,11 +165,17 @@ export function nombreCorto(it) {
   return it.nombre.split(' ')[0].toLowerCase();
 }
 
-export function explicarCambio(antes, despues, items, meta) {
+export function explicarCambio(antes, despues, items, meta, opts = {}) {
   if (!antes || !despues) return null;
   const porId = id => items.find(i => i.id === id);
 
+  // Los tamaños que acaba de mover EL USUARIO desde "Ajustar". La app no puede
+  // firmar como suya una acción ajena: se excluyen del diff, y si no queda nada
+  // más que contar, se calla.
+  const manual = new Set(opts.manual || []);
+
   const cambios = Object.keys(despues.tamanos)
+    .filter(id => !manual.has(id))
     .filter(id => antes.tamanos[id] !== undefined && antes.tamanos[id] !== despues.tamanos[id])
     .map(id => ({
       id,
@@ -183,13 +189,26 @@ export function explicarCambio(antes, despues, items, meta) {
   if (!cambios.length) return null;
 
   // ¿Qué macro justifica el REAJUSTE? No basta comparar contra el plato anterior:
-  // entre los dos porcionados también entró un módulo nuevo, y su aportación se
-  // llevaría el mérito. El punto de comparación honesto es el contrafactual —el
-  // mismo plato de ahora, pero con los módulos previos clavados donde estaban—,
-  // que aísla lo que ganó el reajuste y nada más.
-  const referencia = meta
-    ? porcionar(items, meta, { fijos: antes.tamanos }).desviacion
-    : antes.desviacion;
+  // entre los dos porcionados también entró un módulo nuevo —o el usuario clavó
+  // un tamaño— y su aportación se llevaría el mérito. El punto de comparación
+  // honesto es el contrafactual: el mismo plato de ahora, con los módulos previos
+  // clavados donde estaban Y los que movió el usuario ya en su valor NUEVO. Así
+  // la ganancia que quede es la del reajuste automático y de nadie más.
+  let referencia = antes.desviacion, costeRef = antes.coste;
+  if (meta) {
+    const fijos = {};
+    for (const id of Object.keys(antes.tamanos)) if (!manual.has(id)) fijos[id] = antes.tamanos[id];
+    for (const id of manual) if (despues.tamanos[id] !== undefined) fijos[id] = despues.tamanos[id];
+    const contra = porcionar(items, meta, { fijos });
+    referencia = contra.desviacion;
+    costeRef = contra.coste;
+  }
+
+  // Un tamaño clavado a mano puede estrechar el dominio hasta que el mejor
+  // reajuste posible siga siendo peor que el punto de partida. Ahí no hay
+  // ningún fin nutricional que contar: mirar un solo macro diría que mejoró
+  // mientras el plato entero empeora.
+  if (despues.coste > costeRef + 1e-9) return null;
 
   let macro = null, ganancia = -Infinity;
   for (const k of ['prot', 'carb', 'gras']) {

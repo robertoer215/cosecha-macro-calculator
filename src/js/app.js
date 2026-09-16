@@ -122,33 +122,68 @@ function itemsElegidos() {
   return out;
 }
 
+// Los extras del paso 5 son parte del plato: cuentan en la barra de macros y en
+// el resumen, así que TIENEN que contar en el porcionado. Si no, la tarjeta
+// afirma "Cierra tu meta" mientras la barra justo encima marca 90/71 g.
+function extrasElegidos() {
+  return Object.keys(selExtra)
+    .filter(id => selExtra[id])
+    .map(id => ING.find(i => i.id === id))
+    .filter(Boolean);
+}
+
+// El plato completo: los módulos base y los extras ya agregados.
+function itemsPlato() { return [...itemsElegidos(), ...extrasElegidos()]; }
+
 // Solo los overrides de módulos que siguen en el plato: si el usuario ajusta un
 // módulo a mano y luego lo quita, ese tamaño no debe seguir atando al resto.
+// Los extras van siempre clavados: su tamaño lo eligió el usuario en el paso 5
+// y el porcionador no debe moverlo por su cuenta.
 function fijosVigentes(items) {
   const f = {};
-  items.forEach(it => { if (szManual[it.id] != null) f[it.id] = szManual[it.id]; });
+  items.forEach(it => {
+    if (selExtra[it.id]) f[it.id] = szExtra[it.id] ?? 1;
+    else if (szManual[it.id] != null) f[it.id] = szManual[it.id];
+  });
   return f;
 }
 
 // Corre en LOCAL, en cada toque, sin red: son 81 o 243 combinaciones de
 // aritmética entera, del orden de décimas de milisegundo.
-function recalcular() {
-  const items = itemsElegidos();
+function recalcular(manual = []) {
+  const items = itemsPlato();
   const antes = ultimoPorc;
   if (!items.length) { ultimoPorc = null; szBase = {}; porque = null; idsRecalc = []; return null; }
   const r = porcionar(items, meta, { fijos: fijosVigentes(items) });
-  // El porqué se deriva del diff de tamaños, nunca de un modelo de lenguaje.
-  porque = explicarCambio(antes, r, items, meta);
+  // El porqué se deriva del diff de tamaños, nunca de un modelo de lenguaje, y
+  // excluye lo que acaba de mover el usuario: la app no firma acciones ajenas.
+  porque = explicarCambio(antes, r, items, meta, { manual });
   idsRecalc = porque ? porque.ids : [];
   ultimoPorc = r;
-  szBase = { ...r.tamanos };
+  // szBase solo cachea los módulos BASE; el tamaño de los extras lo manda szExtra.
+  szBase = {};
+  Object.keys(r.tamanos).forEach(id => { if (!selExtra[id]) szBase[id] = r.tamanos[id]; });
   return r;
 }
 
 // A3 · Qué pasaría si tocaras ESTA tarjeta. El mismo porcionado, con el módulo
 // candidato añadido de forma hipotética.
+// El orden importa de verdad: porcionar() enumera las combinaciones en el orden
+// de `items` y conserva la primera cuando dos empatan en coste y precio. Si la
+// tarjeta simulase el plato en otro orden que el que resulta al tocarla, podría
+// prometer 100 g y $12 y entregar 150 g y $18. Se simula con el mismo recorrido.
+function itemsConCandidato(cand) {
+  const out = [];
+  CATS_STEPS.forEach(cat => {
+    const ids = [...(selBase[cat] || [])];
+    if (cand.cat === cat && !ids.includes(cand.id)) ids.push(cand.id);
+    ids.forEach(id => { const it = ING.find(i => i.id === id); if (it) out.push(it); });
+  });
+  return [...out, ...extrasElegidos()];
+}
+
 function hipotetico(it) {
-  const items = [...itemsElegidos(), it];
+  const items = itemsConCandidato(it);
   return porcionar(items, meta, { fijos: fijosVigentes(items) });
 }
 
@@ -194,7 +229,8 @@ function updateGlobalTracker() {
   $('gtv-c').textContent=`${t.carb}/${meta.carb}g`;
   $('gtv-g').textContent=`${t.gras}/${meta.gras}g`;
   const bp=$('gtb-p'),bc=$('gtb-c'),bg=$('gtb-g');
-  bp.style.width=pp+'%';bc.style.width=cp+'%';bg.style.width=gp+'%';
+  // scaleX en vez de width: sin reflow y sin animar una dimensión (ver .bar-fill)
+  bp.style.transform=`scaleX(${pp/100})`;bc.style.transform=`scaleX(${cp/100})`;bg.style.transform=`scaleX(${gp/100})`;
   bp.className='bar-fill bp'+(t.prot>meta.prot?' bover':'');
   bc.className='bar-fill bc'+(t.carb>meta.carb?' bover':'');
   bg.className='bar-fill bg2'+(t.gras>meta.gras?' bover':'');
@@ -335,8 +371,13 @@ function tarjetaHTML(it, cat) {
         </div>
         <div class="size-pills" id="pills-${it.id}" role="group" aria-label="Tamaño de ${it.nombre}">${SIZES.map(sv=>{
           const esResuelto = ultimoPorc && ultimoPorc.tamanos[it.id] === sv.k && szManual[it.id] == null;
+          // role="button" promete teclado: Enter y Espacio tienen que funcionar, o
+          // el foco entra en un callejón sin salida (WCAG 2.1.1). aria-pressed dice
+          // cuál está activo a quien no ve el relleno negro.
           return `<div class="sz-pill${sz===sv.k?' sz-on':''}${esResuelto?' sz-rec':''}" role="button" tabindex="0"
-            onclick="event.stopPropagation();setSzB('${it.id}','${cat}',${sv.k})">${sv.l}${esResuelto?'<span class="rec-lbl">Resuelto</span>':''}</div>`;
+            aria-pressed="${sz===sv.k}" aria-label="${sv.l}, ${mac(it,sv.k).g} gramos"
+            onclick="event.stopPropagation();setSzB('${it.id}','${cat}',${sv.k})"
+            onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();setSzB('${it.id}','${cat}',${sv.k});}">${sv.l}${esResuelto?'<span class="rec-lbl">Resuelto</span>':''}</div>`;
         }).join('')}</div>
       </div>
     </div>`;
@@ -380,6 +421,7 @@ function refrescarTarjetas() {
       const esResuelto = ultimoPorc && ultimoPorc.tamanos[id] === k && szManual[id] == null;
       pill.classList.toggle('sz-on', sz === k);
       pill.classList.toggle('sz-rec', esResuelto);
+      pill.setAttribute('aria-pressed', String(sz === k));
       const lblRec = pill.querySelector('.rec-lbl');
       if (esResuelto && !lblRec) pill.insertAdjacentHTML('beforeend', '<span class="rec-lbl">Resuelto</span>');
       if (!esResuelto && lblRec) lblRec.remove();
@@ -427,13 +469,20 @@ function renderPlatoButtons() {
   `;
 }
 
+// Cambiar de paso no reajusta nada: arrastrar la frase y el pulso a la pantalla
+// siguiente (o al resumen, o al perfil) sería afirmar un reajuste que no acaba
+// de ocurrir. Se limpian al navegar.
+function olvidarPorque(){ porque = null; idsRecalc = []; }
+
 window.nextCat = function() {
   platoCatIdx = Math.min(platoCatIdx + 1, 4);
+  olvidarPorque();
   renderBase();
   window.scrollTo({top:0,behavior:'smooth'});
 };
 window.prevCat = function() {
   platoCatIdx = Math.max(platoCatIdx - 1, 0);
+  olvidarPorque();
   renderBase();
   window.scrollTo({top:0,behavior:'smooth'});
 };
@@ -471,7 +520,9 @@ window.toggleAjuste = function(id){
 window.setSzB = function(id,cat,k){
   if(szManual[id] === k) delete szManual[id];
   else szManual[id] = k;
-  recalcular();
+  // Se le dice a recalcular() QUIÉN movió este tamaño, para que la línea de
+  // porqué no se atribuya la acción del usuario.
+  recalcular([id]);
   refrescarTarjetas();
 };
 
@@ -513,8 +564,8 @@ function renderSugg() {
   $('sugg-wrap').innerHTML=`<div class="sugg-box"><div class="sugg-hd"><span class="sugg-badge">Extras sugeridos</span><span class="sugg-desc">Para alcanzar tu meta de macros</span></div>${items}</div>`;
 }
 
-window.setSzE = function(id,k){ szExtra[id]=k; renderSugg(); updateGlobalTracker(); };
-window.toggleE = function(id){ if(selExtra[id])delete selExtra[id]; else{selExtra[id]=true;if(!szExtra[id])szExtra[id]=1;} renderSugg(); updateGlobalTracker(); };
+window.setSzE = function(id,k){ szExtra[id]=k; recalcular([id]); renderSugg(); updateGlobalTracker(); };
+window.toggleE = function(id){ if(selExtra[id])delete selExtra[id]; else{selExtra[id]=true;if(!szExtra[id])szExtra[id]=1;} recalcular([id]); renderSugg(); updateGlobalTracker(); };
 
 function buildQRText() {
   const lines=['COSECHA — ORDEN DE COCINA',''];
@@ -579,6 +630,8 @@ window.goResumen = function() {
 };
 
 window.goStep = function(n) {
+  olvidarPorque();
+  renderPorque();
   document.querySelectorAll('.screen').forEach((s,i)=>s.classList.toggle('active',i===n));
   for(let i=0;i<3;i++){
     const d=$('d'+i),l=$('l'+i);

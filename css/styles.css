@@ -16,7 +16,10 @@ body{font-family:'Georgia',serif;background:#FAFAF8;color:#1a1a18;min-height:100
 .gt-bar-lbl{font-size:8px;letter-spacing:1px;text-transform:uppercase;font-family:'Inter',sans-serif;color:var(--muted-ink)}
 .gt-bar-val{font-size:8px;font-family:'Inter',sans-serif;color:var(--text)}
 .bar-bg{height:2px;background:var(--border);border-radius:2px;overflow:hidden}
-.bar-fill{height:100%;border-radius:2px;transition:width .4s ease}
+/* El modo IA reescribe estas barras en CADA toque. Animar `width` obliga a un
+   reflow por toque e incumple la regla de animar solo opacity y transform, así
+   que la barra ocupa el 100% y lo que se anima es la escala horizontal. */
+.bar-fill{height:100%;width:100%;border-radius:2px;transform-origin:left center;transform:scaleX(0);transition:transform .4s ease}
 .bp{background:var(--green)}.bc{background:var(--blue)}.bg2{background:var(--amber)}.bover{background:var(--accent)!important}
 .stepper{display:flex;align-items:center;padding:1.75rem 2.5rem 0}
 .s-node{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer}
@@ -279,9 +282,15 @@ select option{font-family:sans-serif;background:#FAFAF8}
   40%{box-shadow:inset 0 0 0 2px var(--accent)}
   100%{box-shadow:inset 0 0 0 0 var(--accent)}
 }
+/* Enumerar selectores dejaba fuera todo lo preexistente: el check al seleccionar,
+   la entrada de pantalla, los puntos del stepper y las propias barras de macros
+   seguían moviéndose con reduce activo. Se apaga TODO y luego se exceptúa nada. */
 @media (prefers-reduced-motion: reduce){
-  .i-price,.i-size-val,.i-fit{transition:none}
-  .recalc{animation:none}
-  .i-img,.icard,.i-photo::before,.sz-pill,.btn-ajustar{transition:none}
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+    scroll-behavior:auto!important;
+  }
   .icard:hover .i-img{transform:none}
 }
