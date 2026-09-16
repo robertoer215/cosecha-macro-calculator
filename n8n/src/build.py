@@ -35,10 +35,13 @@ SYS = (
  'armar_ticket (precios y total), calculadora (comprueba la suma) o consultar_menu (catalogo con\n'
  'filtros por categoria, alergeno y tag). Nunca la inventes ni la deduzcas.\n\n'
  'AUTORIA: si un tamano viene en tamanos_fijados_por_el_cliente, lo fijo EL CLIENTE, no el\n'
- 'sistema: no digas que el sistema lo eligio ni por que. Si combinaciones_evaluadas es 1, el\n'
- 'sistema no eligio nada. Si la propuesta de cierre reajusta otras lineas, tamanos_resultantes\n'
- 'dice exactamente cuales y a que tamano: nombralas asi o no lo menciones; nunca inventes un\n'
- 'mecanismo ("cambiar X por Y") que no este en esos datos.\n\n'
+ 'sistema: no digas que el sistema lo eligio ni por que. Si el_sistema_eligio_algun_tamano es\n'
+ 'false, el sistema no eligio nada. No menciones cuantas combinaciones se evaluaron.\n\n'
+ 'PROPUESTA DE CIERRE: si existe, describela SOLO parafraseando propuesta_cierre.descripcion,\n'
+ 'que ya dice que se anade, que aporta, que otras lineas cambian de tamano y cuanto cuesta. La\n'
+ 'propuesta siempre ANADE un modulo; NUNCA digas "en lugar de", "reemplazar", "cambiar X por Y"\n'
+ 'ni "quitar": nada se quita. Si no hay propuesta y algun macro queda fuera de meta, la razon\n'
+ 'es EXACTAMENTE motivo_sin_propuesta; no inventes otra.\n\n'
  'ALERGENOS: los del catalogo estan derivados del nombre del plato y NO los ha verificado cocina.\n'
  'Si el usuario pide excluir alguno, dilo: no los presentes como garantia.\n\n'
  'ESTILO: espanol de MEXICO. Tutea de tu: "tienes", "quieres", "puedes". NUNCA vos ni voseo\n'
@@ -54,9 +57,9 @@ AGENT_TEXT = ('={{ JSON.stringify({ objetivo: $json.meta, restricciones_sin: $js
               'macros_totales: $json.macros_totales, desviacion: $json.desviacion, '
               'dentro_de_umbral: $json.dentro_de_umbral, total_mxn: $json.total, '
               'tamanos_fijados_por_el_cliente: $json.seleccion.filter(s => s.tamano != null).map(s => s.id + "=" + s.tamano), '
-              'combinaciones_evaluadas: $json.combinaciones_evaluadas, '
-              'propuesta_cierre: $json.propuesta_cierre, modulos_rechazados: $json.rechazados, '
-              'umbral_g: 4 }) }}')
+              'el_sistema_eligio_algun_tamano: $json.combinaciones_evaluadas > 1, '
+              'propuesta_cierre: $json.propuesta_cierre, motivo_sin_propuesta: $json.motivo_sin_propuesta, '
+              'modulos_rechazados: $json.rechazados, umbral_g: 4 }) }}')
 
 REG = ("={{ JSON.stringify({ values: [[ new Date().toISOString(), $json.pedido_id, "
   "$('Resolver plato').first().json.meta.kcal, $('Resolver plato').first().json.meta.prot, "

@@ -277,6 +277,10 @@ select option{font-family:sans-serif;background:#FAFAF8}
 .btn-ajustar[aria-expanded="true"]{background:var(--text);border-color:var(--text);color:#fff}
 .btn-ajustar:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .icard:not(.sel) .btn-ajustar{visibility:hidden;pointer-events:none}
+/* `hidden` tiene que ganar al display:inline-flex del botón: en la tarjeta de un extra no hay nada que ajustar. */
+.btn-ajustar[hidden]{display:none}
+.icard:focus-visible{outline:2px solid var(--accent);outline-offset:-3px}
+.icard.tope:focus-visible{outline-color:var(--border-strong)}
 
 /* A5 · La línea de porqué. Convierte el control que se quitó en inteligencia
    percibida en vez de en pérdida de control. */

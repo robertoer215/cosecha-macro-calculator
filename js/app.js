@@ -135,6 +135,24 @@ function extrasElegidos() {
 // El plato completo: los módulos base y los extras ya agregados.
 function itemsPlato() { return [...itemsElegidos(), ...extrasElegidos()]; }
 
+// Módulos de una categoría YA en el plato, base o extra. El tope por categoría
+// cuenta los dos: si no, el paso 5 ofrecía como extra el tercer carbohidrato que
+// el paso 2 acababa de negar, y n8n rechazaba el plato con 400.
+function enCategoria(cat) {
+  return (selBase[cat] || []).length + extrasElegidos().filter(e => e.cat === cat).length;
+}
+
+// "Elige hasta 2 · 1 elegido + 1 extra": el encabezado dice el tope y cuenta lo
+// mismo que cuenta el tope, base y extras, para que nunca contradiga a la tarjeta
+// que dice "Máximo 2 por categoría".
+function textoEncabezado(cat) {
+  const base = (selBase[cat] || []).length, extra = extrasElegidos().filter(e => e.cat === cat).length;
+  let t = `Elige hasta ${MAX_MODULOS_CAT}`;
+  if (base) t += ` · ${base} elegido${base > 1 ? 's' : ''}`;
+  if (extra) t += `${base ? ' +' : ' ·'} ${extra} extra`;
+  return t;
+}
+
 // Solo los overrides de módulos que siguen en el plato: si el usuario ajusta un
 // módulo a mano y luego lo quita, ese tamaño no debe seguir atando al resto.
 // Los extras van siempre clavados: su tamaño lo eligió el usuario en el paso 5
@@ -148,8 +166,8 @@ function fijosVigentes(items) {
   return f;
 }
 
-// Corre en LOCAL, en cada toque, sin red: son 81 o 243 combinaciones de
-// aritmética entera, del orden de décimas de milisegundo.
+// Corre en LOCAL, en cada toque, sin red: cientos de miles de combinaciones como
+// mucho, resueltas por encuentro en el medio en pocos milisegundos.
 function recalcular(manual = []) {
   const items = itemsPlato();
   const antes = ultimoPorc;
@@ -296,7 +314,7 @@ function renderBase() {
   const selCount = (selBase[cat]||[]).length;
 
   let html = renderSubNav();
-  html += `<div class="cat-sec"><div class="cat-hd"><span class="cat-nm">${CAT_LABEL[cat]}</span><span class="cat-ht">Elige uno o más${selCount ? ` · ${selCount} elegido${selCount>1?'s':''}` : ''}</span></div><div class="items-grid">`;
+  html += `<div class="cat-sec"><div class="cat-hd"><span class="cat-nm">${CAT_LABEL[cat]}</span><span class="cat-ht">${textoEncabezado(cat)}</span></div><div class="items-grid">`;
   items.forEach(it => { html += tarjetaHTML(it, cat); });
   html += `</div></div><div id="cierre-wrap"></div>`;
   $('base-mods').innerHTML = html;
@@ -324,11 +342,13 @@ function renderCierre() {
 
   // Solo donde el inventario se queda corto de verdad, con al menos un módulo de
   // la categoría ya elegido y sitio para otro: si no, esto sería la carta otra vez.
-  const nCat = (selBase[cat] || []).length;
-  if (cat !== 'carbohidrato' || !nCat || nCat >= MAX_MODULOS_CAT) { wrap.innerHTML = ''; return; }
+  const nCat = enCategoria(cat);
+  if (cat !== 'carbohidrato' || !(selBase[cat] || []).length || nCat >= MAX_MODULOS_CAT) { wrap.innerHTML = ''; return; }
 
   const candidatos = ING.filter(i => i.cat === 'carbohidrato' && !selExtra[i.id]);
-  const p = proponerCierre(plato, meta, candidatos, { fijos: fijosVigentes(plato) });
+  // `colocar`: el candidato se enumera donde quedará al pulsar "+ Añadir", para
+  // que la caja prometa exactamente lo que ocurre (empates incluidos).
+  const p = proponerCierre(plato, meta, candidatos, { fijos: fijosVigentes(plato), colocar: (_, c) => itemsConCandidato(c) });
   if (!p) { wrap.innerHTML = ''; return; }
 
   const actual = ultimoPorc ? ultimoPorc.desviacion : null;
@@ -367,7 +387,7 @@ function renderCierre() {
 function estadoTarjeta(it, cat) {
   const esExtra = !!selExtra[it.id];
   const isSel = esExtra || (selBase[cat]||[]).includes(it.id);
-  const tope = !isSel && (selBase[cat]||[]).length >= MAX_MODULOS_CAT;
+  const tope = !isSel && enCategoria(cat) >= MAX_MODULOS_CAT;
   const r = isSel || tope ? ultimoPorc : hipotetico(it);
   const sz = esExtra ? (szExtra[it.id] ?? 1) : isSel ? (szBase[it.id] ?? 1) : (!tope && r ? r.tamanos[it.id] : 1);
   const m = mac(it, sz), pr = precio(it, sz);
@@ -381,7 +401,13 @@ function tarjetaHTML(it, cat) {
   const { isSel, esExtra, tope, sz, m, pr, fit } = estadoTarjeta(it, cat);
   const abierto = !!ajustando[it.id];
 
-  return `<div class="icard${isSel?' sel':''}${tope?' tope':''}${abierto?' ajustando':''}${idsRecalc.includes(it.id)?' recalc':''}" data-id="${it.id}"${tope?' aria-disabled="true"':''} onclick="selBI('${it.id}','${cat}')">
+  // La tarjeta es un botón también para el teclado: Tab llega, Enter y Espacio
+  // eligen o quitan, aria-pressed dice el estado y aria-disabled el tope. El
+  // keydown solo actúa si el foco está en la propia tarjeta, no en sus píldoras.
+  return `<div class="icard${isSel?' sel':''}${tope?' tope':''}${abierto?' ajustando':''}${idsRecalc.includes(it.id)?' recalc':''}" data-id="${it.id}"
+      role="button" tabindex="0" aria-pressed="${isSel}"${tope?' aria-disabled="true"':''} aria-label="${it.nombre}"
+      onclick="selBI('${it.id}','${cat}')"
+      onkeydown="if(event.target===this&&(event.key==='Enter'||event.key===' ')){event.preventDefault();selBI('${it.id}','${cat}');}">
       <div class="i-photo">${foto(it,'i-img')}<div class="i-check"></div></div>
       <div class="i-body">
         <div class="i-top"><div class="i-name">${it.nombre}</div></div>
@@ -419,8 +445,7 @@ function refrescarTarjetas() {
   // El contador del encabezado también se actualiza en sitio: si no, se queda
   // congelado en el valor que tenía al entrar al paso.
   const ht = document.querySelector('.cat-ht');
-  const n = (selBase[cat]||[]).length;
-  if (ht) ht.textContent = `Elige uno o más${n ? ` · ${n} elegido${n>1?'s':''}` : ''}`;
+  if (ht) ht.textContent = textoEncabezado(cat);
   document.querySelectorAll('.icard[data-id]').forEach(card => {
     const id = card.dataset.id;
     const it = ING.find(i => i.id === id);
@@ -428,6 +453,7 @@ function refrescarTarjetas() {
     const { isSel, esExtra, tope, sz, m, pr, fit } = estadoTarjeta(it, cat);
 
     card.classList.toggle('sel', isSel);
+    card.setAttribute('aria-pressed', String(isSel));
     card.classList.toggle('tope', tope);
     if (tope) card.setAttribute('aria-disabled', 'true'); else card.removeAttribute('aria-disabled');
     const btnA = card.querySelector('.btn-ajustar'); if (btnA) btnA.hidden = esExtra;
@@ -514,7 +540,7 @@ window.prevCat = function() {
 window.selBI = function(id,cat) {
   // Un extra del paso 5 ya está en el plato: tocarlo lo quita, no lo duplica.
   if (selExtra[id]) {
-    delete selExtra[id]; delete szExtra[id];
+    delete selExtra[id]; delete szExtra[id]; delete szManual[id]; delete ajustando[id];
     recalcular();
     refrescarTarjetas();
     return;
@@ -522,7 +548,7 @@ window.selBI = function(id,cat) {
   if(!selBase[cat]) selBase[cat]=[];
   const idx=selBase[cat].indexOf(id);
   // Al tope de módulos de la categoría la tarjeta ya lo dice; el toque no hace nada.
-  if (idx === -1 && selBase[cat].length >= MAX_MODULOS_CAT) return;
+  if (idx === -1 && enCategoria(cat) >= MAX_MODULOS_CAT) return;
   if(idx>-1){
     selBase[cat].splice(idx,1);
     if(!selBase[cat].length) delete selBase[cat];
@@ -539,6 +565,7 @@ window.selBI = function(id,cat) {
 
 // "Ajustar" — revelación progresiva. Quien no lo toque nunca sabrá que existe.
 window.toggleAjuste = function(id){
+  if (selExtra[id]) return;              // el tamaño de un extra se ajusta en el paso 5
   ajustando[id] = !ajustando[id];
   const card = document.querySelector(`.icard[data-id="${id}"]`);
   if(!card) return;
@@ -551,6 +578,7 @@ window.toggleAjuste = function(id){
 // resto a su alrededor, en vez de ignorar el override o sacar el módulo de la
 // cuenta. Volver a tocar el tamaño resuelto devuelve el módulo al automático.
 window.setSzB = function(id,cat,k){
+  if (selExtra[id]) return;              // un extra no se clava desde aquí
   if(szManual[id] === k) delete szManual[id];
   else szManual[id] = k;
   // Se le dice a recalcular() QUIÉN movió este tamaño, para que la línea de
@@ -569,9 +597,11 @@ function renderSugg() {
   // directa imprimiría artefactos tipo "6.699999999999999g" en pantalla.
   const gP=meta.prot-t.prot,gC=meta.carb-t.carb,gG=Math.round((meta.gras-t.gras)*10)/10;
   const suggs=[];
-  if(gP>8){const b=ING.filter(i=>i.cat==='proteina'&&!(selBase.proteina||[]).includes(i.id)).sort((a,b2)=>b2.prot-a.prot)[0];if(b)suggs.push({it:b,why:`Faltan ~${gP}g de proteína para alcanzar tu meta.`,m:'Proteína'});}
-  if(gC>10){const b=ING.filter(i=>i.cat==='carbohidrato'&&!(selBase.carbohidrato||[]).includes(i.id)).sort((a,b2)=>b2.carb-a.carb)[0];if(b)suggs.push({it:b,why:`Faltan ~${gC}g de carbohidratos para energía sostenida.`,m:'Carbohidrato'});}
-  if(gG>5){const b=ING.filter(i=>i.cat==='grasa'&&!(selBase.grasa||[]).includes(i.id)).sort((a,b2)=>b2.gras-a.gras)[0];if(b)suggs.push({it:b,why:`Faltan ~${gG}g de grasas saludables.`,m:'Grasa'});}
+  // Un extra cuenta para el tope de su categoría: si ya hay dos módulos, no se ofrece.
+  const libre=cat=>enCategoria(cat)<MAX_MODULOS_CAT;
+  if(gP>8&&libre('proteina')){const b=ING.filter(i=>i.cat==='proteina'&&!(selBase.proteina||[]).includes(i.id)&&!selExtra[i.id]).sort((a,b2)=>b2.prot-a.prot)[0];if(b)suggs.push({it:b,why:`Faltan ~${gP}g de proteína para alcanzar tu meta.`,m:'Proteína'});}
+  if(gC>10&&libre('carbohidrato')){const b=ING.filter(i=>i.cat==='carbohidrato'&&!(selBase.carbohidrato||[]).includes(i.id)&&!selExtra[i.id]).sort((a,b2)=>b2.carb-a.carb)[0];if(b)suggs.push({it:b,why:`Faltan ~${gC}g de carbohidratos para energía sostenida.`,m:'Carbohidrato'});}
+  if(gG>5&&libre('grasa')){const b=ING.filter(i=>i.cat==='grasa'&&!(selBase.grasa||[]).includes(i.id)&&!selExtra[i.id]).sort((a,b2)=>b2.gras-a.gras)[0];if(b)suggs.push({it:b,why:`Faltan ~${gG}g de grasas saludables.`,m:'Grasa'});}
   if(!suggs.length){
     $('sugg-wrap').innerHTML=`<div class="sugg-box"><div class="sugg-ok"><div class="sugg-ok-mark">✓</div><div class="sugg-ok-lbl">Tu plato ya cubre tu meta nutricional.</div></div></div>`;
     return;
@@ -598,7 +628,15 @@ function renderSugg() {
 }
 
 window.setSzE = function(id,k){ szExtra[id]=k; recalcular([id]); renderSugg(); updateGlobalTracker(); };
-window.toggleE = function(id){ if(selExtra[id])delete selExtra[id]; else{selExtra[id]=true;if(!szExtra[id])szExtra[id]=1;} recalcular([id]); renderSugg(); updateGlobalTracker(); };
+window.toggleE = function(id){
+  if(selExtra[id]){ delete selExtra[id]; }
+  else {
+    const it=ING.find(i=>i.id===id);
+    if(it && enCategoria(it.cat)>=MAX_MODULOS_CAT) return;   // tope por categoría, base o extra
+    selExtra[id]=true; if(!szExtra[id])szExtra[id]=1;
+  }
+  recalcular([id]); renderSugg(); updateGlobalTracker();
+};
 
 // El texto del QR es COMPACTO y solo ASCII: qrcodejs 1.0.0 calcula mal el tamaño
 // en cuanto hay un carácter fuera de ASCII (un acento bastaba para desbordar) y

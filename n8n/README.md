@@ -27,6 +27,16 @@ respuesta incluye siempre la traza:
 }
 ```
 
+Además de las cifras, `Verificar y armar` aplica tres guardas léxicas deterministas
+y rechaza el texto del modelo si: describe la propuesta como un **reemplazo**
+("en lugar de", "cambiar X por Y") cuando lo que sigue nombra un módulo (una
+comparación de precio "119 MXN en lugar de 147" pasa); usa **voseo**; o pasa de
+**tres frases**. El motivo queda en `auditoria.motivos_rechazo_del_texto`. El
+respaldo en código usa `propuesta_cierre.descripcion` (mecanismo exacto: qué se
+añade, qué líneas cambian de tamaño, cuánto cuesta) y `motivo_sin_propuesta`
+(por qué no hay propuesta: dentro de umbral, categorías al tope, nada mejora).
+El agente recibe esos mismos dos campos y la instrucción de parafrasearlos.
+
 Esa auditoría es más fuerte que la traza de herramientas: no comprueba que el
 modelo *pudo* consultar el dato, sino que *no escribió* ninguno que no fuera el
 calculado. Medido sobre 10 llamadas seguidas: 10/10 sin cifras inventadas.

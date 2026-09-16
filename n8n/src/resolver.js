@@ -90,14 +90,37 @@ const cuadra = suma.kcal === r.macros.kcal && suma.prot === r.macros.prot
 if (!cuadra) avisos.push('DISCREPANCIA: la suma de las líneas no cuadra con el porcionado. Gana la suma de las líneas.');
 
 // ── propuesta de cierre: el error, el valor percibido y el upsell, a la vez ──
-let propuesta = null;
-if (!r.dentroDeUmbral) {
+let propuesta = null, motivoSinPropuesta = null;
+if (r.dentroDeUmbral) {
+  motivoSinPropuesta = 'El plato ya cae dentro del umbral de ±4 g en los tres macros: no hay nada que cerrar.';
+} else {
   const porCat = {};
   items.forEach(i => { porCat[i.categoria] = (porCat[i.categoria] || 0) + 1; });
-  const candidatos = consultarMenu({ sin: v.sin })
-    .filter(c => !items.some(i => i.id === c.id))
-    .filter(c => (porCat[c.categoria] || 0) < MAX_MODULOS_CAT);
+  const sinTope = consultarMenu({ sin: v.sin }).filter(c => !items.some(i => i.id === c.id));
+  const candidatos = sinTope.filter(c => (porCat[c.categoria] || 0) < MAX_MODULOS_CAT);
   propuesta = proponerCierre(items, v.meta, candidatos, { fijos });
+  // Si no hay propuesta, el agente recibe el POR QUÉ calculado; si no, se lo inventa.
+  if (!propuesta) {
+    if (!sinTope.length) motivoSinPropuesta = 'No queda ningún módulo disponible que cumpla las restricciones.';
+    else if (!candidatos.length) motivoSinPropuesta = `Todas las categorías tienen ya ${MAX_MODULOS_CAT} módulos, que es el máximo: no se puede añadir nada más.`;
+    else motivoSinPropuesta = 'Ningún módulo adicional acercaría el plato a la meta más de lo que ya está.';
+  }
+}
+// Descripción del mecanismo de la propuesta, escrita en código: la propuesta AÑADE
+// un módulo y puede reajustar el tamaño de otros; nunca quita ni reemplaza nada.
+// El agente la parafrasea; sin ella narraba "cambiar X por Y" que no ocurría.
+if (propuesta) {
+  const LBLM = { prot: 'proteína', carb: 'carbohidratos', gras: 'grasas' };
+  const cambios = [];
+  for (const it of items) {
+    const antesT = ETQ[r.tamanos[it.id]], despT = propuesta.tamanos_resultantes[it.id];
+    if (despT && despT !== antesT) cambios.push(`${it.nombre} pasa de ${antesT} a ${despT}`);
+  }
+  const aporta = propuesta.aporta[propuesta.macro_que_cierra];
+  const precioTxt = propuesta.precio_extra >= 0 ? `+${propuesta.precio_extra} MXN` : `${propuesta.precio_extra} MXN (el plato sale más barato)`;
+  propuesta.descripcion = `Se AÑADE ${propuesta.nombre} en ${propuesta.tamano} (${propuesta.g} g), que aporta ${aporta} g de ${LBLM[propuesta.macro_que_cierra]}. `
+    + (cambios.length ? `Al añadirlo, ${cambios.join(' y ')}; nada se quita. ` : 'Las demás líneas no cambian. ')
+    + `Diferencia de precio: ${precioTxt}.`;
 }
 
 const numeros = {};
@@ -111,6 +134,7 @@ return [{ json: {
   dentro_de_umbral: r.dentroDeUmbral,
   total: suma.total,
   propuesta_cierre: propuesta,
+  motivo_sin_propuesta: motivoSinPropuesta,
   combinaciones_evaluadas: r.combinacionesEvaluadas,
   suma_cuadra: cuadra,
   catalogo_filas: catalogo.length,

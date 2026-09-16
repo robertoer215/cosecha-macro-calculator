@@ -48,8 +48,11 @@ con 3P+3C+3V; por eso además hay tope de módulos por categoría (MAX_MODULOS_C
   tarjeta afirma "Cierra tu meta" mientras la barra marca otra cosa. Y en el paso 2
   su tarjeta se pinta ELEGIDA ("En tu plato como extra"): tocarla lo quita, no lo
   duplica. El "Cierre sugerido" también se calcula sobre el plato con extras.
-- Tope de 2 módulos distintos por categoría: la tercera tarjeta dice "Máximo 2 por
-  categoría", no promete hipotético y el toque no hace nada. n8n devuelve 400.
+- Tope de 2 módulos distintos por categoría, contando base Y extras (enCategoria):
+  la tercera tarjeta dice "Máximo 2 por categoría", no promete hipotético y el toque
+  no hace nada; el paso 5 no ofrece extras de una categoría al tope; n8n devuelve 400.
+- Las tarjetas son operables con teclado (role=button, tabindex=0, aria-pressed,
+  Enter/Espacio); el keydown solo actúa si el foco está en la propia tarjeta.
 - La línea de porqué se deriva del DIFF del porcionado, nunca de un modelo. Mide
   contra un CONTRAFACTUAL (el plato de ahora con los previos clavados donde estaban
   y el módulo nuevo y lo manual clavados en su valor FINAL) y excluye lo que movió

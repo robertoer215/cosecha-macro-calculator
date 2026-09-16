@@ -468,8 +468,11 @@ test('los tamaños fijados con Ajustar pueden ir hasta el tope, y se respetan', 
 // Lo que la revisión adversarial encontró en cfbc3fd
 // ─────────────────────────────────────────────────────────────────────────────
 
-test('cada cambio citado en el porqué acerca de verdad SU macro, aplicado él solo sobre el contrafactual', () => {
-  let citados = 0;
+test('cada cambio citado en el porqué aporta de verdad a SU macro, dado todo lo demás que hizo el sistema', () => {
+  // Criterio MARGINAL: la desviación final de ese macro es menor CON el cambio que
+  // sin él (el módulo devuelto a su tamaño previo). Es lo que hace citable la mitad
+  // compensatoria de un intercambio, que sola empeoraría todo.
+  let citados = 0, mantener = 0;
   for (const peso of [55, 75, 95]) for (const obj of ['perder_grasa','mantener','ganar_musculo','rendimiento'])
   for (const c of ['C01','C02','C03']) for (const g of ['G01','G02','G03']) for (const p of ['P01','P02']) {
     const meta = calcularMeta({ sexo:'masculino', edad:30, peso, altura:175, comidas:3, objetivo:obj, actividad:'moderado' });
@@ -484,18 +487,51 @@ test('cada cambio citado en el porqué acerca de verdad SU macro, aplicado él s
       for (const c2 of t.cambios) {
         const it = con.find(i => i.id === c2.id);
         const delta = mac(it, c2.a)[t.macro] - mac(it, c2.de)[t.macro];
-        assert.ok(Math.abs(ref[t.macro]) - Math.abs(ref[t.macro] + delta) > 0,
-          `"${ex.texto}" — ${c2.id} ${c2.de}→${c2.a} no acerca ${t.macro} (delta ${delta}, ref ${ref[t.macro]})`);
-        // y la frase nombra ese módulo con su etiqueta de tamaño
-        assert.ok(ex.texto.includes(`${nombreCorto(it)} a ${SIZES.find(s => s.k === c2.a).l}`), `la frase no nombra ${c2.id}: ${ex.texto}`);
+        const finalDev = despues.desviacion[t.macro];
+        assert.ok(Math.abs(finalDev - delta) - Math.abs(finalDev) > 0,
+          `"${ex.texto}" — ${c2.id} ${c2.de}→${c2.a} no aporta a ${t.macro} (final ${finalDev}, sin él ${finalDev - delta})`);
+        // con tres o más cambios en un tramo la frase los colapsa ("Reajusté 3 módulos"):
+        // solo se exige el nombre cuando el tramo tiene uno o dos
+        if (t.cambios.length <= 2) assert.ok(ex.texto.includes(`${nombreCorto(it)} a ${SIZES.find(s => s.k === c2.a).l}`), `la frase no nombra ${c2.id}: ${ex.texto}`);
+        else assert.ok(ex.texto.includes(`${t.cambios.length} módulos`), `tramo colapsado sin conteo: ${ex.texto}`);
         citados++;
       }
-      // el fin de cada tramo coincide con el signo de la referencia
-      const fin = ref[t.macro] < 0 ? 'para cerrar' : 'para no pasarte de';
-      assert.ok(ex.texto.includes(fin), `fin incorrecto para ${t.macro}: ${ex.texto}`);
+      // el fin coincide con lo que pasó en conjunto con ese macro
+      const agregada = Math.abs(ref[t.macro]) - Math.abs(despues.desviacion[t.macro]);
+      if (t.fin === 'mantener') { mantener++; assert.ok(agregada <= 1e-9, `"mantener" con ganancia agregada ${agregada}`); }
+      else { assert.ok(agregada > 0, `"${t.fin}" sin ganancia agregada en ${t.macro}`);
+             assert.equal(t.fin, ref[t.macro] < 0 ? 'cerrar' : 'no_pasarte'); }
+      assert.ok(ex.texto.includes({ cerrar: 'para cerrar', no_pasarte: 'para no pasarte de', mantener: 'para mantener' }[t.fin]));
     }
+    // ningún cambio real se cita fuera de tramos, y ningún tramo cita lo que no cambió
+    for (const t of ex.tramos) for (const c2 of t.cambios) assert.notEqual(antes.tamanos[c2.id], despues.tamanos[c2.id]);
   }
   assert.ok(citados > 20, `pocos cambios citados para probar nada: ${citados}`);
+});
+
+test('proponerCierre con `colocar` promete exactamente el plato que resulta al aceptar', () => {
+  // El orden importa en los empates: la caja debe enumerar el candidato donde
+  // quedará al pulsar "+ Añadir", no al final.
+  const ORDEN = ['proteina', 'carbohidrato', 'vegetal', 'grasa'];
+  const colocar = (its, c) => {
+    const out = [...its];
+    let pos = out.length;
+    for (let i = 0; i < out.length; i++) if (ORDEN.indexOf(out[i].cat) > ORDEN.indexOf(c.cat)) { pos = i; break; }
+    out.splice(pos, 0, c);
+    return out;
+  };
+  let n = 0;
+  for (const prot of [40, 55, 80]) for (const carb of [65, 110, 160]) for (const gras of [18, 32]) {
+    const meta = { prot, carb, gras };
+    const items = [id('P01'), id('C01'), id('V04'), id('G02')];
+    const p = proponerCierre(items, meta, CARB, { colocar });
+    if (!p) continue;
+    const real = porcionar(colocar(items, p.it), meta);
+    assert.deepEqual(p.resultado.tamanos, real.tamanos, `la caja prometió ${JSON.stringify(p.resultado.tamanos)} y ocurre ${JSON.stringify(real.tamanos)}`);
+    assert.equal(p.precio, real.precio);
+    n++;
+  }
+  assert.ok(n > 0);
 });
 
 test('el motor por encuentro en el medio da lo mismo que la enumeración plana', () => {

@@ -41,7 +41,7 @@ function porcionar(items, meta, opts) {
   }));
   const total = opciones.reduce((a, d) => a * d.length, 1);
   // Encuentro en el medio: réplica exacta de js/calc.js. Mismo espacio de búsqueda,
-  // mismo óptimo; con ocho módulos 1,7 M de cruces en milisegundos, donde la
+  // mismo óptimo; con ocho módulos 230.400 cruces en milisegundos, donde la
   // enumeración plana tumbaba el task runner de n8n (>30 s) con el mismo plato.
   const enumerar = doms => {
     let acc = [{ prot: 0, carb: 0, gras10: 0, kcal: 0, precio: 0, fs: [] }];

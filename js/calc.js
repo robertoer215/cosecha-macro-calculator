@@ -122,7 +122,7 @@ export function porcionar(items, meta, opts = {}) {
   // ENCUENTRO EN EL MEDIO. Se enumeran las dos mitades del plato por separado y
   // se cruzan: es el MISMO espacio de búsqueda y el mismo óptimo global, pero cada
   // combinación cuesta tres sumas en vez de n llamadas a mac(). Con ocho módulos
-  // (2P+2C+2V+2G) son 1,7 M de cruces en ~15 ms; la enumeración plana tardaba
+  // (2P+2C+2V+2G) son 230.400 cruces en ~2 ms; la enumeración plana tardaba
   // segundos y con 3P+3C+3V un solo toque llegaba a 3,6 s.
   const enumerar = doms => {
     let acc = [{ prot: 0, carb: 0, gras10: 0, kcal: 0, precio: 0, fs: [] }];
@@ -224,19 +224,23 @@ export function explicarCambio(antes, despues, items, meta, opts = {}) {
   // Si el reajuste no mejora el plato entero, no hay fin nutricional que contar.
   if (despues.coste > costeRef + 1e-9) return null;
 
-  // Cada cambio se atribuye SOLO al macro que ese cambio, aplicado por sí solo
-  // sobre el contrafactual, acerca de verdad a la meta. Un cambio que no acerca
-  // ninguno (vino del desempate por precio) no se cuenta: mentir un porqué sería
-  // peor que callar. "Bajé guacamole a Pequeña para no pasarte de tu proteína"
-  // no puede volver a salir cuando ese cambio movió 0 g de proteína.
+  // Cada cambio se acredita al macro donde su aportación MARGINAL es mayor: la
+  // diferencia entre el plato final y el plato final SIN ese cambio (ese módulo
+  // devuelto a su tamaño previo). Con eso un intercambio —bajar camote y subir
+  // arroz para quitar grasa sin perder carbohidrato— se cuenta entero: cada
+  // mitad sola empeora, pero dado lo demás, el camote quita grasa y el arroz
+  // repone carbohidrato. Un cambio sin aportación positiva en ningún macro (vino
+  // del desempate por precio) no se cita: mentir un porqué sería peor que callar.
   const MACROS = ['prot', 'carb', 'gras'];
+  const finalDev = despues.desviacion;
   const atribuir = c => {
     const de = mac(c.it, c.de), a = mac(c.it, c.a);
     let macro = null, mejor = 1e-9;
     for (const k of MACROS) {
       const delta = a[k] - de[k];
       if (Math.abs(delta) < 1e-9) continue;
-      const gan = Math.abs(referencia[k]) - Math.abs(referencia[k] + delta);
+      const sinEl = finalDev[k] - delta;
+      const gan = Math.abs(sinEl) - Math.abs(finalDev[k]);
       if (gan > mejor) { mejor = gan; macro = k; }
     }
     return macro;
@@ -244,11 +248,25 @@ export function explicarCambio(antes, despues, items, meta, opts = {}) {
   const utiles = cambios.map(c => ({ ...c, macro: atribuir(c) })).filter(c => c.macro);
   if (!utiles.length) return null;
 
-  // Ganancia agregada del macro principal, contra el contrafactual: es la cifra
-  // que los tests contrastan y la que justifica hablar.
-  const macro = utiles[0].macro;
-  const ganancia = Math.abs(referencia[macro]) - Math.abs(despues.desviacion[macro]);
-  if (ganancia <= 0) return null;
+  // Un tramo por macro. El fin de cada tramo depende de si ese macro, en
+  // conjunto, mejoró respecto al contrafactual: "cerrar" si veníamos cortos, "no
+  // pasarte de" si veníamos largos, y "mantener" cuando el cambio solo evita que
+  // otro cambio lo estropee (la mitad compensatoria de un intercambio).
+  const grupos = [];
+  for (const c of utiles) {
+    let g = grupos.find(x => x.macro === c.macro);
+    if (!g) {
+      const agregada = Math.abs(referencia[c.macro]) - Math.abs(finalDev[c.macro]);
+      g = { macro: c.macro, cambios: [], ganancia: agregada,
+            fin: agregada > 1e-9 ? (referencia[c.macro] < 0 ? 'cerrar' : 'no_pasarte') : 'mantener' };
+      grupos.push(g);
+    }
+    g.cambios.push(c);
+  }
+  // Primero los tramos que mejoran de verdad; si ninguno lo hace, no hay porqué.
+  grupos.sort((x, y) => y.ganancia - x.ganancia);
+  if (grupos[0].ganancia <= 0) return null;
+  const macro = grupos[0].macro, ganancia = grupos[0].ganancia;
 
   // El nombre del tamaño conserva su mayúscula ("Grande"): es una etiqueta de la
   // carta, no una palabra corriente de la frase.
@@ -257,30 +275,22 @@ export function explicarCambio(antes, despues, items, meta, opts = {}) {
     const verbo = c.subio ? 'Subí' : 'Bajé';
     return `${inicial ? verbo : verbo.toLowerCase()} ${nombreCorto(c.it)} a ${lbl}`;
   };
-  // "cerrar" cuando veníamos cortos, "no pasarte de" cuando veníamos largos.
-  const fin = k => (referencia[k] < 0 ? `para cerrar ${MACRO_LBL[k]}` : `para no pasarte de ${MACRO_LBL[k]}`);
-
-  // Un tramo de frase por macro, en el orden en que aparecen; como mucho dos.
-  const grupos = [];
-  for (const c of utiles) {
-    let g = grupos.find(x => x.macro === c.macro);
-    if (!g) { g = { macro: c.macro, cambios: [] }; grupos.push(g); }
-    g.cambios.push(c);
-  }
+  const FIN = { cerrar: 'para cerrar', no_pasarte: 'para no pasarte de', mantener: 'para mantener' };
   const tramo = (g, inicial) => {
     const cs = g.cambios;
     let sujeto;
     if (cs.length === 1) sujeto = frase(cs[0], inicial);
     else if (cs.length === 2) sujeto = `${frase(cs[0], inicial)} y ${frase(cs[1], false)}`;
     else sujeto = `${inicial ? 'Reajusté' : 'reajusté'} ${cs.length} módulos`;
-    return `${sujeto} ${fin(g.macro)}`;
+    return `${sujeto} ${FIN[g.fin]} ${MACRO_LBL[g.macro]}`;
   };
+
   const usados = grupos.slice(0, 2);
   const texto = usados.map((g, i) => tramo(g, i === 0)).join(' y ') + '.';
   const ids = usados.flatMap(g => g.cambios.map(c => c.id));
   // `tramos` expone la estructura de la frase: qué cambios se atribuyen a qué
   // macro. Es lo que los tests contrastan, en vez de volver a parsear la prosa.
-  const tramos = usados.map(g => ({ macro: g.macro, cambios: g.cambios.map(c => ({ id: c.id, de: c.de, a: c.a })) }));
+  const tramos = usados.map(g => ({ macro: g.macro, fin: g.fin, cambios: g.cambios.map(c => ({ id: c.id, de: c.de, a: c.a })) }));
   return { texto, ids, macro, ganancia, tramos };
 }
 
@@ -308,9 +318,14 @@ export function proponerCierre(items, meta, candidatos, opts = {}) {
   const yaEsta = new Set((items || []).map(i => i.id));
   let mejor = null;
 
+  // `colocar` sitúa el candidato en el MISMO orden en que quedará al aceptarlo.
+  // porcionar() conserva la primera combinación cuando dos empatan en coste y
+  // precio, así que enumerar el plato en otro orden podía prometer "2 porciones"
+  // y entregar "Grande". Por defecto lo añade al final.
+  const colocar = opts.colocar || ((its, c) => [...its, c]);
   for (const c of candidatos) {
     if (yaEsta.has(c.id)) continue;
-    const con = [...(items || []), c];
+    const con = colocar(items || [], c);
     const r = porcionar(con, meta, opts);
     if (!mejor || r.coste < mejor.r.coste - 1e-9) mejor = { c, r };
   }
