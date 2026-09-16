@@ -88,12 +88,14 @@ test('perfil normal NO activa el ajuste de carbos', () => {
 // ---------- mac ----------
 
 test('mac escala macros por factor de tamaño y redondea consistente', () => {
-  const it = ING.find(i => i.id === 'C01'); // arroz: 38g carb
-  assert.equal(mac(it, 1).carb, 38);
-  assert.equal(mac(it, 0.5).carb, 19);
-  assert.equal(mac(it, 1.5).carb, 57);
+  // Se deriva del dato, NO se fija a mano: los macros de la carta se corrigen y el test
+  // debe seguir probando el ESCALADO, no el valor de un módulo concreto.
+  const it = ING.find(i => i.id === 'C01');
+  assert.equal(mac(it, 1).carb, it.carb);
+  assert.equal(mac(it, 0.5).carb, Math.round(it.carb * 0.5));
+  assert.equal(mac(it, 1.5).carb, Math.round(it.carb * 1.5));
   // la suma de tamaños mostrados es exactamente la suma de las cartas
-  assert.equal(mac(it, 0.5).carb + mac(it, 1).carb, 57);
+  assert.equal(mac(it, 0.5).carb + mac(it, 1).carb, Math.round(it.carb * 0.5) + it.carb);
   // grasas con 1 decimal
   const p = ING.find(i => i.id === 'P01'); // 3.5g grasa
   assert.equal(mac(p, 1.5).gras, 5.3); // 5.25 → 5.3
