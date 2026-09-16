@@ -17,7 +17,10 @@
     </div>
   </div>
 
-  <div class="global-tracker" id="global-tracker">
+  <!-- aria-live: la barra ya no cambia por una acción directa del usuario sino por
+       un CÁLCULO que dispara tocar otra cosa. Sin anuncio, un lector de pantalla
+       no tendría forma de enterarse de que los gramos se movieron. -->
+  <div class="global-tracker" id="global-tracker" aria-live="polite" aria-atomic="true">
     <div class="gt-top">
       <div class="gt-lbl">Progreso de macros</div>
       <div class="gt-kcal" id="gt-kcal">0 / 0 kcal</div>
@@ -27,6 +30,8 @@
       <div class="gt-bar-wrap"><div class="gt-bar-top"><span class="gt-bar-lbl">Carbos</span><span class="gt-bar-val" id="gtv-c">0/0g</span></div><div class="bar-bg"><div class="bar-fill bc" id="gtb-c" style="width:0%"></div></div></div>
       <div class="gt-bar-wrap"><div class="gt-bar-top"><span class="gt-bar-lbl">Grasas</span><span class="gt-bar-val" id="gtv-g">0/0g</span></div><div class="bar-bg"><div class="bar-fill bg2" id="gtb-g" style="width:0%"></div></div></div>
     </div>
+    <!-- A5 · la línea de porqué: qué tamaño se movió y para cerrar qué macro -->
+    <div class="porque" id="porque"></div>
   </div>
 
   <div class="stepper" id="stepper">
@@ -113,7 +118,7 @@
   <div class="screen" id="sc1">
     <div class="eyebrow">Paso 02</div>
     <div class="stitle">Arma tu plato</div>
-    <div class="ssub">Selecciona un módulo por categoría y elige el tamaño. La app sugerirá extras para alcanzar tu meta.</div>
+    <div class="ssub">Elige qué quieres en cada categoría. El tamaño de cada módulo lo calcula la app y lo reajusta cada vez que añades algo, para acercarte lo más posible a tu meta.</div>
     <div id="meta-panel"></div>
     <div id="base-mods"></div>
     <div id="sugg-wrap"></div>

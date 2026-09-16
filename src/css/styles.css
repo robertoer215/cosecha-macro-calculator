@@ -1,6 +1,6 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Georgia',serif;background:#FAFAF8;color:#1a1a18;min-height:100vh}
-:root{--bg:#FAFAF8;--surface:#F4F2EE;--border:#E2DDD6;--border-strong:#C8C0B4;--text:#1a1a18;--muted:#8A8680;--light:#B8B2AA;--accent:#C05A1F;--accent-soft:#F5EDE4;--green:#3A7D6E;--blue:#4A6FA5;--amber:#C07A1F}
+:root{--bg:#FAFAF8;--surface:#F4F2EE;--border:#E2DDD6;--border-strong:#C8C0B4;--text:#1a1a18;--muted:#8A8680;--light:#B8B2AA;--accent:#C05A1F;--accent-soft:#F5EDE4;--accent-ink:#AE511C;--muted-ink:#6F6C67;--green:#3A7D6E;--blue:#4A6FA5;--amber:#C07A1F}
 .app{max-width:720px;margin:0 auto;padding-bottom:6rem}
 .header{padding:2.5rem 2.5rem 1.75rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-end}
 .logo{font-size:13px;letter-spacing:6px;text-transform:uppercase}
@@ -9,11 +9,11 @@ body{font-family:'Georgia',serif;background:#FAFAF8;color:#1a1a18;min-height:100
 .global-tracker.visible{display:block}
 .gt-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:.625rem}
 .gt-lbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-family:'Inter',sans-serif;color:var(--muted)}
-.gt-kcal{font-size:11px;font-family:'Inter',sans-serif;color:var(--accent);font-weight:500}
+.gt-kcal{font-size:11px;font-family:'Inter',sans-serif;color:var(--accent-ink);font-weight:500}
 .gt-bars{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .gt-bar-wrap{display:flex;flex-direction:column;gap:4px}
 .gt-bar-top{display:flex;justify-content:space-between}
-.gt-bar-lbl{font-size:8px;letter-spacing:1px;text-transform:uppercase;font-family:'Inter',sans-serif;color:var(--muted)}
+.gt-bar-lbl{font-size:8px;letter-spacing:1px;text-transform:uppercase;font-family:'Inter',sans-serif;color:var(--muted-ink)}
 .gt-bar-val{font-size:8px;font-family:'Inter',sans-serif;color:var(--text)}
 .bar-bg{height:2px;background:var(--border);border-radius:2px;overflow:hidden}
 .bar-fill{height:100%;border-radius:2px;transition:width .4s ease}
@@ -91,24 +91,29 @@ select option{font-family:sans-serif;background:#FAFAF8}
 .i-body{padding:14px}
 .i-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
 .i-name{font-size:13px;color:var(--text);line-height:1.3}
-.i-price{font-size:12px;color:var(--accent);font-family:'Inter',sans-serif;font-weight:500}
+.i-price{font-size:12px;color:var(--accent-ink);font-family:'Inter',sans-serif;font-weight:500}
 .i-check{width:20px;height:20px;border-radius:50%;border:1px solid rgba(255,255,255,.85);background:rgba(26,26,24,.2);transition:all .2s;position:absolute;top:10px;right:10px;z-index:2;display:flex;align-items:center;justify-content:center}
 .i-check::after{content:'';width:8px;height:8px;border-radius:50%;background:transparent;transition:background .2s}
 .icard.sel .i-check{background:var(--accent);border-color:#fff}
 .icard.sel .i-check::after{background:#fff}
 .icard.sel .i-photo::before{box-shadow:inset 0 0 0 3px var(--accent)}
 .i-macros{display:flex;gap:10px;margin-bottom:4px}
-.mp{font-size:10px;color:var(--muted);font-family:'Inter',sans-serif}
+.mp{font-size:10px;color:var(--muted-ink);font-family:'Inter',sans-serif}
 .mp b{color:var(--text);font-weight:500;font-style:normal}
-.size-pills{display:none;gap:1px;background:var(--border);border:1px solid var(--border);margin-top:10px}
-.icard.sel .size-pills{display:flex}
-.sz-pill{flex:1;padding:6px 4px;text-align:center;background:var(--bg);cursor:pointer;font-size:9px;letter-spacing:1px;text-transform:uppercase;font-family:'Inter',sans-serif;color:var(--muted);transition:background .2s}
+/* MODO IA — el tamaño dejó de ser una pregunta y pasó a ser una respuesta.
+   Las píldoras ya no se abren al SELECCIONAR (eso hacía crecer la tarjeta 47 px):
+   ahora solo las revela "Ajustar", que es una acción aparte y deliberada. */
+.size-pills{display:none;gap:8px;margin-top:10px}
+.icard.ajustando .size-pills{display:flex}
+/* 12px reales y 44px de alto: antes eran 9px en un target de 24px, que incumplía
+   readable-font-size y touch-target-size a la vez. */
+.sz-pill{flex:1;min-height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 4px;text-align:center;background:var(--bg);border:1px solid var(--border);cursor:pointer;font-size:12px;letter-spacing:.5px;text-transform:uppercase;font-family:'Inter',sans-serif;color:var(--muted-ink);transition:background .2s}
 .sz-pill:hover{background:var(--surface)}
 .sz-pill.sz-on{background:var(--text);color:#fff}
 .sz-pill.sz-rec{border-top:2px solid var(--accent)}
 .sz-pill.sz-rec.sz-on{border-top:2px solid var(--accent)}
 /* La palabra en vez de un punto: el punto no comunicaba nada por sí solo. */
-.rec-lbl{display:block;font-size:7px;letter-spacing:.4px;text-transform:uppercase;color:var(--accent);margin-top:3px;white-space:nowrap}
+.rec-lbl{display:block;font-size:9px;letter-spacing:.4px;text-transform:uppercase;color:var(--accent-ink);margin-top:2px;white-space:nowrap}
 .sz-pill.sz-on .rec-lbl{color:#fff}
 .sugg-box{border:1px solid var(--border);margin-bottom:2rem}
 .sugg-hd{padding:.875rem 1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
@@ -219,4 +224,64 @@ select option{font-family:sans-serif;background:#FAFAF8}
      el precio y "+ Agregar" no caben en una línea y el botón se sale de la tarjeta. */
   .sugg-controls{flex-wrap:wrap;gap:8px}
   .sugg-sizes{flex:1 1 100%}
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MODO IA — el tamaño como respuesta
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* A2 · CIFRAS TABULARES. Los gramos y los precios ahora cambian en cada toque:
+   sin anchura fija por dígito los números bailan en horizontal a cada render. */
+.i-price,.i-size-val,.i-fit,.mp b,.gt-bar-val,.gt-kcal,.res-price,.res-macs,.sugg-price,
+.gap-num,.res-total-val,.mn-val,.meta-tag{font-variant-numeric:tabular-nums}
+
+/* A3 · La tarjeta responde a otra pregunta. Ya no "¿cuánto?" sino "¿qué tan
+   cerca me deja?". El pie tiene ALTURA FIJA y el mismo alto esté o no elegida
+   la tarjeta: es lo que garantiza que seleccionar no mueva ni un pixel. */
+/* Las dos filas llevan min-height FIJA y existen en todas las tarjetas, elegidas
+   o no. Esa es la garantía de que seleccionar no mueva un solo pixel: lo que
+   cambia es el contenido, nunca la caja. */
+.i-fit{min-height:15px;font-size:10px;font-family:'Inter',sans-serif;color:var(--muted-ink);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.i-fit.cierra{color:var(--green)}
+.i-foot{display:flex;align-items:center;justify-content:space-between;gap:6px;min-height:44px}
+/* Continuidad deliberada con .sz-rec: el mismo filete naranja de 2px que marcaba
+   "Recomendado" en las píldoras marca ahora el tamaño resuelto. */
+.i-size-val{flex:1;min-width:0;font-size:11px;letter-spacing:.5px;text-transform:uppercase;
+  font-family:'Inter',sans-serif;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  border-top:2px solid var(--accent);padding-top:5px}
+/* En la tarjeta no elegida el filete se apaga: el tamaño aún es una hipótesis. */
+.icard:not(.sel) .i-size-val{border-top-color:var(--border);color:var(--muted-ink)}
+
+/* A6 · "Ajustar" — revelación progresiva. Quien no lo toque nunca sabrá que
+   existe; quien lo toque recupera el control completo. 44×44 reales. */
+.btn-ajustar{min-width:44px;min-height:44px;padding:0 9px;display:inline-flex;align-items:center;justify-content:center;
+  background:transparent;border:1px solid var(--border-strong);color:var(--muted-ink);
+  font-family:'Inter',sans-serif;font-size:12px;letter-spacing:.5px;cursor:pointer;flex-shrink:0;transition:background .2s,border-color .2s}
+.btn-ajustar:hover{background:var(--surface);border-color:var(--accent)}
+.btn-ajustar[aria-expanded="true"]{background:var(--text);border-color:var(--text);color:#fff}
+.btn-ajustar:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.icard:not(.sel) .btn-ajustar{visibility:hidden;pointer-events:none}
+
+/* A5 · La línea de porqué. Convierte el control que se quitó en inteligencia
+   percibida en vez de en pérdida de control. */
+.porque{font-family:'Inter',sans-serif;font-size:11px;line-height:1.45;color:var(--muted-ink);
+  padding:6px 0 0;display:flex;gap:6px;align-items:baseline}
+.porque::before{content:'';flex:0 0 14px;height:2px;background:var(--accent);transform:translateY(-4px)}
+.porque:empty{display:none}
+
+/* A4 · El recálculo tiene que verse, o la app parece hacer cosas a espaldas del
+   usuario. Solo opacity y transform: nunca width ni height. */
+.i-price,.i-size-val,.i-fit{transition:opacity .18s ease-out}
+.recalc{animation:pulseBorder .3s ease-out}
+@keyframes pulseBorder{
+  0%{box-shadow:inset 0 0 0 0 var(--accent)}
+  40%{box-shadow:inset 0 0 0 2px var(--accent)}
+  100%{box-shadow:inset 0 0 0 0 var(--accent)}
+}
+@media (prefers-reduced-motion: reduce){
+  .i-price,.i-size-val,.i-fit{transition:none}
+  .recalc{animation:none}
+  .i-img,.icard,.i-photo::before,.sz-pill,.btn-ajustar{transition:none}
+  .icard:hover .i-img{transform:none}
 }

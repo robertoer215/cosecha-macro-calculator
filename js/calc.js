@@ -88,21 +88,29 @@ export const PESO_MACRO = { prot: 2, carb: 1, gras: 1 };
 // El mismo ±4 g por macro que ya usa el resumen para pintar "En tu meta".
 export const UMBRAL_G = 4;
 
-export function porcionar(items, meta) {
+export function porcionar(items, meta, opts = {}) {
   if (!items || !items.length) return null;
   // Meta 0 (pasa con los carbos en déficit agresivo): evita dividir entre cero
   // sin distorsionar el peso relativo de los demás macros.
   const den = k => Math.max(meta[k] || 0, 1);
   const n = items.length;
-  const total = FACTORES.length ** n;
+
+  // Tamaños fijados a mano con "Ajustar": ese módulo deja de ser una variable y
+  // el porcionado optimiza los DEMÁS a su alrededor, en vez de ignorar el
+  // override o sacar el módulo de la cuenta. Sin `fijos` el dominio de cada
+  // módulo son los tres tamaños de siempre y el resultado no cambia.
+  const fijos = opts.fijos || {};
+  const dominios = items.map(it => (fijos[it.id] != null ? [fijos[it.id]] : FACTORES));
+  const total = dominios.reduce((a, d) => a * d.length, 1);
   let mejor = null;
 
   for (let combo = 0; combo < total; combo++) {
     const factores = new Array(n);
     let resto = combo;
     for (let i = 0; i < n; i++) {
-      factores[i] = FACTORES[resto % FACTORES.length];
-      resto = Math.floor(resto / FACTORES.length);
+      const d = dominios[i];
+      factores[i] = d[resto % d.length];
+      resto = Math.floor(resto / d.length);
     }
     let prot = 0, carb = 0, gras = 0, kcal = 0, pr = 0;
     for (let i = 0; i < n; i++) {
@@ -137,4 +145,77 @@ export function porcionar(items, meta) {
                  && Math.abs(mejor.desviacion.gras) <= UMBRAL_G,
     combinacionesEvaluadas: total
   };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// LA LÍNEA DE PORQUÉ
+//
+// Cuando añadir un módulo cambia el tamaño de otro que el usuario ya había
+// elegido, hay que decirlo: si no, la app parece estar haciendo cosas a sus
+// espaldas. El texto se deriva del DIFF entre dos porcionados —qué tamaño
+// cambió y qué macro mejoró con el cambio—, nunca de un modelo de lenguaje.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const MACRO_LBL = { prot: 'tu proteína', carb: 'tus carbohidratos', gras: 'tus grasas' };
+
+// El nombre corto de un módulo es su primera palabra: "Camote asado con chile
+// ancho" → "camote". Sale del propio dato, no de una tabla paralela que
+// habría que mantener a mano cada vez que cambie la carta.
+export function nombreCorto(it) {
+  return it.nombre.split(' ')[0].toLowerCase();
+}
+
+export function explicarCambio(antes, despues, items, meta) {
+  if (!antes || !despues) return null;
+  const porId = id => items.find(i => i.id === id);
+
+  const cambios = Object.keys(despues.tamanos)
+    .filter(id => antes.tamanos[id] !== undefined && antes.tamanos[id] !== despues.tamanos[id])
+    .map(id => ({
+      id,
+      it: porId(id),
+      de: antes.tamanos[id],
+      a: despues.tamanos[id],
+      subio: despues.tamanos[id] > antes.tamanos[id]
+    }))
+    .filter(c => c.it);
+
+  if (!cambios.length) return null;
+
+  // ¿Qué macro justifica el REAJUSTE? No basta comparar contra el plato anterior:
+  // entre los dos porcionados también entró un módulo nuevo, y su aportación se
+  // llevaría el mérito. El punto de comparación honesto es el contrafactual —el
+  // mismo plato de ahora, pero con los módulos previos clavados donde estaban—,
+  // que aísla lo que ganó el reajuste y nada más.
+  const referencia = meta
+    ? porcionar(items, meta, { fijos: antes.tamanos }).desviacion
+    : antes.desviacion;
+
+  let macro = null, ganancia = -Infinity;
+  for (const k of ['prot', 'carb', 'gras']) {
+    const g = Math.abs(referencia[k]) - Math.abs(despues.desviacion[k]);
+    if (g > ganancia) { ganancia = g; macro = k; }
+  }
+  // El reajuste no mejoró ningún macro (vino del desempate por precio): sin
+  // porqué nutricional que contar, y mentir uno sería peor que callar.
+  if (ganancia <= 0) return null;
+
+  // "cerrar" cuando veníamos cortos, "no pasarte de" cuando veníamos largos.
+  const faltaba = referencia[macro] < 0;
+  const fin = faltaba ? `para cerrar ${MACRO_LBL[macro]}` : `para no pasarte de ${MACRO_LBL[macro]}`;
+
+  // El nombre del tamaño conserva su mayúscula ("Grande"): es una etiqueta de la
+  // carta, no una palabra corriente de la frase.
+  const frase = (c, inicial) => {
+    const lbl = SIZES.find(s => s.k === c.a).l;
+    const verbo = c.subio ? 'Subí' : 'Bajé';
+    return `${inicial ? verbo : verbo.toLowerCase()} ${nombreCorto(c.it)} a ${lbl}`;
+  };
+
+  let sujeto;
+  if (cambios.length === 1) sujeto = frase(cambios[0], true);
+  else if (cambios.length === 2) sujeto = `${frase(cambios[0], true)} y ${frase(cambios[1], false)}`;
+  else sujeto = `Reajusté ${cambios.length} módulos`;
+
+  return { texto: `${sujeto} ${fin}.`, ids: cambios.map(c => c.id), macro, ganancia };
 }

@@ -1,7 +1,7 @@
 // Tests del porcionado conjunto del MODO IA — correr con: npm test
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { porcionar, mac, precio, recomendarSize, calcularMeta, PESO_MACRO, UMBRAL_G } from '../js/calc.js';
+import { porcionar, mac, precio, recomendarSize, calcularMeta, PESO_MACRO, UMBRAL_G, explicarCambio, nombreCorto } from '../js/calc.js';
 import { ING, SIZES } from '../js/data.js';
 
 const F = SIZES.map(s => s.k);
@@ -152,4 +152,145 @@ test('dos llamadas idénticas devuelven exactamente lo mismo', () => {
 // 12 ─ sin selección no inventa un plato
 test('sin módulos elegidos devuelve null', () => {
   assert.equal(porcionar([], { prot: 40, carb: 60, gras: 15 }), null);
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tamaños fijados a mano ("Ajustar") y la línea de porqué
+// ─────────────────────────────────────────────────────────────────────────────
+
+test('sin `fijos` el resultado es idéntico al de antes: el parámetro no cambia nada', () => {
+  const meta = { prot: 50, carb: 93, gras: 20 };
+  const a = porcionar(PLATO, meta);
+  const b = porcionar(PLATO, meta, {});
+  const c = porcionar(PLATO, meta, { fijos: {} });
+  assert.deepEqual(b, a);
+  assert.deepEqual(c, a);
+  assert.equal(a.combinacionesEvaluadas, 81);
+});
+
+test('un tamaño fijado se respeta exactamente y recorta el espacio de búsqueda', () => {
+  const meta = { prot: 50, carb: 93, gras: 20 };
+  for (const k of F) {
+    const r = porcionar(PLATO, meta, { fijos: { C01: k } });
+    assert.equal(r.tamanos.C01, k, `C01 fijado a ${k} debe salir ${k}`);
+    assert.equal(r.combinacionesEvaluadas, 27, 'un módulo fijado deja 3^3 combinaciones');
+  }
+});
+
+test('con un módulo fijado, los demás siguen siendo el óptimo global para ESE fijado', () => {
+  const meta = { prot: 45, carb: 80, gras: 18 };
+  const fijo = 0.5;
+  const r = porcionar(PLATO, meta, { fijos: { P01: fijo } });
+  let mejor = Infinity;
+  for (const f of combinaciones(PLATO.length)) {
+    if (f[0] !== fijo) continue;           // P01 es el primero de PLATO
+    mejor = Math.min(mejor, evaluar(PLATO, f, meta).coste);
+  }
+  assert.ok(Math.abs(r.coste - mejor) < 1e-9, `coste ${r.coste} debería ser el mínimo ${mejor}`);
+});
+
+test('fijar TODOS los módulos devuelve exactamente esa combinación, sin optimizar', () => {
+  const meta = { prot: 50, carb: 93, gras: 20 };
+  const fijos = { P01: 1.5, V01: 0.5, C01: 1.5, G01: 0.5 };
+  const r = porcionar(PLATO, meta, { fijos });
+  assert.deepEqual(r.tamanos, fijos);
+  assert.equal(r.combinacionesEvaluadas, 1);
+  const ref = evaluar(PLATO, [1.5, 0.5, 1.5, 0.5], meta);
+  assert.equal(r.precio, ref.precio);
+});
+
+test('un módulo fijado nunca puede batir al óptimo libre', () => {
+  const meta = { prot: 55, carb: 95, gras: 18 };
+  const libre = porcionar(PLATO, meta);
+  for (const k of F) {
+    const r = porcionar(PLATO, meta, { fijos: { G01: k } });
+    assert.ok(r.coste >= libre.coste - 1e-9, 'fijar solo puede empeorar o igualar');
+  }
+});
+
+test('explicarCambio nombra el módulo, la dirección y el macro que mejoró', () => {
+  const meta = { prot: 50, carb: 93, gras: 20 };
+  const antes = porcionar([id('P01')], meta);
+  const despues = porcionar([id('P01'), id('C02')], meta);
+  const ex = explicarCambio(antes, despues, [id('P01'), id('C02')]);
+  if (ex) {
+    assert.match(ex.texto, /^(Subí|Bajé|Reajusté)/);
+    assert.match(ex.texto, /\.$/);
+    assert.ok(['prot', 'carb', 'gras'].includes(ex.macro));
+    assert.ok(ex.ids.length >= 1);
+  }
+});
+
+test('explicarCambio devuelve null cuando ningún tamaño cambió', () => {
+  const meta = { prot: 50, carb: 93, gras: 20 };
+  const r = porcionar(PLATO, meta);
+  assert.equal(explicarCambio(r, r, PLATO), null);
+  assert.equal(explicarCambio(null, r, PLATO), null);
+  assert.equal(explicarCambio(r, null, PLATO), null);
+});
+
+test('explicarCambio: si el camote sube para cerrar carbos, lo dice con esas palabras', () => {
+  // Meta con muchos carbos: al añadir el camote el porcionado debe estirarlo.
+  const meta = { prot: 30, carb: 120, gras: 12 };
+  const solo = [id('P01')];
+  const con = [id('P01'), id('C02')];
+  const ex = explicarCambio(porcionar(solo, meta), porcionar(con, meta), con);
+  // El camote entra nuevo, así que no cuenta como "cambio" de un tamaño previo:
+  // lo que debe reportarse es el reajuste del pollo, si lo hubo.
+  if (ex) assert.ok(/pollo|camote/.test(ex.texto), `texto inesperado: ${ex.texto}`);
+});
+
+test('nombreCorto usa la primera palabra del nombre real del módulo', () => {
+  assert.equal(nombreCorto(id('C02')), 'camote');
+  assert.equal(nombreCorto(id('P01')), 'pollo');
+  assert.equal(nombreCorto(id('G01')), 'guacamole');
+  // ningún módulo debe quedarse sin nombre corto
+  for (const it of ING) assert.ok(nombreCorto(it).length > 2, `${it.id} sin nombre corto`);
+});
+
+test('la línea de porqué nunca menciona un módulo que no esté en el plato', () => {
+  const meta = { prot: 45, carb: 100, gras: 18 };
+  for (const extra of ['C01', 'C02', 'C03']) {
+    const base = [id('P01'), id('V01')];
+    const con = [...base, id(extra)];
+    const ex = explicarCambio(porcionar(base, meta), porcionar(con, meta), con);
+    if (!ex) continue;
+    for (const idc of ex.ids) assert.ok(con.some(i => i.id === idc), `${idc} no está en el plato`);
+  }
+});
+
+test('la atribución del porqué se mide contra el contrafactual, no contra el plato anterior', () => {
+  // Al añadir un módulo entran a la vez dos efectos: lo que aporta el módulo
+  // nuevo y lo que aporta reajustar los viejos. La frase solo puede atribuirse
+  // el segundo. Comparado contra `antes` la ganancia se infla.
+  const meta = calcularMeta({ sexo:'masculino', edad:28, peso:75, altura:175,
+                              comidas:3, objetivo:'perder_grasa', actividad:'moderado' });
+  const base = ['P01','C02','V01'].map(id);
+  const con  = [...base, id('G01')];
+  const antes = porcionar(base, meta), despues = porcionar(con, meta);
+
+  const honesto = explicarCambio(antes, despues, con, meta);
+  const inflado = explicarCambio(antes, despues, con);        // sin meta: contra el plato anterior
+  assert.ok(honesto, 'este caso debe producir una línea de porqué');
+  assert.ok(honesto.ganancia <= inflado.ganancia,
+    `la atribución honesta (${honesto.ganancia}) no puede superar a la inflada (${inflado.ganancia})`);
+
+  // Y la ganancia declarada debe ser exactamente la del contrafactual.
+  const congelado = porcionar(con, meta, { fijos: antes.tamanos });
+  const real = Math.abs(congelado.desviacion[honesto.macro]) - Math.abs(despues.desviacion[honesto.macro]);
+  assert.ok(Math.abs(honesto.ganancia - real) < 1e-9);
+});
+
+test('el tamaño se nombra con su etiqueta de la carta, en mayúscula', () => {
+  const meta = { prot: 30, carb: 120, gras: 12 };
+  let visto = 0;
+  for (const c of ['C01','C02','C03']) for (const v of ['V01','V02','V03','V04']) {
+    const base = [id('P01'), id(c)], con = [...base, id(v)];
+    const ex = explicarCambio(porcionar(base, meta), porcionar(con, meta), con, meta);
+    if (!ex) continue;
+    visto++;
+    assert.ok(/ a (Pequeña|Estándar|Grande)\b/.test(ex.texto), `etiqueta mal escrita: ${ex.texto}`);
+    assert.ok(!/ a (pequeña|estándar|grande)\b/.test(ex.texto), `minúscula indebida: ${ex.texto}`);
+  }
+  assert.ok(visto > 0, 'ningún caso produjo línea: el test no prueba nada');
 });

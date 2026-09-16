@@ -1,7 +1,21 @@
 import { ING, SIZES, OBJ_LABEL, CATS, CAT_LABEL, IMG_DIR } from './data.js';
-import { precio, mac, calcularMeta, metaManualComida, metaManualTotal, recomendarSize } from './calc.js';
+import { precio, mac, calcularMeta, metaManualComida, metaManualTotal,
+         porcionar, explicarCambio, UMBRAL_G } from './calc.js';
 
 let meta = {}, selBase = {}, szBase = {}, selExtra = {}, szExtra = {};
+
+// ── MODO IA ──────────────────────────────────────────────────────────────────
+// El usuario sigue eligiendo QUÉ comer, en el mismo orden y con las mismas
+// tarjetas. Lo único que deja de preguntársele es CUÁNTO: el tamaño lo resuelve
+// porcionar() sobre TODOS los módulos a la vez, y se recalcula en cada toque.
+//
+//   szManual  overrides que el usuario fijó a mano desde "Ajustar". Son los
+//             únicos tamaños que el porcionador no puede mover: se clavan y el
+//             resto se optimiza a su alrededor.
+//   szBase    caché de los tamaños VIGENTES (los que devolvió el porcionado, o
+//             el override). El resumen, el QR y el ticket lo leen tal cual, así
+//             que nada aguas abajo tuvo que enterarse del cambio.
+let szManual = {}, ajustando = {}, ultimoPorc = null, porque = null, idsRecalc = [];
 let modoActual = 'calc';
 let subModoActual = 'comida';
 let platoCatIdx = 0;
@@ -89,12 +103,71 @@ window.calcular = function() {
     });
   }
   selBase = {}; szBase = {}; selExtra = {}; szExtra = {};
+  szManual = {}; ajustando = {}; ultimoPorc = null; porque = null; idsRecalc = [];
   platoCatIdx = 0;
   renderMeta();
   renderBase();
   updateGlobalTracker();
   goStep(1);
 };
+
+// Los módulos elegidos, en el orden en que el usuario los fue eligiendo por
+// pasos. El orden importa: es el que ve en pantalla y el que sale en el ticket.
+function itemsElegidos() {
+  const out = [];
+  CATS_STEPS.forEach(cat => (selBase[cat] || []).forEach(id => {
+    const it = ING.find(i => i.id === id);
+    if (it) out.push(it);
+  }));
+  return out;
+}
+
+// Solo los overrides de módulos que siguen en el plato: si el usuario ajusta un
+// módulo a mano y luego lo quita, ese tamaño no debe seguir atando al resto.
+function fijosVigentes(items) {
+  const f = {};
+  items.forEach(it => { if (szManual[it.id] != null) f[it.id] = szManual[it.id]; });
+  return f;
+}
+
+// Corre en LOCAL, en cada toque, sin red: son 81 o 243 combinaciones de
+// aritmética entera, del orden de décimas de milisegundo.
+function recalcular() {
+  const items = itemsElegidos();
+  const antes = ultimoPorc;
+  if (!items.length) { ultimoPorc = null; szBase = {}; porque = null; idsRecalc = []; return null; }
+  const r = porcionar(items, meta, { fijos: fijosVigentes(items) });
+  // El porqué se deriva del diff de tamaños, nunca de un modelo de lenguaje.
+  porque = explicarCambio(antes, r, items, meta);
+  idsRecalc = porque ? porque.ids : [];
+  ultimoPorc = r;
+  szBase = { ...r.tamanos };
+  return r;
+}
+
+// A3 · Qué pasaría si tocaras ESTA tarjeta. El mismo porcionado, con el módulo
+// candidato añadido de forma hipotética.
+function hipotetico(it) {
+  const items = [...itemsElegidos(), it];
+  return porcionar(items, meta, { fijos: fijosVigentes(items) });
+}
+
+const MACRO_CORTO = { prot: 'proteína', carb: 'carbos', gras: 'grasas' };
+
+// "¿Qué tan cerca me deja?" — el macro que quedaría MÁS lejos de la meta, que es
+// el que de verdad limita el plato. Si los tres caben en el umbral, lo dice.
+function textoCercania(r) {
+  if (!r) return { txt: '', cierra: false };
+  if (r.dentroDeUmbral) return { txt: 'Cierra tu meta', cierra: true };
+  let k = 'prot', peor = -1;
+  for (const m of ['prot', 'carb', 'gras']) {
+    const d = Math.abs(r.desviacion[m]);
+    if (d > peor) { peor = d; k = m; }
+  }
+  const v = r.desviacion[k];
+  const n = Math.abs(Math.round(v * 10) / 10);
+  return { txt: `Te deja ${v < 0 ? '−' : '+'}${n} g ${MACRO_CORTO[k]}`, cierra: false };
+}
 
 function totals() {
   let p=0,c=0,g=0,k=0;
@@ -126,6 +199,7 @@ function updateGlobalTracker() {
   bc.className='bar-fill bc'+(t.carb>meta.carb?' bover':'');
   bg.className='bar-fill bg2'+(t.gras>meta.gras?' bover':'');
   $('global-tracker').classList.add('visible');
+  renderPorque();
 }
 
 function renderMeta() {
@@ -178,27 +252,116 @@ function renderBase() {
 
   let html = renderSubNav();
   html += `<div class="cat-sec"><div class="cat-hd"><span class="cat-nm">${CAT_LABEL[cat]}</span><span class="cat-ht">Elige uno o más${selCount ? ` · ${selCount} elegido${selCount>1?'s':''}` : ''}</span></div><div class="items-grid">`;
-  items.forEach(it => {
-    const rec=recomendarSize(it,meta);
-    // La carta muestra SIEMPRE el tamaño que se agregará al tocarla (el recomendado
-    // si el usuario no ha elegido otro): así los macros de la carta y la barra cuadran.
-    const sz=szBase[it.id]??rec;
-    const isSel=(selBase[cat]||[]).includes(it.id);
-    const m=mac(it,sz),pr=precio(it,sz);
-    html+=`<div class="icard${isSel?' sel':''}" onclick="selBI('${it.id}','${cat}')">
+  items.forEach(it => { html += tarjetaHTML(it, cat); });
+  html += `</div></div>`;
+  $('base-mods').innerHTML = html;
+  renderPlatoButtons();
+  updateGlobalTracker();
+}
+
+// La tarjeta ya no pregunta "¿cuánto?" sino "¿qué tan cerca me deja?".
+// El tamaño que enseña es el que se aplicará al tocarla: elegida, el resuelto;
+// sin elegir, el que tendría si entrara al plato.
+function tarjetaHTML(it, cat) {
+  const isSel = (selBase[cat]||[]).includes(it.id);
+  const r = isSel ? ultimoPorc : hipotetico(it);
+  const sz = isSel ? (szBase[it.id] ?? 1) : (r ? r.tamanos[it.id] : 1);
+  const m = mac(it, sz), pr = precio(it, sz);
+  const lbl = SIZES.find(s => s.k === sz)?.l || 'Estándar';
+  const fit = isSel ? { txt:'', cierra:false } : textoCercania(r);
+  const abierto = !!ajustando[it.id];
+
+  return `<div class="icard${isSel?' sel':''}${abierto?' ajustando':''}${idsRecalc.includes(it.id)?' recalc':''}" data-id="${it.id}" onclick="selBI('${it.id}','${cat}')">
       <div class="i-photo">${foto(it,'i-img')}<div class="i-check"></div></div>
       <div class="i-body">
         <div class="i-top"><div class="i-name">${it.nombre}</div></div>
         <div class="i-macros"><div class="mp"><b>${m.prot}g</b> P</div><div class="mp"><b>${m.carb}g</b> C</div><div class="mp"><b>${m.gras}g</b> G</div></div>
         <div class="i-price">$${pr} MXN</div>
-        <div class="size-pills">${SIZES.map(s=>`<div class="sz-pill${sz===s.k?' sz-on':''}${s.k===rec?' sz-rec':''}" onclick="event.stopPropagation();setSzB('${it.id}','${cat}',${s.k})">${s.l}${s.k===rec?'<span class="rec-lbl">Recomendado</span>':''}</div>`).join('')}</div>
+        <div class="i-fit${fit.cierra?' cierra':''}">${fit.txt}</div>
+        <div class="i-foot">
+          <div class="i-size-val">${lbl} · ${m.g} g</div>
+          <button type="button" class="btn-ajustar" aria-expanded="${abierto}" aria-controls="pills-${it.id}"
+            aria-label="Ajustar el tamaño de ${it.nombre}"
+            onclick="event.stopPropagation();toggleAjuste('${it.id}')">Ajustar</button>
+        </div>
+        <div class="size-pills" id="pills-${it.id}" role="group" aria-label="Tamaño de ${it.nombre}">${SIZES.map(sv=>{
+          const esResuelto = ultimoPorc && ultimoPorc.tamanos[it.id] === sv.k && szManual[it.id] == null;
+          return `<div class="sz-pill${sz===sv.k?' sz-on':''}${esResuelto?' sz-rec':''}" role="button" tabindex="0"
+            onclick="event.stopPropagation();setSzB('${it.id}','${cat}',${sv.k})">${sv.l}${esResuelto?'<span class="rec-lbl">Resuelto</span>':''}</div>`;
+        }).join('')}</div>
       </div>
     </div>`;
+}
+
+// Actualiza las tarjetas que YA están en el DOM en vez de reconstruir el HTML.
+// Dos razones: la transition de opacity solo existe si el nodo sobrevive al
+// cambio (con innerHTML nuevo no hay nada que transicionar), y así las fotos no
+// se vuelven a decodificar en cada toque.
+function refrescarTarjetas() {
+  const cat = CATS_STEPS[platoCatIdx];
+  if (platoCatIdx === 4) { renderBase(); return; }
+  // El contador del encabezado también se actualiza en sitio: si no, se queda
+  // congelado en el valor que tenía al entrar al paso.
+  const ht = document.querySelector('.cat-ht');
+  const n = (selBase[cat]||[]).length;
+  if (ht) ht.textContent = `Elige uno o más${n ? ` · ${n} elegido${n>1?'s':''}` : ''}`;
+  document.querySelectorAll('.icard[data-id]').forEach(card => {
+    const id = card.dataset.id;
+    const it = ING.find(i => i.id === id);
+    if (!it) return;
+    const isSel = (selBase[cat]||[]).includes(id);
+    const r = isSel ? ultimoPorc : hipotetico(it);
+    const sz = isSel ? (szBase[id] ?? 1) : (r ? r.tamanos[id] : 1);
+    const m = mac(it, sz), pr = precio(it, sz);
+    const lbl = SIZES.find(s => s.k === sz)?.l || 'Estándar';
+    const fit = isSel ? { txt:'', cierra:false } : textoCercania(r);
+
+    card.classList.toggle('sel', isSel);
+    card.classList.toggle('ajustando', !!ajustando[id]);
+    setTexto(card.querySelector('.i-price'), `$${pr} MXN`);
+    setTexto(card.querySelector('.i-size-val'), `${lbl} · ${m.g} g`);
+    const elFit = card.querySelector('.i-fit');
+    setTexto(elFit, fit.txt);
+    if (elFit) elFit.classList.toggle('cierra', fit.cierra);
+    card.querySelectorAll('.mp').forEach((el,i) => {
+      setTexto(el, `<b>${[m.prot,m.carb,m.gras][i]}g</b> ${['P','C','G'][i]}`, true);
+    });
+    card.querySelectorAll('.sz-pill').forEach((pill,i) => {
+      const k = SIZES[i].k;
+      const esResuelto = ultimoPorc && ultimoPorc.tamanos[id] === k && szManual[id] == null;
+      pill.classList.toggle('sz-on', sz === k);
+      pill.classList.toggle('sz-rec', esResuelto);
+      const lblRec = pill.querySelector('.rec-lbl');
+      if (esResuelto && !lblRec) pill.insertAdjacentHTML('beforeend', '<span class="rec-lbl">Resuelto</span>');
+      if (!esResuelto && lblRec) lblRec.remove();
+    });
+    const btn = card.querySelector('.btn-ajustar');
+    if (btn) btn.setAttribute('aria-expanded', String(!!ajustando[id]));
+    // A4 · pulso del borde solo en las tarjetas que de verdad cambiaron de tamaño.
+    card.classList.remove('recalc');
+    if (idsRecalc.includes(id)) { void card.offsetWidth; card.classList.add('recalc'); }
   });
-  html += `</div></div>`;
-  $('base-mods').innerHTML = html;
-  renderPlatoButtons();
+  renderPorque();
   updateGlobalTracker();
+}
+
+// Crossfade de la cifra: el texto nuevo se escribe YA (el feedback tiene que
+// verse en menos de 100 ms) y lo que se difumina es su opacidad. Solo se toca
+// lo que de verdad cambió, para no hacer parpadear media pantalla.
+function setTexto(el, valor, esHTML) {
+  if (!el) return;
+  const actual = esHTML ? el.innerHTML : el.textContent;
+  if (actual === valor) return;
+  if (esHTML) el.innerHTML = valor; else el.textContent = valor;
+  el.style.opacity = '0';
+  requestAnimationFrame(() => requestAnimationFrame(() => { el.style.opacity = '1'; }));
+}
+
+// A5 · La línea de porqué, bajo la barra de macros.
+function renderPorque() {
+  const el = $('porque');
+  if (!el) return;
+  el.innerHTML = porque ? `<span>${porque.texto}</span>` : '';
 }
 
 function renderPlatoButtons() {
@@ -228,11 +391,39 @@ window.prevCat = function() {
 window.selBI = function(id,cat) {
   if(!selBase[cat]) selBase[cat]=[];
   const idx=selBase[cat].indexOf(id);
-  if(idx>-1){ selBase[cat].splice(idx,1); if(!selBase[cat].length) delete selBase[cat]; }
-  else { selBase[cat].push(id); if(!szBase[id]){ const it=ING.find(i=>i.id===id); szBase[id]=recomendarSize(it,meta); } }
-  renderBase();
+  if(idx>-1){
+    selBase[cat].splice(idx,1);
+    if(!selBase[cat].length) delete selBase[cat];
+    // Al salir del plato el módulo pierde su override y su panel abierto: si
+    // vuelve a entrar, vuelve a entrar como una decisión del sistema.
+    delete szManual[id]; delete ajustando[id];
+  } else {
+    selBase[cat].push(id);
+  }
+  // El tamaño ya no se pregunta: se resuelve, para TODOS los módulos a la vez.
+  recalcular();
+  refrescarTarjetas();
 };
-window.setSzB = function(id,cat,k){ szBase[id]=k; renderBase(); };
+
+// "Ajustar" — revelación progresiva. Quien no lo toque nunca sabrá que existe.
+window.toggleAjuste = function(id){
+  ajustando[id] = !ajustando[id];
+  const card = document.querySelector(`.icard[data-id="${id}"]`);
+  if(!card) return;
+  card.classList.toggle('ajustando', ajustando[id]);
+  const btn = card.querySelector('.btn-ajustar');
+  if(btn) btn.setAttribute('aria-expanded', String(!!ajustando[id]));
+};
+
+// Fijar un tamaño a mano lo CLAVA: el porcionado deja de moverlo y optimiza el
+// resto a su alrededor, en vez de ignorar el override o sacar el módulo de la
+// cuenta. Volver a tocar el tamaño resuelto devuelve el módulo al automático.
+window.setSzB = function(id,cat,k){
+  if(szManual[id] === k) delete szManual[id];
+  else szManual[id] = k;
+  recalcular();
+  refrescarTarjetas();
+};
 
 function renderSugg() {
   if(!Object.keys(selBase).length){
