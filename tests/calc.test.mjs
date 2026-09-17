@@ -2,7 +2,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { precio, mac, calcularMeta, metaManualComida, metaManualTotal, recomendarSize } from '../js/calc.js';
-import { ING, FACT_ACTIVIDAD, FACT_OBJETIVO, FACT_MACRO, COSTOS_OPERATIVOS, MARGEN_DIVISOR } from '../js/data.js';
+import { ING, FACT_ACTIVIDAD, FACT_OBJETIVO, FACT_MACRO, FOOD_COST_OBJETIVO, PASO_DIFERENCIA_COSTE } from '../js/data.js';
 
 const OBJETIVOS = Object.keys(FACT_OBJETIVO);
 const ACTIVIDADES = Object.keys(FACT_ACTIVIDAD);
@@ -103,11 +103,35 @@ test('mac escala macros por factor de tamaño y redondea consistente', () => {
 
 // ---------- precio ----------
 
-test('precio respeta la fórmula ceil((pKg×g/1000)×1.40/0.85×factor)', () => {
+// Réplica independiente de la banda por categoría (ver data.js y calc.js).
+const costePorc = it => it.costoKg * it.g / 1000;
+const medioCat = cat => { const xs = ING.filter(i => i.cat === cat).map(costePorc); return xs.reduce((a, b) => a + b, 0) / xs.length; };
+const baseBanda = it => (medioCat(it.cat) + PASO_DIFERENCIA_COSTE * (costePorc(it) - medioCat(it.cat))) / FOOD_COST_OBJETIVO;
+
+test('precio respeta la banda por categoría: ceil(base × factor) con base a food cost objetivo', () => {
   for (const it of ING) for (const f of [0.5, 1, 1.5]) {
-    const esperado = Math.ceil((it.pKg * it.g / 1000) * COSTOS_OPERATIVOS / MARGEN_DIVISOR * f);
-    assert.equal(precio(it, f), esperado, `precio incorrecto en ${it.id} ×${f}`);
+    assert.equal(precio(it, f), Math.ceil(baseBanda(it) * f), `precio incorrecto en ${it.id} ×${f}`);
   }
+});
+
+test('ningún módulo se vende por debajo de su coste', () => {
+  for (const it of ING) assert.ok(precio(it, 1) > costePorc(it), `${it.id}: precio ${precio(it, 1)} ≤ coste ${costePorc(it).toFixed(2)}`);
+});
+
+test('el food cost de cada categoría cierra en el objetivo con un mix parejo', () => {
+  for (const cat of ['proteina', 'carbohidrato', 'vegetal', 'grasa']) {
+    const xs = ING.filter(i => i.cat === cat);
+    const fc = xs.reduce((a, i) => a + costePorc(i), 0) / xs.reduce((a, i) => a + precio(i, 1), 0);
+    assert.ok(Math.abs(fc - FOOD_COST_OBJETIVO) < 0.02, `${cat}: food cost ${(fc * 100).toFixed(1)}% (objetivo ${FOOD_COST_OBJETIVO * 100}%)`);
+  }
+});
+
+test('las proteínas quedan en una banda estrecha aunque sus costes no lo estén', () => {
+  const ps = ING.filter(i => i.cat === 'proteina');
+  const precios = ps.map(i => precio(i, 1)), costes = ps.map(costePorc);
+  const spreadPrecio = Math.max(...precios) / Math.min(...precios), spreadCoste = Math.max(...costes) / Math.min(...costes);
+  assert.ok(spreadCoste > 2, `el montaje del test exige costes dispares: ${spreadCoste.toFixed(2)}×`);
+  assert.ok(spreadPrecio < 1.25, `las proteínas se separan ${spreadPrecio.toFixed(2)}× en precio; el tope es 1.25×`);
 });
 
 // ---------- recomendarSize ----------

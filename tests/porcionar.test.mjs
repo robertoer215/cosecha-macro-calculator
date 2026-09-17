@@ -1,8 +1,8 @@
 // Tests del porcionado conjunto del MODO IA — correr con: npm test
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { porcionar, mac, precio, recomendarSize, calcularMeta, PESO_MACRO, UMBRAL_G, explicarCambio, nombreCorto, proponerCierre, tamanosPermitidos } from '../js/calc.js';
-import { ING, SIZES, MAX_PORCIONES, COSTOS_OPERATIVOS, MARGEN_DIVISOR } from '../js/data.js';
+import { porcionar, mac, precio, precioBase, recomendarSize, calcularMeta, PESO_MACRO, UMBRAL_G, explicarCambio, nombreCorto, proponerCierre, tamanosPermitidos } from '../js/calc.js';
+import { ING, SIZES, MAX_PORCIONES } from '../js/data.js';
 
 const F = SIZES.map(s => s.k);
 const id = x => ING.find(i => i.id === x);
@@ -435,11 +435,8 @@ test('una meta alta de carbohidratos se cierra repitiendo el mismo módulo', () 
 test('a partir de 2 porciones el precio es exactamente N veces la Estándar', () => {
   for (const it of ING) {
     for (const k of [2, 3, 4]) assert.equal(precio(it, k), k * precio(it, 1), `${it.id} ×${k}`);
-    // y los tres tamaños de siempre no cambian: siguen con la fórmula
-    for (const f of [0.5, 1, 1.5]) {
-      const esperado = Math.ceil((it.pKg * it.g / 1000) * COSTOS_OPERATIVOS / MARGEN_DIVISOR * f);
-      assert.equal(precio(it, f), esperado, `${it.id} ×${f} cambió de precio`);
-    }
+    // y los tres tamaños de siempre escalan la base de la banda, con ceil
+    for (const f of [0.5, 1, 1.5]) assert.equal(precio(it, f), Math.ceil(precioBase(it) * f), `${it.id} ×${f}`);
   }
 });
 

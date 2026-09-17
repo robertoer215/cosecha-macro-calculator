@@ -6,7 +6,7 @@ y la app calcula macros personalizados, sugiere extras y genera un QR para cocin
 ## Arquitectura
 - `src/index.html` — markup, sin lógica inline salvo onclick que llaman funciones globales
 - `src/css/styles.css` — todos los estilos. Paleta crema + acento naranja (#C05A1F)
-- `src/js/data.js` — datos: ingredientes, precios (pKg), factores, constantes
+- `src/js/data.js` — datos: ingredientes con `costoKg` (coste real de la preparación, del costeo), factores, constantes de precio
 - `src/js/calc.js` — funciones puras: precio(), mac(), calcularMeta(), y el MODO IA:
   porcionar(), explicarCambio(), proponerCierre()
 - `src/js/app.js` — estado y render de la UI; expone funciones a window
@@ -66,7 +66,14 @@ con 3P+3C+3V; por eso además hay tope de módulos por categoría (MAX_MODULOS_C
 
 ## Reglas de negocio (NO cambiar sin avisar)
 - Macros: Mifflin-St Jeor → TDEE → kcal objetivo → reparto por comida
-- Precio: ceil((pKg × g/1000) × 1.40 / 0.85 × factorTamaño)
+- Precio (16-sep-2026): BANDA POR CATEGORÍA a food cost objetivo. `costoKg` es el coste
+  real por kilo de la preparación terminada (cosecha-costos/costeo.csv, insumos
+  verificados 29–31 ago 2026). precioBase = (costeMedioCat + 0.25 × (costePorción −
+  costeMedioCat)) / 0.32; Pequeña/Estándar/Grande = ceil(base × factor); 2+ porciones
+  = N × Estándar. Sustituye a la "fórmula de la casa" (coste × 1.40 / 0.85), que
+  dejaba food cost 61 % y vendía 7 de 13 módulos por debajo de coste. Resultado:
+  proteínas $144 / $168 / $173 (antes $24 / $80 / $82), plato medio $231 (el
+  modelo v2 dice $233). El catálogo de n8n (Sheets) lleva estos mismos precios.
 - Tamaños: Pequeña 0.5, Estándar 1, Grande 1.5, y a partir de ahí PORCIONES
   MÚLTIPLES del mismo módulo (×2, ×3, ×4 = raciones Estándar repetidas), con tope
   por categoría en MAX_PORCIONES (proteína 3, carbohidrato 4, vegetal 2, grasa 2).

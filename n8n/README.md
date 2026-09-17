@@ -97,6 +97,13 @@ tendría CADA línea si se acepta, para que el agente no invente el mecanismo.
 El catálogo es la fuente única: el negocio edita ahí disponibilidad del día,
 precios y alérgenos sin tocar n8n. Se lee en cada petición, a propósito.
 
+Los precios del catálogo se derivan de `js/data.js` + `precio()` de la app (banda
+por categoría a food cost 32 %, ver CLAUDE.md) y se reescribieron el 16-sep-2026.
+Si cambian en la app hay que volver a escribirlos aquí: el MCP de Drive no edita
+contenido, así que se hace con un flujo temporal de n8n (webhook → HTTP PUT a
+`values/A1:Q14?valueInputOption=RAW` con la credencial de Sheets; generador en el
+scratchpad de la sesión, patrón trivial de reproducir) o a mano en la hoja.
+
 ## Huecos declarados
 
 - **Alérgenos SIN VERIFICAR.** No existen en ninguna fuente del repo: ni en

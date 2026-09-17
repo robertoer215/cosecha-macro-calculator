@@ -1,3 +1,10 @@
+// `costoKg` es el COSTE por kilo de la preparación terminada (merma incluida), no el
+// precio del insumo: sale de cosecha-costos/costeo.csv (columna costo_kg_calculado,
+// insumos verificados el 29–31 de agosto de 2026; salmón re-verificado a $439/kg el
+// 31-ago). Sustituye a los pKg anteriores, que no tenían origen documentado y
+// dejaban 7 de 13 módulos vendiéndose por debajo de su coste. Confianza del costeo:
+// REVISAR en todos salvo camote, nopal y nueces (OK); el espárrago es de confianza
+// BAJA (el SKU pasó de $34.90 a $149 en dos días).
 // `img` apunta a assets/ingredientes/ (derivadas 600×600 de las fotos de la landing).
 // `foco` es el object-position del recorte: las fotos son cuadradas y las tarjetas 4:3,
 // así que sin él algunos platos que no están centrados en su foto quedan cortados.
@@ -13,19 +20,19 @@
 // PENDIENTE: el recetario declara porción de 150 g para arroz y esquites, la app declara 120 y 100.
 // Estos macros corresponden a la porción que declara la app; cerrar el conflicto antes de publicar carta.
 export const ING = [
-  {cat:'proteina',id:'P01',nombre:'Pollo al cilantro y limón',g:150,kcal:165,prot:31,carb:0,gras:3.5,pKg:95,img:'pollo.jpg'},
-  {cat:'proteina',id:'P02',nombre:'Salmón al pastor con achiote',g:130,kcal:240,prot:28,carb:2,gras:13,pKg:380,img:'salmon.jpg'},
-  {cat:'proteina',id:'P03',nombre:'Tenderloin al mole verde',g:150,kcal:210,prot:33,carb:1,gras:8,pKg:320,img:'tenderloin.jpg'},
-  {cat:'grasa',id:'G01',nombre:'Guacamole artesanal',g:60,kcal:96,prot:1,carb:5,gras:9,pKg:55,img:'guacamole.jpg',foco:'51% 34%'},
-  {cat:'grasa',id:'G02',nombre:'Nueces con chile piquín',g:25,kcal:165,prot:4,carb:3,gras:16,pKg:280,img:'nueces-piquin.jpg',foco:'38% 31%'},
-  {cat:'grasa',id:'G03',nombre:'Semillas de girasol tostadas',g:20,kcal:115,prot:4,carb:4,gras:10,pKg:90,img:'semillas.jpg',foco:'38% 48%'},
-  {cat:'carbohidrato',id:'C01',nombre:'Arroz con edamame y granada',g:120,kcal:147,prot:3,carb:28,gras:2.6,pKg:85,img:'arroz-edamame.jpg',foco:'44% 45%'},
-  {cat:'carbohidrato',id:'C02',nombre:'Camote asado con chile ancho',g:130,kcal:208,prot:3,carb:32,gras:7.5,pKg:25,img:'camote.jpg',foco:'43% 45%'},
-  {cat:'carbohidrato',id:'C03',nombre:'Esquites con yogur y feta',g:100,kcal:124,prot:5,carb:14,gras:5.3,pKg:70,img:'esquites.jpg',foco:'51% 47%'},
-  {cat:'vegetal',id:'V01',nombre:'Brócoli al carbón sobre tzatziki',g:120,kcal:75,prot:5,carb:9,gras:2,pKg:40,img:'brocoli.jpg'},
-  {cat:'vegetal',id:'V02',nombre:'Espárragos asados con limón',g:100,kcal:35,prot:4,carb:5,gras:0.5,pKg:120,img:'esparragos.jpg'},
-  {cat:'vegetal',id:'V03',nombre:'Ensalada de nopal con jitomate',g:110,kcal:45,prot:2,carb:8,gras:0.5,pKg:20,img:'nopal.jpg'},
-  {cat:'vegetal',id:'V04',nombre:'Verduras tatemadas con cacahuate',g:120,kcal:90,prot:3,carb:10,gras:4,pKg:45,img:'verduras-tatemadas.jpg',foco:'52% 47%'},
+  {cat:'proteina',id:'P01',nombre:'Pollo al cilantro y limón',g:150,kcal:165,prot:31,carb:0,gras:3.5,costoKg:190.38,img:'pollo.jpg'},
+  {cat:'proteina',id:'P02',nombre:'Salmón al pastor con achiote',g:130,kcal:240,prot:28,carb:2,gras:13,costoKg:512.26,img:'salmon.jpg'},
+  {cat:'proteina',id:'P03',nombre:'Tenderloin al mole verde',g:150,kcal:210,prot:33,carb:1,gras:8,costoKg:397.51,img:'tenderloin.jpg'},
+  {cat:'grasa',id:'G01',nombre:'Guacamole artesanal',g:60,kcal:96,prot:1,carb:5,gras:9,costoKg:57.61,img:'guacamole.jpg',foco:'51% 34%'},
+  {cat:'grasa',id:'G02',nombre:'Nueces con chile piquín',g:25,kcal:165,prot:4,carb:3,gras:16,costoKg:266.51,img:'nueces-piquin.jpg',foco:'38% 31%'},
+  {cat:'grasa',id:'G03',nombre:'Semillas de girasol tostadas',g:20,kcal:115,prot:4,carb:4,gras:10,costoKg:181.79,img:'semillas.jpg',foco:'38% 48%'},
+  {cat:'carbohidrato',id:'C01',nombre:'Arroz con edamame y granada',g:120,kcal:147,prot:3,carb:28,gras:2.6,costoKg:36.28,img:'arroz-edamame.jpg',foco:'44% 45%'},
+  {cat:'carbohidrato',id:'C02',nombre:'Camote asado con chile ancho',g:130,kcal:208,prot:3,carb:32,gras:7.5,costoKg:73.33,img:'camote.jpg',foco:'43% 45%'},
+  {cat:'carbohidrato',id:'C03',nombre:'Esquites con yogur y feta',g:100,kcal:124,prot:5,carb:14,gras:5.3,costoKg:129.71,img:'esquites.jpg',foco:'51% 47%'},
+  {cat:'vegetal',id:'V01',nombre:'Brócoli al carbón sobre tzatziki',g:120,kcal:75,prot:5,carb:9,gras:2,costoKg:50.79,img:'brocoli.jpg'},
+  {cat:'vegetal',id:'V02',nombre:'Espárragos asados con limón',g:100,kcal:35,prot:4,carb:5,gras:0.5,costoKg:205.49,img:'esparragos.jpg'},
+  {cat:'vegetal',id:'V03',nombre:'Ensalada de nopal con jitomate',g:110,kcal:45,prot:2,carb:8,gras:0.5,costoKg:47.54,img:'nopal.jpg'},
+  {cat:'vegetal',id:'V04',nombre:'Verduras tatemadas con cacahuate',g:120,kcal:90,prot:3,carb:10,gras:4,costoKg:49.24,img:'verduras-tatemadas.jpg',foco:'52% 47%'},
 ];
 export const IMG_DIR = 'assets/ingredientes/';
 // Los tres primeros son los tamaños de siempre. A partir de 2 el módulo se REPITE:
@@ -55,5 +62,11 @@ export const FACT_MACRO = {
 export const OBJ_LABEL = {perder_grasa:'Perder grasa',mantener:'Mantener',ganar_musculo:'Ganar músculo',rendimiento:'Rendimiento'};
 export const CATS = ['proteina','grasa','carbohidrato','vegetal'];
 export const CAT_LABEL = {proteina:'Proteína',grasa:'Grasa saludable',carbohidrato:'Carbohidrato',vegetal:'Vegetal'};
-export const COSTOS_OPERATIVOS = 1.40;
-export const MARGEN_DIVISOR = 0.85;
+// PRECIO POR BANDA DE CATEGORÍA (16-sep-2026). Sustituye a la "fórmula de la casa"
+// (coste × 1.40 / 0.85), que dejaba un food cost del 61 % y las proteínas entre $24
+// y $82. Cada categoría se cobra alrededor de su coste medio al food cost objetivo
+// del modelo de costos v2, y solo una fracción de la diferencia de coste entre
+// módulos pasa al precio: las proteínas quedan en $144 / $168 / $173 en vez de
+// $90 / $187 / $209, y el plato medio en $231 (el modelo dice $233).
+export const FOOD_COST_OBJETIVO = 0.32;
+export const PASO_DIFERENCIA_COSTE = 0.25;

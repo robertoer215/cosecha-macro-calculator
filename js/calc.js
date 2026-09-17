@@ -1,10 +1,33 @@
-import { FACT_ACTIVIDAD, FACT_OBJETIVO, FACT_MACRO, COSTOS_OPERATIVOS, MARGEN_DIVISOR, SIZES, MAX_PORCIONES, MAX_MODULOS_CAT } from './data.js';
+import { ING, FACT_ACTIVIDAD, FACT_OBJETIVO, FACT_MACRO, FOOD_COST_OBJETIVO, PASO_DIFERENCIA_COSTE, SIZES, MAX_PORCIONES, MAX_MODULOS_CAT } from './data.js';
+// Coste de la porción Estándar: coste por kilo de la preparación terminada × gramos.
+export function costePorcion(it) { return it.costoKg * it.g / 1000; }
+
+// Coste medio de la porción Estándar en cada categoría (se calcula una vez).
+const COSTE_MEDIO_CAT = {};
+function costeMedio(cat) {
+  if (COSTE_MEDIO_CAT[cat] === undefined) {
+    const pares = ING.filter(i => i.cat === cat);
+    COSTE_MEDIO_CAT[cat] = pares.length ? pares.reduce((a, i) => a + costePorcion(i), 0) / pares.length : 0;
+  }
+  return COSTE_MEDIO_CAT[cat];
+}
+
+// Precio de la porción Estándar, sin redondear. BANDA POR CATEGORÍA: la categoría
+// se cobra alrededor de su coste medio al food cost objetivo, y solo una fracción
+// (PASO_DIFERENCIA_COSTE) de lo que un módulo se aparta de ese medio pasa a su
+// precio. Es lo que hace que el pollo y el salmón se parezcan en la carta aunque
+// no en el coste: el pollo subvenciona al salmón y el food cost de la categoría
+// cierra en el objetivo con un mix parejo.
+export function precioBase(it) {
+  const medio = costeMedio(it.cat);
+  return (medio + PASO_DIFERENCIA_COSTE * (costePorcion(it) - medio)) / FOOD_COST_OBJETIVO;
+}
+
 export function precio(it, f = 1) {
   // A partir de 2 porciones cada una cuesta lo que la Estándar: es lo que espera
-  // quien pide "tres de camote", y evita que el ceil de la fórmula dé un precio
-  // distinto de tres veces la carta. Pequeña, Estándar y Grande no cambian.
+  // quien pide "tres de camote". Pequeña, Estándar y Grande escalan la base.
   if (f >= 2) return f * precio(it, 1);
-  return Math.ceil((it.pKg * it.g / 1000) * COSTOS_OPERATIVOS / MARGEN_DIVISOR * f);
+  return Math.ceil(precioBase(it) * f);
 }
 export function mac(it, f = 1) {
   return {
