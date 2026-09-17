@@ -64,6 +64,41 @@ con 3P+3C+3V; por eso además hay tope de módulos por categoría (MAX_MODULOS_C
   usan `transform:scaleX` por eso; su estilo inline es `transform:scaleX(0)`, no
   `width:0%`.
 
+## Cierre del plato contra n8n (17-sep-2026)
+`goResumen()` pinta el resumen con los números LOCALES al instante (≈6 ms) y
+dispara UNA llamada POST al webhook `cosecha-plato` (`js/cocina.js` tiene lo puro:
+contrato, normalización de la respuesta, comparación y llamada con timeout de 8 s;
+`app.js` solo pinta). Lo que vuelve confirma, explica (`explicacion`, auditada en
+n8n: aquí no se redacta nada) y propone (`propuesta_cierre`).
+- Los números de pantalla son los locales. Si cocina calcula distinto (total,
+  líneas o macros), gana cocina pero se enseñan las dos cifras en `.cocina-disc` y
+  el total pasa a "Total según cocina". `coincide_con_la_app` no basta: compara con
+  lo ENVIADO, y se comprueba línea a línea contra lo que ve el cliente.
+- La respuesta se NORMALIZA antes de pintar nada (`normalizarRespuesta`): total,
+  líneas, tamaños o macros fuera de contrato → "Sin confirmar"; lo accesorio se
+  limpia campo a campo. Un 200 con `ok:false` se trata como rechazo.
+- Hueco `#cocina` con altura reservada: `.cocina-body` 226 px (12 líneas; medido
+  sobre 40 explicaciones reales a 375 px: mediana 144, p90 160, máx 193) y 262 px
+  bajo 340 px. Solo la discrepancia lo hace crecer, a propósito.
+- La propuesta se RESERVA con la tarjeta exacta que va a llegar: `predecirPropuesta()`
+  corre el mismo motor con todas las líneas clavadas (como n8n) y pinta la misma
+  tarjeta con el contenido oculto. Ningún número de la predicción se enseña. Si
+  n8n no propone o la llamada falla, la tarjeta se quita y `sinSalto()` compensa el
+  scroll cuando el bloque está por encima de lo visible.
+- Aceptar la propuesta CLAVA las líneas actuales (`szManual`) y añade el módulo
+  como extra al tamaño propuesto: es lo que cocina prometió ("las demás líneas no
+  cambian"); sin clavarlas el porcionado reajustaba el plato y el precio aceptado
+  no se cumplía en el 53 % de los casos. Luego se repite la llamada con
+  `upsell_aceptado:true` y `pedido_id_previo`.
+- Dedupe: misma meta + misma selección (`clavePedido`) no vuelve a pedir; un plato
+  ya confirmado en la sesión se restaura del `historial`. Una respuesta tardía de
+  un plato editado se ignora (`seq`). Timeout/red/rechazo → "Sin confirmar con
+  cocina", con el QR y el ticket intactos; reabrir el resumen reintenta.
+- El QR lleva el `pedido_id` como última línea y TODO el texto se filtra a ASCII
+  (la hora local puede traer U+202F). `#qr-pedido` lo muestra en el ticket.
+- Latencia real desde el navegador: mediana ≈ 5 s, máximo visto 7,6 s (el timeout
+  de 8 s del encargo queda justo; un pico de n8n se pintaría como "Sin confirmar").
+
 ## Reglas de negocio (NO cambiar sin avisar)
 - Macros: Mifflin-St Jeor → TDEE → kcal objetivo → reparto por comida
 - Precio (16-sep-2026): BANDA POR CATEGORÍA a food cost objetivo. `costoKg` es el coste

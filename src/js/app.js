@@ -1,6 +1,7 @@
 import { ING, SIZES, OBJ_LABEL, CATS, CAT_LABEL, IMG_DIR, MAX_MODULOS_CAT } from './data.js';
 import { precio, mac, calcularMeta, metaManualComida, metaManualTotal,
          porcionar, explicarCambio, proponerCierre, tamanosPermitidos, UMBRAL_G } from './calc.js';
+import { armarPedido, clavePedido, compararConCocina, llamarCocina, K_DE_ETIQUETA } from './cocina.js';
 
 let meta = {}, selBase = {}, szBase = {}, selExtra = {}, szExtra = {};
 
@@ -105,6 +106,7 @@ window.calcular = function() {
   selBase = {}; szBase = {}; selExtra = {}; szExtra = {};
   szManual = {}; ajustando = {}; ultimoPorc = null; porque = null; idsRecalc = [];
   platoCatIdx = 0;
+  reiniciarCocina();
   renderMeta();
   renderBase();
   updateGlobalTracker();
@@ -649,7 +651,11 @@ function buildQRText() {
   Object.keys(selExtra).forEach(id=>{ const it=ING.find(i=>i.id===id);const sz=szExtra[id]||1,m=mac(it,sz);lines.push('E:'+id+' x'+sz+' '+m.g+'g'); });
   const t=totals();
   lines.push('P'+t.prot+' C'+t.carb+' G'+t.gras+' K'+t.kcal);
-  return lines.join('\n');
+  // El id del pedido que devolvió cocina, cuando lo hay: es ASCII (fecha + ids).
+  if (cocina.estado === 'confirmado' && cocina.respuesta) lines.push(String(cocina.respuesta.pedido_id));
+  // Todo el texto se filtra a ASCII: el QR no tolera un solo carácter fuera, y la
+  // hora local puede traer un espacio estrecho (U+202F) según el navegador.
+  return lines.join('\n').replace(/[^\x20-\x7E\n]/g, '');
 }
 
 function buildQRInstructions() {
@@ -659,8 +665,265 @@ function buildQRInstructions() {
   return inst;
 }
 
+// ── COCINA · el plato se CIERRA contra n8n ────────────────────────────────────
+// El resumen se pinta al instante con los números locales y la llamada al
+// webhook sale después, sin bloquear nada. Lo que vuelve CONFIRMA (mismos
+// números), EXPLICA (texto ya auditado en n8n: aquí no se redacta nada) y
+// PROPONE (el cierre). Si discrepa, gana cocina, pero se enseñan las dos
+// cifras. Sin red o pasados 8 s, el resumen se queda como está, marcado
+// "Sin confirmar con cocina", y el QR y el ticket siguen valiendo.
+//
+//   seq        número de la llamada vigente: la respuesta tardía de un plato
+//              que ya se editó no puede pintar encima del resumen nuevo.
+//   clave      meta + selección del plato pedido: volver a abrir el mismo
+//              resumen no dispara un segundo pedido.
+//   historial  platos que cocina YA confirmó en esta sesión, por clave: quitar
+//              el extra y volver tampoco genera un pedido nuevo.
+let cocina = { seq: 0, clave: null, estado: null, motivo: null, errores: [], respuesta: null, local: null, llamada: null, historial: new Map() };
+
+function reiniciarCocina() {
+  if (cocina.llamada) cocina.llamada.cancelar();
+  cocina = { seq: cocina.seq, clave: null, estado: null, motivo: null, errores: [], respuesta: null, local: null, llamada: null, historial: new Map() };
+}
+
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const etq = k => SIZES.find(s => s.k === k)?.l || 'Estándar';
+const SKEL = n => `<div class="cocina-skel" aria-hidden="true">${'<span></span>'.repeat(n)}</div>`;
+
+// Las líneas tal como las ve el cliente: base con su tamaño resuelto y extras
+// con el suyo, en el orden de los pasos + extras (el mismo que porciona la app).
+function lineasLocales() {
+  const lineas = itemsPlato().map(it => {
+    const k = selExtra[it.id] ? (szExtra[it.id] ?? 1) : (szBase[it.id] ?? 1);
+    const m = mac(it, k);
+    return { id: it.id, nombre: it.nombre, cat: it.cat, esExtra: !!selExtra[it.id], tamano: k, g: m.g, precio: precio(it, k),
+             macros: { kcal: m.kcal, prot: m.prot, carb: m.carb, gras: m.gras } };
+  });
+  return { lineas, total: lineas.reduce((a, l) => a + l.precio, 0), macros: totals() };
+}
+
+// La propuesta que hará cocina se puede PREDECIR en local: mismo motor, mismos
+// datos, todas las líneas clavadas a su tamaño, que es como la calcula n8n. No
+// se enseña ni un número de esa predicción: sirve solo para reservar el hueco
+// con la altura EXACTA de la tarjeta que va a llegar (misma estructura, mismo
+// texto, oculto), de modo que al llegar cambie el contenido y no se mueva nada.
+function predecirPropuesta() {
+  const plato = itemsPlato();
+  if (!plato.length) return null;
+  const fijos = {}, porCat = {};
+  plato.forEach(it => { fijos[it.id] = selExtra[it.id] ? (szExtra[it.id] ?? 1) : (szBase[it.id] ?? 1); porCat[it.cat] = (porCat[it.cat] || 0) + 1; });
+  const candidatos = ING.filter(c => !plato.some(i => i.id === c.id) && (porCat[c.cat] || 0) < MAX_MODULOS_CAT);
+  const p = proponerCierre(plato, meta, candidatos, { fijos });
+  if (!p) return null;
+  // Mismo formato que n8n/src/resolver.js. Con todas las líneas clavadas la
+  // propuesta nunca reajusta otra línea, así que el texto es predecible.
+  const LBLM = { prot: 'proteína', carb: 'carbohidratos', gras: 'grasas' };
+  const precioTxt = p.deltaPrecio >= 0 ? `+${p.deltaPrecio} MXN` : `${p.deltaPrecio} MXN (el plato sale más barato)`;
+  const descripcion = `Se AÑADE ${p.it.nombre} en ${etq(p.tamano)} (${p.g} g), que aporta ${p.aporta[p.macro]} g de ${LBLM[p.macro]}. Las demás líneas no cambian. Diferencia de precio: ${precioTxt}.`;
+  return { it: p.it, descripcion, extra: p.deltaPrecio };
+}
+
+// La tarjeta de la propuesta: reservada (mismo contenido, oculto: solo ocupa) o
+// lista, con `descripcion` tal cual y el precio extra con signo.
+function propuestaHTML({ it, descripcion, extra }, reservado) {
+  const tag = enCategoria(it.cat) >= 1 ? 'Segundo ' + CAT_LABEL[it.cat].toLowerCase() : CAT_LABEL[it.cat];
+  return `<div class="sugg-box cocina-propuesta" data-estado="${reservado ? 'reservado' : 'listo'}"${reservado ? ' aria-hidden="true"' : ''}>
+    <div class="sugg-hd"><span class="sugg-badge">Cierre sugerido</span><span class="sugg-desc">${reservado ? 'Revisando…' : 'Según cocina'}</span></div>
+    <div class="sugg-item">
+      <div class="sugg-thumb">${reservado ? '' : foto(it, 'sugg-img')}</div>
+      <div class="sugg-main">
+        <div class="sugg-macro-tag">${tag}</div>
+        <div class="sugg-name">${esc(it.nombre)}</div>
+        <div class="sugg-why">${esc(descripcion)}</div>
+        <div class="sugg-controls">
+          <div class="sugg-price">${extra >= 0 ? '+' : '−'}$${Math.abs(extra)}</div>
+          <button type="button" class="btn-add off"${reservado ? ' disabled tabindex="-1"' : ''} onclick="aceptarPropuestaCocina()">+ Añadir</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// Cambia un bloque sin que salte lo que el cliente está mirando: si el bloque
+// queda por encima de lo visible, el scroll se compensa con lo que creció o
+// encogió (lo que hace el anclaje de scroll del navegador, pero en todos).
+function sinSalto(idRegion, fn) {
+  const ancla = document.querySelector('.qr-section');
+  const region = document.getElementById(idRegion);
+  const bAntes = region ? region.getBoundingClientRect().bottom : 1;
+  const tAntes = ancla ? ancla.getBoundingClientRect().top : null;
+  fn();
+  if (!ancla || tAntes === null || bAntes > 0) return;
+  const delta = ancla.getBoundingClientRect().top - tAntes;
+  if (delta) window.scrollBy(0, delta);
+}
+
+const ESTADO_LBL = { confirmando: 'Confirmando con cocina…', confirmado: 'Confirmado por cocina', sin_confirmar: 'Sin confirmar con cocina' };
+const MOTIVO_TXT = { timeout: 'Cocina no respondió a tiempo.', red: 'Sin conexión con cocina.',
+                     http: 'Cocina no aceptó el pedido.', respuesta_invalida: 'Cocina respondió algo que no es un pedido.' };
+
+// Pinta el hueco de cocina según el estado. Cambia el contenido, nunca la caja.
+function pintarCocina() {
+  const box = $('cocina');
+  if (!box) return;
+  sinSalto('cocina-propuesta', () => {
+    const est = cocina.estado || 'confirmando';
+    box.dataset.estado = est;
+    $('cocina-estado').textContent = ESTADO_LBL[est];
+    const body = $('cocina-body'), propWrap = $('cocina-propuesta');
+    if (est === 'confirmando') {
+      body.innerHTML = SKEL(8);
+    } else if (est === 'sin_confirmar') {
+      const errs = cocina.errores.length ? ' ' + cocina.errores.map(esc).join('. ') + '.' : '';
+      body.innerHTML = `<p class="cocina-nota">${MOTIVO_TXT[cocina.motivo] || MOTIVO_TXT.red}${errs} Tu resumen y tu código siguen siendo válidos con los números de tu pantalla.</p>`;
+      if (propWrap) propWrap.innerHTML = '';
+    } else {
+      const r = cocina.respuesta;
+      const disc = compararConCocina(cocina.local, r);
+      let html = '';
+      // La explicación es la que llega, ya auditada en n8n. Si no llega, se omite.
+      if (r.explicacion) html += `<p class="cocina-texto">${esc(r.explicacion)}</p>`;
+      r.avisos.forEach(a => { html += `<p class="cocina-aviso">${esc(a)}</p>`; });
+      r.rechazados.forEach(x => { html += `<p class="cocina-aviso">${esc(x.nombre || x.id)}: ${esc(x.motivo)}</p>`; });
+      if (disc.hay) html += discrepanciaHTML(disc);
+      body.innerHTML = html;
+      pintarTotalSegunCocina(disc);
+      pintarPropuesta(r);
+    }
+    const ped = $('qr-pedido');
+    if (ped) ped.textContent = est === 'confirmado' ? `Pedido ${cocina.respuesta.pedido_id}` : '';
+  });
+}
+
+// La discrepancia se enseña con las dos cifras, línea a línea. Gana cocina.
+function discrepanciaHTML(d) {
+  const f = l => `${etq(l.tamano)} · ${l.g} g · $${l.precio}`;
+  const fc = c => `${esc(c.etiqueta)} · ${c.g} g · $${c.precio}`;
+  let h = `<div class="cocina-disc"><div class="cocina-disc-hd">Cocina calculó distinto</div>`;
+  if (d.total) h += `<p><b>Total:</b> cocina calculó <b>$${d.total.cocina}</b>; tu pantalla decía $${d.total.local}.</p>`;
+  d.lineas.forEach(l => {
+    if (!l.cocina) h += `<p><b>${esc(l.nombre)}:</b> no está en el plato de cocina${l.motivo ? ` (${esc(l.motivo)})` : ''}; tu pantalla decía ${f(l.local)}.</p>`;
+    else if (!l.local) h += `<p><b>${esc(l.nombre)}:</b> cocina añadió ${fc(l.cocina)}; no estaba en tu pantalla.</p>`;
+    else h += `<p><b>${esc(l.nombre)}:</b> cocina calculó ${fc(l.cocina)}; tu pantalla decía ${f(l.local)}.</p>`;
+  });
+  if (d.macros) {
+    const m = x => `${x.prot} g P · ${x.carb} g C · ${x.gras} g G · ${x.kcal} kcal`;
+    h += `<p><b>Macros:</b> cocina calculó ${m(d.macros.cocina)}; tu pantalla decía ${m(d.macros.local)}.</p>`;
+  }
+  return h + '</div>';
+}
+
+function pintarTotalSegunCocina(disc) {
+  const lbl = $('res-total-lbl'), val = $('res-total-val');
+  if (!lbl || !val) return;
+  if (disc.hay) { lbl.textContent = 'Total según cocina'; val.textContent = `$${cocina.respuesta.total} MXN`; }
+  else { lbl.textContent = 'Total a pagar'; val.textContent = `$${cocina.local.total} MXN`; }
+}
+
+// La propuesta de cierre de cocina. Solo si se puede aceptar de verdad: existe
+// en la carta, no está ya en el plato y su categoría no está al tope.
+function pintarPropuesta(r) {
+  const wrap = $('cocina-propuesta');
+  if (!wrap) return;
+  const p = r.propuesta_cierre;
+  const it = p && ING.find(i => i.id === p.id);
+  const puede = it && !selExtra[it.id] && !(selBase[it.cat] || []).includes(it.id) && enCategoria(it.cat) < MAX_MODULOS_CAT;
+  wrap.innerHTML = puede ? propuestaHTML({ it, descripcion: p.descripcion, extra: p.precio_extra }, false) : '';
+}
+
+// UNA llamada por plato cerrado. La respuesta se aplica solo si sigue siendo la
+// vigente; timeout, red y rechazo terminan igual: "Sin confirmar con cocina".
+function confirmarConCocina(extra = {}) {
+  const local = lineasLocales();
+  const pedido = armarPedido(meta, local.lineas, extra);
+  const clave = clavePedido(pedido);
+  if (clave === cocina.clave && (cocina.estado === 'confirmando' || cocina.estado === 'confirmado')) { pintarCocina(); return; }
+  if (cocina.llamada) cocina.llamada.cancelar();
+  // Un plato que cocina ya confirmó en esta sesión se vuelve a enseñar, no a pedir.
+  const previo = cocina.historial.get(clave);
+  if (previo) {
+    cocina = { ...cocina, seq: cocina.seq + 1, clave, estado: 'confirmado', motivo: null, errores: [], respuesta: previo.respuesta, local: previo.local, llamada: null };
+    pintarCocina();
+    dibujarQR();
+    return;
+  }
+  const seq = cocina.seq + 1;
+  const llamada = llamarCocina(pedido);
+  cocina = { ...cocina, seq, clave, estado: 'confirmando', motivo: null, errores: [], respuesta: null, local, llamada };
+  pintarCocina();
+  llamada.promesa.then(res => {
+    if (seq !== cocina.seq || res.motivo === 'cancelado') return;   // el plato ya es otro
+    try {
+      if (res.ok) {
+        cocina.estado = 'confirmado'; cocina.respuesta = res.data;
+        cocina.historial.set(clave, { respuesta: res.data, local });
+        if (cocina.historial.size > 20) cocina.historial.delete(cocina.historial.keys().next().value);
+      } else {
+        cocina.estado = 'sin_confirmar'; cocina.motivo = res.motivo; cocina.errores = res.errores || [];
+      }
+      cocina.llamada = null;
+      pintarCocina();
+      // El QR se redibuja con el pedido solo si el resumen está a la vista: si el
+      // cliente está editando, el plato de pantalla ya no es el de esta respuesta.
+      if (res.ok && $('sc2').classList.contains('active')) dibujarQR();
+    } catch (e) {
+      cocina.estado = 'sin_confirmar'; cocina.motivo = 'respuesta_invalida'; cocina.errores = []; cocina.respuesta = null; cocina.llamada = null;
+      pintarCocina();
+      console.warn('cocina:', e.message);
+    }
+  });
+}
+
+// Aceptar el cierre. Lo prometido es "las demás líneas no cambian": se clavan a
+// su tamaño de ahora (como si el cliente las hubiera fijado con Ajustar, que es
+// lo que acaba de hacer al aceptar ESTE plato) y el módulo entra como extra al
+// tamaño propuesto. Sin clavarlas, el porcionado reajustaba las líneas base al
+// añadir el extra y el cliente recibía otro plato y otro precio que los que
+// aceptó. Luego se repinta el resumen y se REPITE la llamada declarando el
+// upsell y el pedido al que responde. Rechazarla es no tocar nada.
+window.aceptarPropuestaCocina = function() {
+  const r = cocina.respuesta, p = r && r.propuesta_cierre;
+  if (cocina.estado !== 'confirmado' || !p) return;
+  const it = ING.find(i => i.id === p.id);
+  if (!it || selExtra[it.id] || (selBase[it.cat] || []).includes(it.id) || enCategoria(it.cat) >= MAX_MODULOS_CAT) return;
+  const k = K_DE_ETIQUETA[p.tamano];
+  if (k == null) return;
+  itemsPlato().forEach(x => { if (!selExtra[x.id] && szManual[x.id] == null) szManual[x.id] = szBase[x.id] ?? 1; });
+  szExtra[it.id] = k;
+  window.toggleE(it.id);
+  pintarResumen();
+  confirmarConCocina({ upsell_aceptado: true, pedido_id_previo: r.pedido_id });
+  // El cliente estaba abajo, en la propuesta: se le lleva al total nuevo (bajo el
+  // tracker fijo, no debajo de él) y el foco pasa al estado de cocina.
+  const total = document.querySelector('.res-total'), tracker = $('global-tracker');
+  if (total) {
+    total.style.scrollMarginTop = ((tracker ? tracker.offsetHeight : 0) + 12) + 'px';
+    total.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  }
+  const box = $('cocina');
+  if (box) { box.tabIndex = -1; box.focus({ preventScroll: true }); }
+};
+
+function dibujarQR() {
+  const el = $('qr-canvas');
+  if (!el || !window.QRCode) return;
+  el.innerHTML = '';
+  try { new QRCode(el, { text: buildQRText(), width: 120, height: 120, colorDark: '#1a1a18', colorLight: '#F4F2EE', correctLevel: QRCode.CorrectLevel.M }); }
+  catch (e) { el.innerHTML = '<div class="qr-fallo">QR no disponible</div>'; console.warn('QR:', e.message); }
+}
+
 window.goResumen = function() {
   if(!Object.keys(selBase).length){alert('Selecciona al menos un ingrediente');return;}
+  pintarResumen();
+  confirmarConCocina();
+};
+
+// El resumen LOCAL, al instante. El hueco de cocina y el de la propuesta nacen
+// aquí, con su altura ya reservada, para que la respuesta no mueva nada.
+function pintarResumen() {
+  // El resumen nunca lleva la línea de porqué: repintarlo estando ya en él (al
+  // aceptar el cierre) también la limpia.
+  olvidarPorque(); renderPorque();
   let rows='',total=0,tP=0,tC=0,tG=0,tK=0;
   CATS.forEach(cat=>{
     (selBase[cat]||[]).forEach(id=>{
@@ -685,27 +948,28 @@ window.goResumen = function() {
   const fmtMacro=(v,unit)=>{ if(Math.abs(v)<=TOLG) return 'En tu meta'; return v>0?`${v}${unit} de más`:`${Math.abs(v)}${unit} de menos`; };
   const insts=buildQRInstructions();
   const instHTML=insts.map((it,i)=>`<div class="qr-inst-item"><div class="qr-inst-num">${i+1}</div><div><div class="qr-inst-text">${it.name}${it.isExtra?' <span style="font-size:10px;color:var(--accent);font-family:Inter,sans-serif">(extra)</span>':''}</div><div class="qr-inst-detail">Porción ${it.sz} · <strong>${it.g}g</strong> · ${it.cat}</div></div></div>`).join('');
+  const prediccion = predecirPropuesta();
   $('res-content').innerHTML=`
-    <div class="res-wrap">${rows}<div class="res-total"><div class="res-total-lbl">Total a pagar</div><div class="res-total-val">$${total} MXN</div></div></div>
+    <div class="res-wrap">${rows}<div class="res-total"><div class="res-total-lbl" id="res-total-lbl">Total a pagar</div><div class="res-total-val" id="res-total-val">$${total} MXN</div></div></div>
     <div class="gap-wrap"><div class="gap-hd">Diferencia vs tu meta</div><div class="gap-grid">
       <div class="gap-blk"><div class="gap-num ${clsKcal(dK)}">${fmtKcal(dK)}</div><div class="gap-lbl">kcal</div></div>
       <div class="gap-blk"><div class="gap-num ${clsMacro(dP)}">${fmtMacro(dP,'g')}</div><div class="gap-lbl">proteína</div></div>
       <div class="gap-blk"><div class="gap-num ${clsMacro(dC)}">${fmtMacro(dC,'g')}</div><div class="gap-lbl">carbos</div></div>
       <div class="gap-blk"><div class="gap-num ${clsMacro(dG)}">${fmtMacro(dG,'g')}</div><div class="gap-lbl">grasas</div></div>
     </div></div>
+    <div class="gap-wrap cocina" id="cocina" data-estado="confirmando" aria-live="polite" aria-atomic="true">
+      <div class="gap-hd"><span>Cocina</span><span class="cocina-estado" id="cocina-estado">${ESTADO_LBL.confirmando}</span></div>
+      <div class="cocina-body" id="cocina-body">${SKEL(8)}</div>
+    </div>
+    <div id="cocina-propuesta" aria-live="polite">${prediccion ? propuestaHTML(prediccion, true) : ''}</div>
     <div class="qr-section"><div class="qr-hd"><div class="qr-hd-lbl">Código para cocina</div><div class="qr-hd-tag">Escanear en caja</div></div>
-      <div class="qr-body"><div class="qr-code-wrap"><div id="qr-canvas"></div><p>Escanea para<br>ver orden</p></div>
+      <div class="qr-body"><div class="qr-code-wrap"><div id="qr-canvas"></div><p>Escanea para<br>ver orden</p><div class="qr-pedido" id="qr-pedido"></div></div>
       <div class="qr-instructions"><div class="qr-inst-title">Porciones exactas</div>${instHTML}</div></div></div>`;
-  goStep(2);
-  setTimeout(()=>{
-    const el=$('qr-canvas');
-    if(el && window.QRCode){
-      el.innerHTML='';
-      try { new QRCode(el,{text:buildQRText(),width:120,height:120,colorDark:'#1a1a18',colorLight:'#F4F2EE',correctLevel:QRCode.CorrectLevel.M}); }
-      catch(e){ el.innerHTML='<div class="qr-fallo">QR no disponible</div>'; console.warn('QR:', e.message); }
-    }
-  },200);
-};
+  // Repintar el resumen estando ya en él (al aceptar el cierre) no debe
+  // devolver al cliente al principio de la página.
+  if (!$('sc2').classList.contains('active')) goStep(2);
+  setTimeout(dibujarQR, 200);
+}
 
 window.goStep = function(n) {
   olvidarPorque();
