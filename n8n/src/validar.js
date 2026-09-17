@@ -35,10 +35,23 @@ const CAT = { P: 'proteína', C: 'carbohidrato', V: 'vegetal', G: 'grasa' };
 Object.entries(porCat).forEach(([c, n]) => { if (n > 2) err.push(`seleccion: ${n} módulos de ${CAT[c] || c}; el máximo son 2 por categoría`); });
 const sin = ((body.restricciones || {}).sin || []).map(x => String(x).toLowerCase().trim()).filter(Boolean);
 
+// ── el upsell: la app REPITE la llamada al aceptar la propuesta de cierre ──
+// Dos campos opcionales, pero si vienen se comprueban: el flag tiene que ser un
+// booleano de verdad (ni "true" ni 1) y el pedido previo, un id con la forma que
+// emite este mismo flujo. Con el flag en true el pedido previo es obligatorio:
+// un upsell sin pedido al que responder no se puede registrar.
+const upsellAceptado = body.upsell_aceptado === true;
+if (body.upsell_aceptado != null && typeof body.upsell_aceptado !== 'boolean') err.push('upsell_aceptado: debe ser true o false');
+const pedidoPrevio = body.pedido_id_previo == null ? '' : String(body.pedido_id_previo).trim();
+if (pedidoPrevio && !/^PED-\d{14}-[A-Z0-9]{0,24}$/.test(pedidoPrevio)) err.push('pedido_id_previo: no tiene la forma PED-AAAAMMDDhhmmss-ids');
+if (upsellAceptado && !pedidoPrevio) err.push('pedido_id_previo: obligatorio cuando upsell_aceptado es true');
+
 return [{ json: {
   ok: err.length === 0,
   errores: err,
   meta, seleccion, sin,
+  upsell_aceptado: upsellAceptado,
+  pedido_id_previo: pedidoPrevio,
   // id de pedido determinista por contenido + hora, sin Math.random
   pedido_id: 'PED-' + new Date().toISOString().replace(/[-:.TZ]/g, '').slice(0, 14) + '-' + ids.join(''),
   t0: Date.now(),

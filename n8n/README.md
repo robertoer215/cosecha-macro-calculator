@@ -3,9 +3,34 @@
 Flujo `Xv459ruzH0Ag71qY` en `https://n8n.srv1683942.hstgr.cloud`, **activo**.
 Webhook: `POST https://n8n.srv1683942.hstgr.cloud/webhook/cosecha-plato`
 
-Se llama **una sola vez, al cerrar el plato**. El porcionado de cada toque corre
-en local, en el navegador, sin red: cientos o miles de combinaciones de aritmética,
-milisegundos.
+Se llama **una sola vez, al cerrar el plato** (y una segunda si el cliente acepta
+la propuesta de cierre). El porcionado de cada toque corre en local, en el
+navegador, sin red: cientos o miles de combinaciones de aritmética, milisegundos.
+Desde el 17-sep-2026 la llamada la hace la app de verdad (`js/cocina.js` +
+`goResumen()` en `js/app.js`, ver CLAUDE.md): manda todas las líneas con su
+tamaño, pinta el resumen local sin esperar y aplica la respuesta al llegar.
+
+## El upsell que se acepta, se registra
+
+Cuando el cliente pulsa "+ Añadir" en la propuesta de cierre, la app añade el
+módulo y **repite la llamada** con dos campos más en el cuerpo:
+
+| campo | tipo | regla en `Validar entrada` |
+|---|---|---|
+| `upsell_aceptado` | boolean, opcional | tiene que ser `true`/`false` de verdad (`"true"` o `1` → 400) |
+| `pedido_id_previo` | string, opcional | forma `PED-AAAAMMDDhhmmss-ids`; **obligatorio** si el flag es `true` |
+
+En la hoja de Pedidos `upsell_aceptado` (columna V) deja de ser un `false` fijo y
+lleva el valor recibido, y la columna Z `pedido_id_previo` apunta al pedido al
+que responde el upsell. La cabecera de Z se escribió con el flujo temporal
+webhook → PUT `values/Z1` (patrón de más abajo) y el flujo se borró después.
+La respuesta del webhook no cambia. Verificado el 17-sep con una aceptación real
+desde el navegador: dos filas, la segunda con `upsell_aceptado = TRUE` y
+`pedido_id_previo` igual al `pedido_id` de la primera.
+
+Como la app manda **todas** las líneas con tamaño, `proponerCierre` corre con todo
+clavado: la propuesta nunca reajusta otra línea ("Las demás líneas no cambian") y
+por eso la app, al aceptar, clava las líneas actuales antes de añadir el módulo.
 
 ## La regla que ordena todo el diseño
 
@@ -114,6 +139,13 @@ scratchpad de la sesión, patrón trivial de reproducir) o a mano en la hoja.
   garantía alérgica hasta que cocina los valide.
 - **Precios y pKg** siguen mal calibrados (trabajo aparte, parado a propósito).
 - Las kcal de etiqueta no cumplen 4/4/9 exacto con sus propios macros.
+
+## CORS
+
+El webhook responde al preflight `OPTIONS` con 204 y `access-control-allow-origin`
+igual al `Origin` pedido (verificado con `https://robertoer215.github.io` y
+`http://localhost:3000`), y el POST devuelve la cabecera: la app llama desde el
+navegador sin proxy.
 
 ## Latencia — criterio NO cumplido
 

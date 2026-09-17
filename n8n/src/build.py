@@ -61,6 +61,14 @@ AGENT_TEXT = ('={{ JSON.stringify({ objetivo: $json.meta, restricciones_sin: $js
               'propuesta_cierre: $json.propuesta_cierre, motivo_sin_propuesta: $json.motivo_sin_propuesta, '
               'modulos_rechazados: $json.rechazados, umbral_g: 4 }) }}')
 
+# Una fila por llamada en la hoja de Pedidos, columnas A..Z en este orden:
+#   timestamp, pedido_id, kcal/prot/carb/gras objetivo, restricciones, seleccion,
+#   tamanos, lineas, g_totales, kcal/prot/carb/gras total, desv prot/carb/gras,
+#   dentro_de_umbral, coincide_con_la_app, propuesta_cierre, upsell_aceptado,
+#   total_mxn, explicacion, ms, pedido_id_previo.
+# upsell_aceptado y pedido_id_previo vienen del cuerpo (Validar entrada): la app
+# repite la llamada al aceptar la propuesta, con el flag en true y el id del
+# pedido al que responde. Antes se escribía `false` fijo.
 REG = ("={{ JSON.stringify({ values: [[ new Date().toISOString(), $json.pedido_id, "
   "$('Resolver plato').first().json.meta.kcal, $('Resolver plato').first().json.meta.prot, "
   "$('Resolver plato').first().json.meta.carb, $('Resolver plato').first().json.meta.gras, "
@@ -68,8 +76,10 @@ REG = ("={{ JSON.stringify({ values: [[ new Date().toISOString(), $json.pedido_i
   "$json.lineas.map(l=>l.tamano).join('|'), $json.lineas.length, $json.lineas.reduce((a,l)=>a+l.g,0), "
   "$json.macros_totales.kcal, $json.macros_totales.prot, $json.macros_totales.carb, $json.macros_totales.gras, "
   "$json.desviacion.prot, $json.desviacion.carb, $json.desviacion.gras, $json.dentro_de_umbral, "
-  "$json.coincide_con_la_app, $json.propuesta_cierre ? $json.propuesta_cierre.id : '', false, "
-  "$json.total, $json.explicacion, $json.auditoria.ms ]] }) }}")
+  "$json.coincide_con_la_app, $json.propuesta_cierre ? $json.propuesta_cierre.id : '', "
+  "$('Resolver plato').first().json.upsell_aceptado === true, "
+  "$json.total, $json.explicacion, $json.auditoria.ms, "
+  "$('Resolver plato').first().json.pedido_id_previo || '' ]] }) }}")
 
 nodes = []
 nodes.append({'id':'wh','name':'Webhook · plato','type':'n8n-nodes-base.webhook','typeVersion':2.1,
@@ -114,7 +124,7 @@ nodes.append(code('Verificar y armar','verificar.js',700,300))
 nodes.append({'id':'registrar','name':'Registrar en Sheets','type':'n8n-nodes-base.httpRequest',
   'typeVersion':4.2,'position':[920,300],
   'parameters':{'method':'POST',
-    'url':'https://sheets.googleapis.com/v4/spreadsheets/'+PED+'/values/A1:Y1:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS',
+    'url':'https://sheets.googleapis.com/v4/spreadsheets/'+PED+'/values/A1:Z1:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS',
     'authentication':'predefinedCredentialType','nodeCredentialType':'googleSheetsOAuth2Api',
     'sendBody':True,'specifyBody':'json','jsonBody':REG,'options':{'timeout':8000}},
   'credentials':GS,'onError':'continueRegularOutput'})
