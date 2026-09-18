@@ -126,6 +126,14 @@ n8n: aquí no se redacta nada) y propone (`propuesta_cierre`).
 - Las kcal de la meta (fórmula y manual-total) se DERIVAN de los macros por comida
   ya redondeados (4P+4C+9G): el panel siempre cuadra. Carbos = residuo, nunca <0;
   si quedan en 0 g/comida se muestra el aviso .meta-warn (flag ajusteCarb).
+  Por eso el formulario manual NO pide kcal (18-sep-2026: las exigía y las
+  ignoraba); las enseña en vivo bajo los campos (`kcalManual()`).
+- Formularios del perfil (18-sep-2026): los campos manuales vienen con VALORES de
+  referencia, no placeholders (un placeholder parece un valor y "Continuar"
+  fallaba con los campos vacíos); los errores van EN el formulario
+  (`errorFormulario()`: aria-invalid, subrayado rojo, mensaje con campo y rango
+  bajo los campos, foco al primero), nunca en `alert()`; los toggles de modo son
+  `<button>` con aria-pressed; todos los `label` llevan `for`.
 - Las cartas muestran siempre el tamaño que se agregará al tocarlas (recomendado
   si el usuario no eligió otro): carta = barra = resumen = QR.
 - Umbrales del resumen: ±4 g por macro; kcal ±68 (= 4·4+4·4+9·4, coherente con

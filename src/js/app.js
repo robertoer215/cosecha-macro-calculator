@@ -49,8 +49,12 @@ window.setMode = function(modo) {
   $('manual-form').style.display  = modo === 'manual' ? 'block' : 'none';
   $('mt-calc').classList.toggle('mt-active', modo === 'calc');
   $('mt-manual').classList.toggle('mt-active', modo === 'manual');
+  $('mt-calc').setAttribute('aria-pressed', String(modo === 'calc'));
+  $('mt-manual').setAttribute('aria-pressed', String(modo === 'manual'));
+  limpiarErrores();
   if (modo === 'manual') {
     $('btn-calcular').disabled = false;
+    window.kcalManual();
   } else {
     const aceptado = $('terms-btn') && $('terms-btn').classList.contains('accepted');
     $('btn-calcular').disabled = !aceptado;
@@ -63,7 +67,52 @@ window.setSubMode = function(sub) {
   $('sub-total').style.display  = sub === 'total'  ? 'block' : 'none';
   $('st-comida').classList.toggle('st-active', sub === 'comida');
   $('st-total').classList.toggle('st-active', sub === 'total');
+  $('st-comida').setAttribute('aria-pressed', String(sub === 'comida'));
+  $('st-total').setAttribute('aria-pressed', String(sub === 'total'));
+  limpiarErrores();
+  window.kcalManual();
 };
+
+const CAMPOS_MANUALES = ['mc-prot', 'mc-carb', 'mc-gras', 'm-prot', 'm-carb', 'm-gras'];
+
+// Las kcal del modo manual no se piden: se derivan de los macros (4P + 4C + 9G,
+// con el mismo redondeo por comida que va a usar la meta) y se enseñan en vivo
+// bajo los campos. Antes el formulario "Total del día" exigía las kcal y luego
+// las ignoraba. Escribir en un campo también le quita la marca de error.
+window.kcalManual = function() {
+  const cm = $('mc-kcal'), tot = $('m-kcal-live');
+  if (cm) {
+    const p = numCampo('mc-prot'), c = numCampo('mc-carb'), g = numCampo('mc-gras');
+    cm.textContent = (p === null || c === null || g === null) ? '' : `= ${metaManualComida({ prot: p, carb: c, gras: g }).kcal} kcal por comida`;
+  }
+  if (tot) {
+    const comidas = +$('m-comidas').value;
+    const p = numCampo('m-prot'), c = numCampo('m-carb'), g = numCampo('m-gras');
+    tot.textContent = (p === null || c === null || g === null) ? '' : `= ${metaManualTotal({ protTotal: p, carbTotal: c, grasTotal: g, comidas }).kcal} kcal por comida · ${comidas} comidas`;
+  }
+  CAMPOS_MANUALES.forEach(idc => { const el = $(idc); if (el && el.classList.contains('invalid') && numCampo(idc) !== null) { el.classList.remove('invalid'); el.removeAttribute('aria-invalid'); } });
+  if (!document.querySelector('#manual-form input.invalid')) { const b = $('manual-error'); if (b) b.textContent = ''; }
+};
+
+// Errores de formulario EN el formulario, no en un alert(): el campo se marca
+// (aria-invalid + subrayado rojo), el mensaje dice qué campo y qué rango bajo los
+// campos (role=alert) y el foco salta al primero con problema.
+function errorFormulario(idError, ids) {
+  const partes = ids.map(idc => {
+    const el = $(idc), lbl = document.querySelector(`label[for="${idc}"]`);
+    const [nombre, unidad] = (lbl ? lbl.textContent : idc).split(' — ');
+    if (el) { el.classList.add('invalid'); el.setAttribute('aria-invalid', 'true'); }
+    return `${nombre.trim()} ${el.min}–${el.max}${unidad ? ' ' + unidad.trim() : ''}`;
+  });
+  const box = $(idError);
+  if (box) box.textContent = `Revisa: ${partes.join(', ')}. Solo números dentro del rango; el 0 es válido.`;
+  const primero = $(ids[0]);
+  if (primero) primero.focus();
+}
+function limpiarErrores() {
+  document.querySelectorAll('input.invalid').forEach(el => { el.classList.remove('invalid'); el.removeAttribute('aria-invalid'); });
+  ['formula-error', 'manual-error'].forEach(idc => { const b = $(idc); if (b) b.textContent = ''; });
+}
 
 window.selObj = el => { document.querySelectorAll('.obj-card').forEach(c=>c.classList.remove('selected')); el.classList.add('selected'); };
 window.selAct = el => { document.querySelectorAll('.act-card').forEach(c=>c.classList.remove('selected')); el.classList.add('selected'); };
@@ -81,20 +130,22 @@ function numCampo(id) {
 }
 
 window.calcular = function() {
+  limpiarErrores();
+  const malos = ids => ids.filter(idc => numCampo(idc) === null);
   if (modoActual === 'manual') {
     if (subModoActual === 'comida') {
-      const prot = numCampo('mc-prot'), carb = numCampo('mc-carb'), gras = numCampo('mc-gras');
-      if (prot === null || carb === null || gras === null) { alert('Revisa los campos de macros: completa los tres con valores dentro de rango (el 0 es válido).'); return; }
-      meta = metaManualComida({ prot, carb, gras });
+      const m = malos(['mc-prot', 'mc-carb', 'mc-gras']);
+      if (m.length) { errorFormulario('manual-error', m); return; }
+      meta = metaManualComida({ prot: numCampo('mc-prot'), carb: numCampo('mc-carb'), gras: numCampo('mc-gras') });
     } else {
-      const comidas = +$('m-comidas').value;
-      const kcalTotal = numCampo('m-kcal'), protTotal = numCampo('m-prot'), carbTotal = numCampo('m-carb'), grasTotal = numCampo('m-gras');
-      if (kcalTotal === null || protTotal === null || carbTotal === null || grasTotal === null) { alert('Revisa los campos: completa todos con valores dentro de rango (el 0 es válido en macros).'); return; }
-      meta = metaManualTotal({ protTotal, carbTotal, grasTotal, comidas });
+      const m = malos(['m-prot', 'm-carb', 'm-gras']);
+      if (m.length) { errorFormulario('manual-error', m); return; }
+      meta = metaManualTotal({ protTotal: numCampo('m-prot'), carbTotal: numCampo('m-carb'), grasTotal: numCampo('m-gras'), comidas: +$('m-comidas').value });
     }
   } else {
+    const m = malos(['edad', 'peso', 'altura']);
+    if (m.length) { errorFormulario('formula-error', m); return; }
     const edad = numCampo('edad'), peso = numCampo('peso'), altura = numCampo('altura');
-    if (edad === null || peso === null || altura === null) { alert('Revisa edad, peso y altura: deben estar dentro de los rangos indicados.'); return; }
     meta = calcularMeta({
       sexo: $('sexo').value,
       edad, peso, altura,
@@ -271,7 +322,7 @@ function renderMeta() {
   $('meta-panel').innerHTML=`
   <div class="meta-panel">
     <div class="meta-top">
-      <div><div class="meta-ey">Meta por comida</div><div class="meta-ctx">${meta.comidas} comidas · ${meta.objetivo === 'manual' ? 'Macros personalizados' : OBJ_LABEL[meta.objetivo]}</div></div>
+      <div><div class="meta-ey">Meta por comida</div><div class="meta-ctx">${meta.objetivo === 'manual' ? (meta.comidas === 1 ? 'Macros personalizados por comida' : `${meta.comidas} comidas · Macros personalizados`) : `${meta.comidas} comidas · ${OBJ_LABEL[meta.objetivo]}`}</div></div>
       <div class="meta-tag">${meta.kcal} kcal</div>
     </div>
     <div class="meta-nums">
