@@ -386,3 +386,40 @@ export function proponerCierre(items, meta, candidatos, opts = {}) {
     resultado: mejor.r
   };
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// GRASAS CUBIERTAS ANTES DE SU PASO
+//
+// La grasa es el macro que se llena primero: el salmón, el tenderloin, el
+// camote y los esquites la traen de serie, y es frecuente llegar al paso de
+// grasa saludable con la meta ya alcanzada sin haber elegido ninguna. Se
+// detecta con el MISMO porcionado que manda en el resto de la app, sobre el
+// plato sin sus módulos de grasa, y se nombra QUIÉN la cubre: las fuentes, de
+// mayor a menor aporte, hasta que entre ellas llegan a la meta. Así el aviso
+// puede decir "con salmón y camote ya alcanzas tu meta" y que sea verdad.
+// ─────────────────────────────────────────────────────────────────────────────
+export function cubrenGrasa(items, meta, opts = {}) {
+  if (!meta || !(meta.gras > 0)) return null;
+  const sinGrasa = (items || []).filter(it => it.cat !== 'grasa');
+  if (!sinGrasa.length) return null;
+  const r = porcionar(sinGrasa, meta, opts);
+  if (r.desviacion.gras < 0) return null;
+  const aportes = sinGrasa
+    .map(it => ({ it, gras: mac(it, r.tamanos[it.id]).gras }))
+    .filter(x => x.gras > 0)
+    .sort((a, b) => b.gras - a.gras);
+  const fuentes = [];
+  let acumulado = 0;
+  for (const x of aportes) {
+    fuentes.push(x.it);
+    acumulado += x.gras;
+    if (acumulado >= meta.gras - 1e-9) break;
+  }
+  return {
+    // 'justa' dentro del umbral de ±4 g; 'encima' cuando el plato entero la pasa.
+    estado: r.desviacion.gras > UMBRAL_G ? 'encima' : 'justa',
+    desviacion: r.desviacion.gras,
+    fuentes,
+    resultado: r
+  };
+}

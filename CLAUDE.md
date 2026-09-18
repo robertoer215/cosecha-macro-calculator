@@ -63,6 +63,15 @@ con 3P+3C+3V; por eso además hay tope de módulos por categoría (MAX_MODULOS_C
 - Nunca animar width ni height, solo opacity y transform. Las barras del tracker
   usan `transform:scaleX` por eso; su estilo inline es `transform:scaleX(0)`, no
   `width:0%`.
+- **Grasas cubiertas antes de su paso (18-sep-2026)**: la grasa es el macro que
+  se llena primero (salmón, tenderloin, camote y esquites la traen de serie). Al
+  entrar al paso de grasa saludable, `cubrenGrasa()` porciona el plato SIN sus
+  módulos de grasa y, si ya alcanza la meta, pinta el aviso `.nudge` antes de las
+  tarjetas nombrando QUIÉN la cubre ("con salmón y camote ya alcanzas tu meta"),
+  con "Seguir sin grasa extra". Nace con el paso y nunca se inserta a mitad (en
+  ese paso solo se tocan grasas, así que su condición no cambia): sin saltos. Si
+  el cliente elige una grasa igualmente, solo cambia el texto, en sitio, y el
+  botón pasa a "Quitar y seguir". El texto no lleva cifras a propósito.
 
 ## Cierre del plato contra n8n (17-sep-2026)
 `goResumen()` pinta el resumen con los números LOCALES al instante (≈6 ms) y

@@ -328,6 +328,21 @@ select option{font-family:sans-serif;background:#FAFAF8}
 .porque::before{content:'';flex:0 0 14px;height:2px;background:var(--accent);transform:translateY(-4px)}
 .porque:empty{display:none}
 
+/* ═══ GRASAS CUBIERTAS · aviso del paso de grasa saludable ═══
+   Nace con el paso (nunca se inserta a mitad: no hay salto) y solo cambia su
+   texto al elegir o quitar una grasa. Título y texto reservan altura para que
+   el cambio de estado tampoco mueva nada. Solo se anima opacity. */
+.nudge{border:1px solid var(--accent);background:var(--accent-soft);padding:1rem 1.25rem;margin-bottom:1.5rem}
+.nudge-hd{margin-bottom:.6rem}
+.nudge-title{font-size:16px;line-height:1.3;min-height:calc(16px * 1.3);margin-bottom:.4rem;color:var(--text)}
+.nudge-text{font-family:'Inter',sans-serif;font-size:12px;line-height:1.55;min-height:calc(12px * 1.55 * 2);color:var(--muted-ink);margin-bottom:.75rem}
+.nudge-title,.nudge-text{transition:opacity .18s ease-out}
+.nudge-btn{min-height:44px;display:inline-flex;align-items:center}
+.nudge-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* A 375 px el título parte en dos líneas y el texto en cuatro; a 320, en cinco. */
+@media (max-width:560px){.nudge-title{min-height:calc(16px * 1.3 * 2)}.nudge-text{min-height:calc(12px * 1.55 * 4)}}
+@media (max-width:340px){.nudge-text{min-height:calc(12px * 1.55 * 5)}}
+
 /* A4 · El recálculo tiene que verse, o la app parece hacer cosas a espaldas del
    usuario. Solo opacity y transform: nunca width ni height. */
 .i-price,.i-size-val,.i-fit{transition:opacity .18s ease-out}

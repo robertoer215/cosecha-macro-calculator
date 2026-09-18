@@ -1,6 +1,6 @@
 import { ING, SIZES, OBJ_LABEL, CATS, CAT_LABEL, IMG_DIR, MAX_MODULOS_CAT } from './data.js';
 import { precio, mac, calcularMeta, metaManualComida, metaManualTotal,
-         porcionar, explicarCambio, proponerCierre, tamanosPermitidos, UMBRAL_G } from './calc.js';
+         porcionar, explicarCambio, proponerCierre, tamanosPermitidos, UMBRAL_G, cubrenGrasa, nombreCorto } from './calc.js';
 import { armarPedido, clavePedido, compararConCocina, llamarCocina, K_DE_ETIQUETA } from './cocina.js';
 
 let meta = {}, selBase = {}, szBase = {}, selExtra = {}, szExtra = {};
@@ -316,6 +316,9 @@ function renderBase() {
   const selCount = (selBase[cat]||[]).length;
 
   let html = renderSubNav();
+  // Al llegar a la grasa saludable con la meta ya cubierta por lo elegido, el
+  // aviso va ANTES de las tarjetas: la decisión que se pide aquí es no añadir.
+  if (cat === 'grasa') html += nudgeGrasaHTML();
   html += `<div class="cat-sec"><div class="cat-hd"><span class="cat-nm">${CAT_LABEL[cat]}</span><span class="cat-ht">${textoEncabezado(cat)}</span></div><div class="items-grid">`;
   items.forEach(it => { html += tarjetaHTML(it, cat); });
   html += `</div></div><div id="cierre-wrap"></div>`;
@@ -377,6 +380,87 @@ function renderCierre() {
     </div>
   </div>`;
 }
+
+// ── GRASAS CUBIERTAS · el aviso del paso de grasa saludable ──────────────────
+// La grasa es el macro que se llena primero: salmón, tenderloin, camote y
+// esquites la traen de serie, y es frecuente llegar a este paso con la meta ya
+// alcanzada sin haber elegido ninguna. cubrenGrasa() lo detecta con el mismo
+// porcionado que manda en el resto de la app, sobre el plato SIN sus módulos de
+// grasa (base o extra). En este paso solo se tocan grasas, así que su resultado
+// no cambia mientras se está en él: la caja nace con el paso y nunca se inserta
+// a mitad (sin saltos). Lo único que cambia al elegir una grasa es el texto, en
+// sitio. El texto no lleva cifras a propósito: persuade con QUIÉN cubre la meta.
+function estadoNudgeGrasa() {
+  const plato = itemsPlato();
+  const sinGrasa = plato.filter(it => it.cat !== 'grasa');
+  const c = cubrenGrasa(plato, meta, { fijos: fijosVigentes(sinGrasa) });
+  if (!c) return null;
+  return { c, grasas: plato.filter(it => it.cat === 'grasa') };
+}
+
+// "salmón y camote" / "salmón, camote y esquites"; con más de tres fuentes se
+// generaliza: una lista larga ya no persuade, aturde.
+function nombrarFuentes(fuentes) {
+  if (fuentes.length > 3) return 'lo que ya elegiste';
+  const n = fuentes.map(nombreCorto);
+  return n.length === 1 ? n[0] : n.slice(0, -1).join(', ') + ' y ' + n[n.length - 1];
+}
+
+function textosNudgeGrasa({ c, grasas }) {
+  const fuentes = nombrarFuentes(c.fuentes);
+  if (grasas.length) {
+    return { estado: 'elegida',
+      titulo: 'Tus grasas ya estaban cubiertas',
+      texto: `Antes de este paso ya alcanzabas tu meta de grasas con ${fuentes}. Si quitas ${nombrarFuentes(grasas)}, tu plato vuelve a estar cubierto sin pagar de más.`,
+      boton: 'Quitar y seguir sin grasa extra →', accion: 'quitarGrasasYSeguir()' };
+  }
+  if (c.estado === 'encima') {
+    return { estado: 'encima',
+      titulo: 'Tus grasas saludables ya están completas',
+      texto: `Con ${fuentes} ya alcanzas tu meta de grasas, y con el plato completo la pasas. Añadir más te alejaría de tu objetivo: lo mejor es seguir sin grasa extra.`,
+      boton: 'Seguir sin grasa extra →', accion: 'nextCat()' };
+  }
+  return { estado: 'justa',
+    titulo: 'Ya llegaste a tu meta de grasas saludables',
+    texto: `Con ${fuentes} ya alcanzas tu meta de grasas de esta comida. Puedes seguir sin añadir nada aquí: tu plato queda equilibrado y no pagas de más.`,
+    boton: 'Seguir sin grasa extra →', accion: 'nextCat()' };
+}
+
+function nudgeGrasaHTML() {
+  const est = estadoNudgeGrasa();
+  if (!est) return '';
+  const t = textosNudgeGrasa(est);
+  return `<div class="nudge" id="nudge-grasa" role="status" data-estado="${t.estado}">
+    <div class="nudge-hd"><span class="sugg-badge">Grasas cubiertas</span></div>
+    <div class="nudge-title" id="nudge-title">${t.titulo}</div>
+    <p class="nudge-text" id="nudge-text">${t.texto}</p>
+    <button type="button" class="btn-add off nudge-btn" id="nudge-btn" onclick="${t.accion}">${t.boton}</button>
+  </div>`;
+}
+
+// Solo el texto cambia al elegir o quitar una grasa; la caja ya estaba.
+function refrescarNudgeGrasa() {
+  const box = $('nudge-grasa');
+  if (!box) return;
+  const est = estadoNudgeGrasa();
+  if (!est) return;
+  const t = textosNudgeGrasa(est);
+  box.dataset.estado = t.estado;
+  setTexto($('nudge-title'), t.titulo);
+  setTexto($('nudge-text'), t.texto);
+  const btn = $('nudge-btn');
+  setTexto(btn, t.boton);
+  btn.setAttribute('onclick', t.accion);
+}
+
+// Quitar TODAS las grasas del plato (base y extras) y pasar al siguiente paso.
+window.quitarGrasasYSeguir = function() {
+  (selBase.grasa || []).forEach(id => { delete szManual[id]; delete ajustando[id]; });
+  delete selBase.grasa;
+  extrasElegidos().filter(it => it.cat === 'grasa').forEach(it => { delete selExtra[it.id]; delete szExtra[it.id]; delete szManual[it.id]; });
+  recalcular();
+  window.nextCat();
+};
 
 // La tarjeta ya no pregunta "¿cuánto?" sino "¿qué tan cerca me deja?".
 // El tamaño que enseña es el que se aplicará al tocarla: elegida, el resuelto;
@@ -484,6 +568,7 @@ function refrescarTarjetas() {
     card.classList.remove('recalc');
     if (idsRecalc.includes(id)) { void card.offsetWidth; card.classList.add('recalc'); }
   });
+  refrescarNudgeGrasa();
   renderCierre();
   renderPorque();
   updateGlobalTracker();
