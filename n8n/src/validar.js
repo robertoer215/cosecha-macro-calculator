@@ -42,8 +42,15 @@ const sin = ((body.restricciones || {}).sin || []).map(x => String(x).toLowerCas
 // un upsell sin pedido al que responder no se puede registrar.
 const upsellAceptado = body.upsell_aceptado === true;
 if (body.upsell_aceptado != null && typeof body.upsell_aceptado !== 'boolean') err.push('upsell_aceptado: debe ser true o false');
-const pedidoPrevio = body.pedido_id_previo == null ? '' : String(body.pedido_id_previo).trim();
-if (pedidoPrevio && !/^PED-\d{14}-[A-Z0-9]{0,24}$/.test(pedidoPrevio)) err.push('pedido_id_previo: no tiene la forma PED-AAAAMMDDhhmmss-ids');
+// Solo texto: String([...]) convertiría un array con un id válido en un id válido.
+// La forma es EXACTA, la que emite este flujo: fecha de 14 dígitos y de 1 a 8 ids
+// de módulo (letra + dos dígitos), sin sufijo vacío ni ids inventados.
+let pedidoPrevio = '';
+if (body.pedido_id_previo != null) {
+  if (typeof body.pedido_id_previo !== 'string') err.push('pedido_id_previo: debe ser texto');
+  else pedidoPrevio = body.pedido_id_previo.trim();
+}
+if (pedidoPrevio && !/^PED-\d{14}-(?:[A-Z]\d{2}){1,8}$/.test(pedidoPrevio)) err.push('pedido_id_previo: no tiene la forma PED-AAAAMMDDhhmmss-ids');
 if (upsellAceptado && !pedidoPrevio) err.push('pedido_id_previo: obligatorio cuando upsell_aceptado es true');
 
 return [{ json: {

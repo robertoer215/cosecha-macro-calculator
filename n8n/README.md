@@ -18,7 +18,7 @@ módulo y **repite la llamada** con dos campos más en el cuerpo:
 | campo | tipo | regla en `Validar entrada` |
 |---|---|---|
 | `upsell_aceptado` | boolean, opcional | tiene que ser `true`/`false` de verdad (`"true"` o `1` → 400) |
-| `pedido_id_previo` | string, opcional | forma `PED-AAAAMMDDhhmmss-ids`; **obligatorio** si el flag es `true` |
+| `pedido_id_previo` | string, opcional | solo texto, forma exacta `PED-` + 14 dígitos + `-` + 1 a 8 ids (`P01C02…`); **obligatorio** si el flag es `true` |
 
 En la hoja de Pedidos `upsell_aceptado` (columna V) deja de ser un `false` fijo y
 lleva el valor recibido, y la columna Z `pedido_id_previo` apunta al pedido al

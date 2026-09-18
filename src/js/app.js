@@ -827,7 +827,9 @@ function pintarPropuesta(r) {
   if (!wrap) return;
   const p = r.propuesta_cierre;
   const it = p && ING.find(i => i.id === p.id);
-  const puede = it && !selExtra[it.id] && !(selBase[it.cat] || []).includes(it.id) && enCategoria(it.cat) < MAX_MODULOS_CAT;
+  const k = p ? K_DE_ETIQUETA[p.tamano] : null;
+  const puede = it && k != null && tamanosPermitidos(it).includes(k)
+    && !selExtra[it.id] && !(selBase[it.cat] || []).includes(it.id) && enCategoria(it.cat) < MAX_MODULOS_CAT;
   wrap.innerHTML = puede ? propuestaHTML({ it, descripcion: p.descripcion, extra: p.precio_extra }, false) : '';
 }
 
@@ -887,10 +889,15 @@ window.aceptarPropuestaCocina = function() {
   const it = ING.find(i => i.id === p.id);
   if (!it || selExtra[it.id] || (selBase[it.cat] || []).includes(it.id) || enCategoria(it.cat) >= MAX_MODULOS_CAT) return;
   const k = K_DE_ETIQUETA[p.tamano];
-  if (k == null) return;
+  // Un tamaño fuera del tope de la categoría no entra: n8n no lo propone nunca,
+  // pero una respuesta malformada tampoco puede colar un vegetal a 4 porciones.
+  if (k == null || !tamanosPermitidos(it).includes(k)) return;
   itemsPlato().forEach(x => { if (!selExtra[x.id] && szManual[x.id] == null) szManual[x.id] = szBase[x.id] ?? 1; });
   szExtra[it.id] = k;
   window.toggleE(it.id);
+  // Las tarjetas del paso 2 siguen en el DOM: se refrescan para que, al volver,
+  // enseñen los tamaños ya clavados y no un "Resuelto" que dejó de ser verdad.
+  refrescarTarjetas();
   pintarResumen();
   confirmarConCocina({ upsell_aceptado: true, pedido_id_previo: r.pedido_id });
   // El cliente estaba abajo, en la propuesta: se le lleva al total nuevo (bajo el
