@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cosecha — Armador de Plato Modular</title>
 <link rel="stylesheet" href="css/styles.css">
+<link rel="icon" href="data:,">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
@@ -17,16 +18,21 @@
     </div>
   </div>
 
-  <div class="global-tracker" id="global-tracker">
+  <!-- aria-live: la barra ya no cambia por una acción directa del usuario sino por
+       un CÁLCULO que dispara tocar otra cosa. Sin anuncio, un lector de pantalla
+       no tendría forma de enterarse de que los gramos se movieron. -->
+  <div class="global-tracker" id="global-tracker" aria-live="polite" aria-atomic="true">
     <div class="gt-top">
       <div class="gt-lbl">Progreso de macros</div>
       <div class="gt-kcal" id="gt-kcal">0 / 0 kcal</div>
     </div>
     <div class="gt-bars">
-      <div class="gt-bar-wrap"><div class="gt-bar-top"><span class="gt-bar-lbl">Proteína</span><span class="gt-bar-val" id="gtv-p">0/0g</span></div><div class="bar-bg"><div class="bar-fill bp" id="gtb-p" style="width:0%"></div></div></div>
-      <div class="gt-bar-wrap"><div class="gt-bar-top"><span class="gt-bar-lbl">Carbos</span><span class="gt-bar-val" id="gtv-c">0/0g</span></div><div class="bar-bg"><div class="bar-fill bc" id="gtb-c" style="width:0%"></div></div></div>
-      <div class="gt-bar-wrap"><div class="gt-bar-top"><span class="gt-bar-lbl">Grasas</span><span class="gt-bar-val" id="gtv-g">0/0g</span></div><div class="bar-bg"><div class="bar-fill bg2" id="gtb-g" style="width:0%"></div></div></div>
+      <div class="gt-bar-wrap"><div class="gt-bar-top"><span class="gt-bar-lbl">Proteína</span><span class="gt-bar-val" id="gtv-p">0/0g</span></div><div class="bar-bg"><div class="bar-fill bp" id="gtb-p" style="transform:scaleX(0)"></div></div></div>
+      <div class="gt-bar-wrap"><div class="gt-bar-top"><span class="gt-bar-lbl">Carbos</span><span class="gt-bar-val" id="gtv-c">0/0g</span></div><div class="bar-bg"><div class="bar-fill bc" id="gtb-c" style="transform:scaleX(0)"></div></div></div>
+      <div class="gt-bar-wrap"><div class="gt-bar-top"><span class="gt-bar-lbl">Grasas</span><span class="gt-bar-val" id="gtv-g">0/0g</span></div><div class="bar-bg"><div class="bar-fill bg2" id="gtb-g" style="transform:scaleX(0)"></div></div></div>
     </div>
+    <!-- A5 · la línea de porqué: qué tamaño se movió y para cerrar qué macro -->
+    <div class="porque" id="porque"></div>
   </div>
 
   <div class="stepper" id="stepper">
@@ -40,19 +46,22 @@
     <div class="stitle">Tu perfil</div>
     <div class="ssub">Calculamos los macronutrientes exactos para cada comida según tus objetivos fisiológicos.</div>
 
-    <div class="mode-toggle">
-      <div class="mt-btn mt-active" id="mt-calc" onclick="setMode('calc')">Calcular con fórmula</div>
-      <div class="mt-btn" id="mt-manual" onclick="setMode('manual')">Ingresar mis macros</div>
+    <!-- Botones de verdad, no divs: Tab llega, Enter y Espacio cambian de modo y
+         aria-pressed dice cuál está activo. -->
+    <div class="mode-toggle" role="group" aria-label="Cómo definir tu meta">
+      <button type="button" class="mt-btn mt-active" id="mt-calc" aria-pressed="true" onclick="setMode('calc')">Calcular con fórmula</button>
+      <button type="button" class="mt-btn" id="mt-manual" aria-pressed="false" onclick="setMode('manual')">Ingresar mis macros</button>
     </div>
 
     <div id="formula-form">
       <div class="form-grid">
-        <div class="fg"><label>Sexo biológico</label><select id="sexo"><option value="masculino">Masculino</option><option value="femenino">Femenino</option></select></div>
-        <div class="fg"><label>Edad</label><input type="number" id="edad" value="28" min="15" max="80"></div>
-        <div class="fg"><label>Peso — kg</label><input type="number" id="peso" value="75" min="40" max="200"></div>
-        <div class="fg"><label>Altura — cm</label><input type="number" id="altura" value="175" min="140" max="220"></div>
-        <div class="fg"><label>Comidas por día</label><select id="comidas"><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option></select></div>
+        <div class="fg"><label for="sexo">Sexo biológico</label><select id="sexo"><option value="masculino">Masculino</option><option value="femenino">Femenino</option></select></div>
+        <div class="fg"><label for="edad">Edad</label><input type="number" inputmode="numeric" id="edad" value="28" min="15" max="80"></div>
+        <div class="fg"><label for="peso">Peso — kg</label><input type="number" inputmode="decimal" id="peso" value="75" min="40" max="200"></div>
+        <div class="fg"><label for="altura">Altura — cm</label><input type="number" inputmode="numeric" id="altura" value="175" min="140" max="220"></div>
+        <div class="fg"><label for="comidas">Comidas por día</label><select id="comidas"><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option></select></div>
       </div>
+      <div class="form-error" id="formula-error" role="alert"></div>
       <div class="divider"></div>
       <div class="sec-lbl">Objetivo</div>
       <div class="obj-grid">
@@ -81,30 +90,36 @@
     </div>
 
     <div id="manual-form" style="display:none">
-      <div class="manual-note">Usa los valores que te indicó tu nutrióloga o los que ya conoces.</div>
+      <!-- Los campos vienen con valores de referencia, no con placeholders: un
+           placeholder parece un valor y "Continuar" fallaba con los campos vacíos.
+           Las kcal no se piden: se derivan de los macros (regla del proyecto) y se
+           enseñan en vivo bajo los campos. -->
+      <div class="manual-note">Valores de referencia: cámbialos por los que te indicó tu nutrióloga o los que ya conoces. Las calorías se calculan solas a partir de tus macros.</div>
 
-      <div class="sub-toggle">
-        <div class="st-btn st-active" id="st-comida" onclick="setSubMode('comida')">Por comida</div>
-        <div class="st-btn" id="st-total" onclick="setSubMode('total')">Total del día</div>
+      <div class="sub-toggle" role="group" aria-label="Cómo ingresar tus macros">
+        <button type="button" class="st-btn st-active" id="st-comida" aria-pressed="true" onclick="setSubMode('comida')">Por comida</button>
+        <button type="button" class="st-btn" id="st-total" aria-pressed="false" onclick="setSubMode('total')">Total del día</button>
       </div>
 
       <div id="sub-comida">
         <div class="form-grid">
-          <div class="fg"><label>Proteína — g</label><input type="number" id="mc-prot" placeholder="45" min="0" max="300"></div>
-          <div class="fg"><label>Carbohidratos — g</label><input type="number" id="mc-carb" placeholder="60" min="0" max="400"></div>
-          <div class="fg"><label>Grasas — g</label><input type="number" id="mc-gras" placeholder="20" min="0" max="150"></div>
+          <div class="fg"><label for="mc-prot">Proteína — g</label><input type="number" inputmode="numeric" id="mc-prot" value="45" min="0" max="300" oninput="kcalManual()"></div>
+          <div class="fg"><label for="mc-carb">Carbohidratos — g</label><input type="number" inputmode="numeric" id="mc-carb" value="60" min="0" max="400" oninput="kcalManual()"></div>
+          <div class="fg"><label for="mc-gras">Grasas — g</label><input type="number" inputmode="numeric" id="mc-gras" value="20" min="0" max="150" oninput="kcalManual()"></div>
         </div>
+        <div class="manual-kcal" id="mc-kcal" aria-live="polite"></div>
       </div>
 
       <div id="sub-total" style="display:none">
         <div class="form-grid">
-          <div class="fg"><label>Comidas por día</label><select id="m-comidas"><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option></select></div>
-          <div class="fg"><label>Kcal totales / día</label><input type="number" id="m-kcal" placeholder="2000" min="800" max="5000"></div>
-          <div class="fg"><label>Proteína — g totales</label><input type="number" id="m-prot" placeholder="150" min="0" max="500"></div>
-          <div class="fg"><label>Carbohidratos — g totales</label><input type="number" id="m-carb" placeholder="200" min="0" max="800"></div>
-          <div class="fg"><label>Grasas — g totales</label><input type="number" id="m-gras" placeholder="65" min="0" max="300"></div>
+          <div class="fg"><label for="m-comidas">Comidas por día</label><select id="m-comidas" onchange="kcalManual()"><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option></select></div>
+          <div class="fg"><label for="m-prot">Proteína — g totales</label><input type="number" inputmode="numeric" id="m-prot" value="150" min="0" max="500" oninput="kcalManual()"></div>
+          <div class="fg"><label for="m-carb">Carbohidratos — g totales</label><input type="number" inputmode="numeric" id="m-carb" value="200" min="0" max="800" oninput="kcalManual()"></div>
+          <div class="fg"><label for="m-gras">Grasas — g totales</label><input type="number" inputmode="numeric" id="m-gras" value="65" min="0" max="300" oninput="kcalManual()"></div>
         </div>
+        <div class="manual-kcal" id="m-kcal-live" aria-live="polite"></div>
       </div>
+      <div class="form-error" id="manual-error" role="alert"></div>
     </div>
 
     <div class="btn-row"><div></div><button class="btn btn-main" id="btn-calcular" onclick="calcular()" disabled>Continuar</button></div>
@@ -113,7 +128,7 @@
   <div class="screen" id="sc1">
     <div class="eyebrow">Paso 02</div>
     <div class="stitle">Arma tu plato</div>
-    <div class="ssub">Selecciona un módulo por categoría y elige el tamaño. La app sugerirá extras para alcanzar tu meta.</div>
+    <div class="ssub">Elige qué quieres en cada categoría. El tamaño de cada módulo lo calcula la app y lo reajusta cada vez que añades algo, para acercarte lo más posible a tu meta.</div>
     <div id="meta-panel"></div>
     <div id="base-mods"></div>
     <div id="sugg-wrap"></div>

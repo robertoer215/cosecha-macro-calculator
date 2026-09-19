@@ -1,6 +1,6 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Georgia',serif;background:#FAFAF8;color:#1a1a18;min-height:100vh}
-:root{--bg:#FAFAF8;--surface:#F4F2EE;--border:#E2DDD6;--border-strong:#C8C0B4;--text:#1a1a18;--muted:#8A8680;--light:#B8B2AA;--accent:#C05A1F;--accent-soft:#F5EDE4;--green:#3A7D6E;--blue:#4A6FA5;--amber:#C07A1F}
+:root{--bg:#FAFAF8;--surface:#F4F2EE;--border:#E2DDD6;--border-strong:#C8C0B4;--text:#1a1a18;--muted:#8A8680;--light:#B8B2AA;--accent:#C05A1F;--accent-soft:#F5EDE4;--accent-ink:#AE511C;--muted-ink:#6F6C67;--green:#3A7D6E;--blue:#4A6FA5;--amber:#C07A1F}
 .app{max-width:720px;margin:0 auto;padding-bottom:6rem}
 .header{padding:2.5rem 2.5rem 1.75rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-end}
 .logo{font-size:13px;letter-spacing:6px;text-transform:uppercase}
@@ -9,14 +9,17 @@ body{font-family:'Georgia',serif;background:#FAFAF8;color:#1a1a18;min-height:100
 .global-tracker.visible{display:block}
 .gt-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:.625rem}
 .gt-lbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-family:'Inter',sans-serif;color:var(--muted)}
-.gt-kcal{font-size:11px;font-family:'Inter',sans-serif;color:var(--accent);font-weight:500}
+.gt-kcal{font-size:11px;font-family:'Inter',sans-serif;color:var(--accent-ink);font-weight:500}
 .gt-bars{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .gt-bar-wrap{display:flex;flex-direction:column;gap:4px}
 .gt-bar-top{display:flex;justify-content:space-between}
-.gt-bar-lbl{font-size:8px;letter-spacing:1px;text-transform:uppercase;font-family:'Inter',sans-serif;color:var(--muted)}
+.gt-bar-lbl{font-size:8px;letter-spacing:1px;text-transform:uppercase;font-family:'Inter',sans-serif;color:var(--muted-ink)}
 .gt-bar-val{font-size:8px;font-family:'Inter',sans-serif;color:var(--text)}
 .bar-bg{height:2px;background:var(--border);border-radius:2px;overflow:hidden}
-.bar-fill{height:100%;border-radius:2px;transition:width .4s ease}
+/* El modo IA reescribe estas barras en CADA toque. Animar `width` obliga a un
+   reflow por toque e incumple la regla de animar solo opacity y transform, así
+   que la barra ocupa el 100% y lo que se anima es la escala horizontal. */
+.bar-fill{height:100%;width:100%;border-radius:2px;transform-origin:left center;transform:scaleX(0);transition:transform .4s ease}
 .bp{background:var(--green)}.bc{background:var(--blue)}.bg2{background:var(--amber)}.bover{background:var(--accent)!important}
 .stepper{display:flex;align-items:center;padding:1.75rem 2.5rem 0}
 .s-node{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer}
@@ -52,9 +55,9 @@ select option{font-family:sans-serif;background:#FAFAF8}
 .act-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:1.75rem}
 .act-card{background:var(--bg);padding:11px 5px;text-align:center;cursor:pointer;transition:background .2s}
 .act-card:hover{background:var(--surface)}
-.act-card.selected{background:var(--text)}
+.act-card.selected{background:var(--accent)}
 .act-card.selected .an,.act-card.selected .ad{color:#fff}
-.act-card.selected .ad{color:rgba(255,255,255,.55)}
+.act-card.selected .ad{color:rgba(255,255,255,.6)}
 .an{font-size:10px;font-family:'Inter',sans-serif;font-weight:500;color:var(--text);margin-bottom:1px}
 .ad{font-size:9px;color:var(--light);font-family:'Inter',sans-serif}
 .meta-panel{border:1px solid var(--border);padding:1.5rem 1.75rem;margin-bottom:1.5rem}
@@ -91,24 +94,32 @@ select option{font-family:sans-serif;background:#FAFAF8}
 .i-body{padding:14px}
 .i-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
 .i-name{font-size:13px;color:var(--text);line-height:1.3}
-.i-price{font-size:12px;color:var(--accent);font-family:'Inter',sans-serif;font-weight:500}
+.i-price{font-size:12px;color:var(--accent-ink);font-family:'Inter',sans-serif;font-weight:500}
 .i-check{width:20px;height:20px;border-radius:50%;border:1px solid rgba(255,255,255,.85);background:rgba(26,26,24,.2);transition:all .2s;position:absolute;top:10px;right:10px;z-index:2;display:flex;align-items:center;justify-content:center}
 .i-check::after{content:'';width:8px;height:8px;border-radius:50%;background:transparent;transition:background .2s}
 .icard.sel .i-check{background:var(--accent);border-color:#fff}
 .icard.sel .i-check::after{background:#fff}
 .icard.sel .i-photo::before{box-shadow:inset 0 0 0 3px var(--accent)}
 .i-macros{display:flex;gap:10px;margin-bottom:4px}
-.mp{font-size:10px;color:var(--muted);font-family:'Inter',sans-serif}
+.mp{font-size:10px;color:var(--muted-ink);font-family:'Inter',sans-serif}
 .mp b{color:var(--text);font-weight:500;font-style:normal}
-.size-pills{display:none;gap:1px;background:var(--border);border:1px solid var(--border);margin-top:10px}
-.icard.sel .size-pills{display:flex}
-.sz-pill{flex:1;padding:6px 4px;text-align:center;background:var(--bg);cursor:pointer;font-size:9px;letter-spacing:1px;text-transform:uppercase;font-family:'Inter',sans-serif;color:var(--muted);transition:background .2s}
+/* MODO IA — el tamaño dejó de ser una pregunta y pasó a ser una respuesta.
+   Las píldoras ya no se abren al SELECCIONAR (eso hacía crecer la tarjeta 47 px):
+   ahora solo las revela "Ajustar", que es una acción aparte y deliberada. */
+/* Hasta seis opciones (Pequeña · Estándar · Grande · ×2 · ×3 · ×4) en una rejilla
+   de tres columnas: a 375 px la tarjeta va a una columna y cada píldora mide ~83 px,
+   44 de alto, con 8 px de separación. Sigue siendo revelación progresiva. */
+.size-pills{display:none;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.icard.ajustando .size-pills{display:grid}
+/* 12px reales y 44px de alto: antes eran 9px en un target de 24px, que incumplía
+   readable-font-size y touch-target-size a la vez. */
+.sz-pill{min-height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 4px;text-align:center;background:var(--bg);border:1px solid var(--border);cursor:pointer;font-size:12px;letter-spacing:.5px;text-transform:uppercase;font-family:'Inter',sans-serif;color:var(--muted-ink);transition:background .2s}
 .sz-pill:hover{background:var(--surface)}
 .sz-pill.sz-on{background:var(--text);color:#fff}
 .sz-pill.sz-rec{border-top:2px solid var(--accent)}
 .sz-pill.sz-rec.sz-on{border-top:2px solid var(--accent)}
 /* La palabra en vez de un punto: el punto no comunicaba nada por sí solo. */
-.rec-lbl{display:block;font-size:7px;letter-spacing:.4px;text-transform:uppercase;color:var(--accent);margin-top:3px;white-space:nowrap}
+.rec-lbl{display:block;font-size:9px;letter-spacing:.4px;text-transform:uppercase;color:var(--accent-ink);margin-top:2px;white-space:nowrap}
 .sz-pill.sz-on .rec-lbl{color:#fff}
 .sugg-box{border:1px solid var(--border);margin-bottom:2rem}
 .sugg-hd{padding:.875rem 1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
@@ -179,8 +190,12 @@ select option{font-family:sans-serif;background:#FAFAF8}
 .btn{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-family:'Inter',sans-serif;padding:12px 22px;cursor:pointer;border:none;transition:all .25s;font-weight:500}
 .btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}
 .btn-ghost:hover{color:var(--text);border-color:var(--border-strong)}
-.btn-main{background:var(--text);color:var(--bg)}
-.btn-main:hover{background:var(--accent)}
+/* Primario en naranja de marca (18-sep-2026): en el perfil, Continuar, el toggle
+   de modo y la actividad elegida iban en negro junto a las tarjetas de objetivo
+   ya naranjas. Hover un paso más oscuro (--accent-ink). Blanco sobre --accent da
+   4.45:1, el mismo contraste que ya tenían .obj-card.selected y .st-active. */
+.btn-main{background:var(--accent);color:#fff}
+.btn-main:hover{background:var(--accent-ink)}
 .plato-subnav{display:flex;flex-direction:column;align-items:center;gap:.75rem;padding:1.5rem 0 1.75rem;margin-bottom:.5rem}
 .psn-steps{display:flex;align-items:center}
 .psn-dot{width:22px;height:22px;border-radius:50%;border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;font-size:9px;font-family:'Inter',sans-serif;color:var(--muted);background:var(--bg);flex-shrink:0;transition:all .3s}
@@ -193,12 +208,23 @@ select option{font-family:sans-serif;background:#FAFAF8}
 .mode-toggle{display:flex;gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:1.75rem}
 .mt-btn{flex:1;padding:11px 8px;text-align:center;background:var(--bg);cursor:pointer;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;font-family:'Inter',sans-serif;color:var(--muted);transition:background .2s}
 .mt-btn:hover{background:var(--surface)}
-.mt-btn.mt-active{background:var(--text);color:#fff}
+.mt-btn.mt-active{background:var(--accent);color:#fff}
 .manual-note{font-size:12px;color:var(--muted);font-family:'Inter',sans-serif;line-height:1.6;margin-bottom:1.25rem;padding:12px 14px;border:1px solid var(--border);background:var(--surface)}
 .sub-toggle{display:flex;gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:1.5rem}
 .st-btn{flex:1;padding:9px 8px;text-align:center;background:var(--bg);cursor:pointer;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;font-family:'Inter',sans-serif;color:var(--muted);transition:background .2s}
 .st-btn:hover{background:var(--surface)}
 .st-btn.st-active{background:var(--accent);color:#fff}
+/* Los toggles son <button> (teclado y aria-pressed): fuera el cromo del navegador,
+   y 44 px de alto, que con 9px de letra y 11px de padding se quedaban en 35. */
+.mt-btn,.st-btn{border:0;-webkit-appearance:none;appearance:none;min-height:44px;line-height:1.35}
+.mt-btn:focus-visible,.st-btn:focus-visible{outline:2px solid var(--accent);outline-offset:-3px}
+/* Errores de formulario en el formulario, no en un alert(): bajo los campos y
+   con el campo subrayado en rojo. #C0392B sobre el fondo da 5,7:1. */
+.form-error{font-family:'Inter',sans-serif;font-size:11px;line-height:1.5;color:#C0392B;margin:-.75rem 0 1.25rem}
+.form-error:empty{display:none}
+input.invalid{border-bottom-color:#C0392B}
+/* Las kcal derivadas de los macros, en vivo, pegadas a los campos. */
+.manual-kcal{font-family:'Inter',sans-serif;font-size:11px;color:var(--muted-ink);margin:-1rem 0 1.5rem;min-height:16px}
 .terms-wrap{margin-top:1.5rem;padding:1.25rem 1.5rem;border:1px solid var(--border);background:var(--surface)}
 .terms-title{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-family:'Inter',sans-serif;color:var(--muted);margin-bottom:.75rem}
 .terms-text{font-size:12px;color:var(--muted);font-family:'Inter',sans-serif;line-height:1.7;margin-bottom:1.25rem}
@@ -219,4 +245,137 @@ select option{font-family:sans-serif;background:#FAFAF8}
      el precio y "+ Agregar" no caben en una línea y el botón se sale de la tarjeta. */
   .sugg-controls{flex-wrap:wrap;gap:8px}
   .sugg-sizes{flex:1 1 100%}
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MODO IA — el tamaño como respuesta
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* A2 · CIFRAS TABULARES. Los gramos y los precios ahora cambian en cada toque:
+   sin anchura fija por dígito los números bailan en horizontal a cada render. */
+.i-price,.i-size-val,.i-fit,.mp b,.gt-bar-val,.gt-kcal,.res-price,.res-macs,.sugg-price,
+.gap-num,.res-total-val,.mn-val,.meta-tag,.cocina-body,.cocina-propuesta,.qr-pedido{font-variant-numeric:tabular-nums}
+
+/* ═══ COCINA · el plato se cierra contra n8n ═══
+   El hueco nace con el resumen y con su altura reservada: cuando llega la
+   respuesta cambia el contenido, nunca la caja. Solo se anima opacity. */
+.cocina .gap-hd{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.cocina-estado{display:flex;align-items:center;gap:6px;white-space:nowrap;color:var(--muted-ink)}
+.cocina-estado::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
+.cocina[data-estado="confirmando"] .cocina-estado::before{animation:latir 1.6s ease-in-out infinite}
+.cocina[data-estado="confirmado"] .cocina-estado{color:var(--green)}
+.cocina[data-estado="sin_confirmar"] .cocina-estado{color:var(--muted)}
+.cocina[data-estado="sin_confirmar"] .cocina-estado::before{background:transparent;border:1px solid currentColor}
+/* 226 px = 12 líneas: medido sobre 40 explicaciones reales a 375 px (mediana 144,
+   p90 160, máximo 193 px) más margen para el respaldo en código de 3 frases. */
+.cocina-body{padding:14px 1.25rem;min-height:226px;font-family:'Inter',sans-serif;font-size:11px;line-height:1.5;color:var(--muted-ink)}
+.cocina-body p{margin:0 0 6px}
+.cocina-body p:last-child{margin-bottom:0}
+.cocina-texto{color:var(--text)}
+.cocina-aviso{color:var(--accent-ink)}
+/* La discrepancia: las dos cifras, línea a línea. Es el único bloque que puede
+   crecer, y solo cuando cocina calculó distinto: la pantalla ya cambia ahí. */
+.cocina-disc{margin-top:10px;padding:10px 12px;border:1px solid var(--accent);background:var(--accent-soft);color:var(--text)}
+.cocina-disc-hd{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.cocina-skel span{display:block;height:9px;border-radius:2px;background:var(--border);margin-bottom:12px;animation:latir 1.6s ease-in-out infinite}
+.cocina-skel span:nth-child(1){width:92%}.cocina-skel span:nth-child(2){width:78%}.cocina-skel span:nth-child(3){width:86%}.cocina-skel span:nth-child(4){width:64%}.cocina-skel span:nth-child(5){width:90%}.cocina-skel span:nth-child(6){width:70%}.cocina-skel span:nth-child(7){width:84%}.cocina-skel span:nth-child(8){width:44%}
+.cocina-skel span:last-child{margin-bottom:0}
+@keyframes latir{0%,100%{opacity:.35}50%{opacity:.9}}
+/* La propuesta reservada es la MISMA tarjeta que va a llegar, con su contenido
+   oculto (solo ocupa) y unas barras pintadas encima: al llegar solo cambia lo
+   que hay dentro, y las dos miden lo mismo porque tienen la misma estructura. */
+.cocina-propuesta[data-estado="reservado"] .sugg-main>*{visibility:hidden}
+.cocina-propuesta[data-estado="reservado"] .sugg-main{background:repeating-linear-gradient(to bottom,var(--border) 0 9px,transparent 9px 22px) 0 0/82% 100% no-repeat;animation:latir 1.6s ease-in-out infinite}
+.cocina-propuesta .btn-add:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.cocina:focus{outline:none}
+.cocina:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+/* A 320 px el texto parte en más líneas: las explicaciones reales llegan a 243 px. */
+@media (max-width:340px){.cocina-body{min-height:262px}}
+/* "Total a pagar · según cocina" es más largo: que se parta la etiqueta, no la cifra. */
+.res-total-val{white-space:nowrap;flex-shrink:0;margin-left:12px}
+.qr-pedido{min-height:24px;font-size:9px;font-family:'Inter',sans-serif;color:var(--muted-ink);text-align:center;word-break:break-all;line-height:1.35}
+
+/* A3 · La tarjeta responde a otra pregunta. Ya no "¿cuánto?" sino "¿qué tan
+   cerca me deja?". El pie tiene ALTURA FIJA y el mismo alto esté o no elegida
+   la tarjeta: es lo que garantiza que seleccionar no mueva ni un pixel. */
+/* Las dos filas llevan min-height FIJA y existen en todas las tarjetas, elegidas
+   o no. Esa es la garantía de que seleccionar no mueva un solo pixel: lo que
+   cambia es el contenido, nunca la caja. */
+.i-fit{min-height:15px;font-size:10px;font-family:'Inter',sans-serif;color:var(--muted-ink);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.i-fit.cierra{color:var(--green)}
+.i-foot{display:flex;align-items:center;justify-content:space-between;gap:6px;min-height:44px}
+/* Continuidad deliberada con .sz-rec: el mismo filete naranja de 2px que marcaba
+   "Recomendado" en las píldoras marca ahora el tamaño resuelto. */
+.i-size-val{flex:1;min-width:0;font-size:11px;letter-spacing:.5px;text-transform:uppercase;
+  font-family:'Inter',sans-serif;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  border-top:2px solid var(--accent);padding-top:5px}
+/* En la tarjeta no elegida el filete se apaga: el tamaño aún es una hipótesis. */
+.icard:not(.sel) .i-size-val{border-top-color:var(--border);color:var(--muted-ink)}
+/* Categoría al tope de módulos: la tarjeta no promete nada y lo dice. */
+.icard.tope{cursor:default}
+.icard.tope .i-photo,.icard.tope .i-body>*:not(.i-fit){opacity:.55}
+.icard.tope .i-fit{color:var(--muted-ink)}
+.icard.tope:hover{background:var(--bg)}
+.icard.tope:hover .i-img{transform:none}
+.qr-fallo{font-family:'Inter',sans-serif;font-size:10px;color:var(--muted-ink);padding:1rem;text-align:center}
+/* El número de porciones en negrita: "3 PORCIONES · 390 G" se lee de un vistazo. */
+.i-size-val b{font-weight:600}
+
+/* A6 · "Ajustar" — revelación progresiva. Quien no lo toque nunca sabrá que
+   existe; quien lo toque recupera el control completo. 44×44 reales. */
+.btn-ajustar{min-width:44px;min-height:44px;padding:0 9px;display:inline-flex;align-items:center;justify-content:center;
+  background:transparent;border:1px solid var(--border-strong);color:var(--muted-ink);
+  font-family:'Inter',sans-serif;font-size:12px;letter-spacing:.5px;cursor:pointer;flex-shrink:0;transition:background .2s,border-color .2s}
+.btn-ajustar:hover{background:var(--surface);border-color:var(--accent)}
+.btn-ajustar[aria-expanded="true"]{background:var(--text);border-color:var(--text);color:#fff}
+.btn-ajustar:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.icard:not(.sel) .btn-ajustar{visibility:hidden;pointer-events:none}
+/* `hidden` tiene que ganar al display:inline-flex del botón: en la tarjeta de un extra no hay nada que ajustar. */
+.btn-ajustar[hidden]{display:none}
+.icard:focus-visible{outline:2px solid var(--accent);outline-offset:-3px}
+.icard.tope:focus-visible{outline-color:var(--border-strong)}
+
+/* A5 · La línea de porqué. Convierte el control que se quitó en inteligencia
+   percibida en vez de en pérdida de control. */
+.porque{font-family:'Inter',sans-serif;font-size:11px;line-height:1.45;color:var(--muted-ink);
+  padding:6px 0 0;display:flex;gap:6px;align-items:baseline}
+.porque::before{content:'';flex:0 0 14px;height:2px;background:var(--accent);transform:translateY(-4px)}
+.porque:empty{display:none}
+
+/* ═══ GRASAS CUBIERTAS · aviso del paso de grasa saludable ═══
+   Nace con el paso (nunca se inserta a mitad: no hay salto) y solo cambia su
+   texto al elegir o quitar una grasa. Título y texto reservan altura para que
+   el cambio de estado tampoco mueva nada. Solo se anima opacity. */
+.nudge{border:1px solid var(--accent);background:var(--accent-soft);padding:1rem 1.25rem;margin-bottom:1.5rem}
+.nudge-hd{margin-bottom:.6rem}
+.nudge-title{font-size:16px;line-height:1.3;min-height:calc(16px * 1.3);margin-bottom:.4rem;color:var(--text)}
+.nudge-text{font-family:'Inter',sans-serif;font-size:12px;line-height:1.55;min-height:calc(12px * 1.55 * 2);color:var(--muted-ink);margin-bottom:.75rem}
+.nudge-title,.nudge-text{transition:opacity .18s ease-out}
+.nudge-btn{min-height:44px;display:inline-flex;align-items:center}
+.nudge-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* A 375 px el título parte en dos líneas y el texto en cuatro; a 320, en cinco. */
+@media (max-width:560px){.nudge-title{min-height:calc(16px * 1.3 * 2)}.nudge-text{min-height:calc(12px * 1.55 * 4)}}
+@media (max-width:340px){.nudge-text{min-height:calc(12px * 1.55 * 5)}}
+
+/* A4 · El recálculo tiene que verse, o la app parece hacer cosas a espaldas del
+   usuario. Solo opacity y transform: nunca width ni height. */
+.i-price,.i-size-val,.i-fit{transition:opacity .18s ease-out}
+.recalc{animation:pulseBorder .3s ease-out}
+@keyframes pulseBorder{
+  0%{box-shadow:inset 0 0 0 0 var(--accent)}
+  40%{box-shadow:inset 0 0 0 2px var(--accent)}
+  100%{box-shadow:inset 0 0 0 0 var(--accent)}
+}
+/* Enumerar selectores dejaba fuera todo lo preexistente: el check al seleccionar,
+   la entrada de pantalla, los puntos del stepper y las propias barras de macros
+   seguían moviéndose con reduce activo. Se apaga TODO y luego se exceptúa nada. */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+    scroll-behavior:auto!important;
+  }
+  .icard:hover .i-img{transform:none}
 }
