@@ -12,7 +12,10 @@
 // ═════════════════════════════════════════════════════════════════════════════
 
 export const COCINA_URL = 'https://n8n.srv1683942.hstgr.cloud/webhook/cosecha-plato';
-export const COCINA_TIMEOUT_MS = 8000;
+// 15 s, no 8: medido el 18-sep-2026 desde el navegador, cocina tarda 4,5–6,1 s
+// (n8n 3,6–5,4 s, el agente 1,6–3,4 s de eso) y el máximo visto el 17-sep fue 7,6 s.
+// Con 8 s un teléfono en Wi-Fi caía en "Sin confirmar" con el pedido YA registrado.
+export const COCINA_TIMEOUT_MS = 15000;
 
 // n8n devuelve los tamaños como etiqueta de la carta; la app trabaja con el factor.
 export const K_DE_ETIQUETA = { 'Pequeña': 0.5, 'Estándar': 1, 'Grande': 1.5, '2 porciones': 2, '3 porciones': 3, '4 porciones': 4 };
