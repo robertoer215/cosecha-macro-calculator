@@ -35,6 +35,24 @@ const CAT = { P: 'proteína', C: 'carbohidrato', V: 'vegetal', G: 'grasa' };
 Object.entries(porCat).forEach(([c, n]) => { if (n > 2) err.push(`seleccion: ${n} módulos de ${CAT[c] || c}; el máximo son 2 por categoría`); });
 const sin = ((body.restricciones || {}).sin || []).map(x => String(x).toLowerCase().trim()).filter(Boolean);
 
+// ── de dónde sale la meta ──
+// Los macros llegan SIEMPRE por comida; lo que cambia es quién los puso: la
+// fórmula con el perfil del cliente, o el cliente mismo (por comida o para todo
+// el día repartido en `comidas`). Opcionales: sin ellos se asume la fórmula, que
+// es lo que mandaba la app antes de este campo.
+const ORIGENES = ['formula', 'manual_comida', 'manual_dia'];
+let metaOrigen = 'formula';
+if (body.meta_origen != null) {
+  if (typeof body.meta_origen !== 'string' || !ORIGENES.includes(body.meta_origen)) err.push(`meta_origen: debe ser ${ORIGENES.join(', ')}`);
+  else metaOrigen = body.meta_origen;
+}
+let comidas = null;
+if (body.comidas != null) {
+  const c = Number(body.comidas);
+  if (!Number.isInteger(c) || c < 1 || c > 8) err.push('comidas: debe ser un entero entre 1 y 8');
+  else comidas = c;
+}
+
 // ── el upsell: la app REPITE la llamada al aceptar la propuesta de cierre ──
 // Dos campos opcionales, pero si vienen se comprueban: el flag tiene que ser un
 // booleano de verdad (ni "true" ni 1) y el pedido previo, un id con la forma que
@@ -57,6 +75,8 @@ return [{ json: {
   ok: err.length === 0,
   errores: err,
   meta, seleccion, sin,
+  meta_origen: metaOrigen,
+  comidas,
   upsell_aceptado: upsellAceptado,
   pedido_id_previo: pedidoPrevio,
   // id de pedido determinista por contenido + hora, sin Math.random

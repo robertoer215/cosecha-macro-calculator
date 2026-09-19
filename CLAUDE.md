@@ -105,6 +105,9 @@ n8n: aquí no se redacta nada) y propone (`propuesta_cierre`).
   cocina", con el QR y el ticket intactos; reabrir el resumen reintenta.
 - El QR lleva el `pedido_id` como última línea y TODO el texto se filtra a ASCII
   (la hora local puede traer U+202F). `#qr-pedido` lo muestra en el ticket.
+- El pedido lleva `meta_origen` (`formula` | `manual_comida` | `manual_dia`, de
+  `origenMeta()`) y `comidas`: cocina recibe siempre macros por comida y con esto
+  sabe quién los puso; el agente no atribuye a la app una meta que trajo el cliente.
 - Latencia real desde el navegador: mediana ≈ 5 s, máximo visto 7,6 s. El timeout
   pasó de 8 a 15 s el 18-sep-2026: con 8 s un pico normal de n8n (o un teléfono en
   Wi-Fi) se pintaba "Sin confirmar" con el pedido ya registrado en la hoja.

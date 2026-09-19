@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { armarPedido, clavePedido, compararConCocina, llamarCocina, normalizarRespuesta, K_DE_ETIQUETA } from '../js/cocina.js';
+import { armarPedido, clavePedido, compararConCocina, llamarCocina, normalizarRespuesta, origenMeta, K_DE_ETIQUETA } from '../js/cocina.js';
+import { calcularMeta, metaManualComida, metaManualTotal } from '../js/calc.js';
 
 const meta = { kcal: 744, prot: 45, carb: 96, gras: 20, comidas: 3, objetivo: 'manual' };
 const lineas = [
@@ -12,12 +13,31 @@ const local = { lineas, total: 233, macros: { kcal: 702, prot: 41, carb: 89, gra
 const lineaCocina = l => ({ id: l.id, nombre: l.nombre, tamano: Object.keys(K_DE_ETIQUETA).find(k => K_DE_ETIQUETA[k] === l.tamano), g: l.g, macros: l.macros, precio: l.precio });
 const respuestaIgual = () => ({ pedido_id: 'PED-20260917120000-P01C01G01', lineas: lineas.map(lineaCocina), macros_totales: { ...local.macros }, total: 233, coincide_con_la_app: true, rechazados: [] });
 
-test('armarPedido sigue el contrato: solo los cuatro macros, sin vacío y tamaño en cada línea', () => {
+test('armarPedido sigue el contrato: los cuatro macros, el origen de la meta, sin vacío y tamaño en cada línea', () => {
   const p = armarPedido(meta, lineas);
   assert.deepEqual(Object.keys(p.macros_objetivo), ['kcal', 'prot', 'carb', 'gras']);
   assert.deepEqual(p.restricciones, { sin: [] });
   assert.deepEqual(p.seleccion, [{ id: 'P01', tamano: 1 }, { id: 'C01', tamano: 3 }, { id: 'G01', tamano: 1 }]);
+  assert.equal(p.meta_origen, 'manual_dia');   // objetivo 'manual' con 3 comidas
+  assert.equal(p.comidas, 3);
   assert.equal('upsell_aceptado' in p, false);
+});
+
+test('la meta viaja con su origen: fórmula, manual por comida o manual por día', () => {
+  const formula = calcularMeta({ sexo: 'masculino', edad: 28, peso: 75, altura: 175, comidas: 4, objetivo: 'mantener', actividad: 'moderado' });
+  assert.equal(origenMeta(formula), 'formula');
+  assert.equal(armarPedido(formula, lineas).comidas, 4);
+  const comida = metaManualComida({ prot: 45, carb: 60, gras: 20 });
+  assert.equal(origenMeta(comida), 'manual_comida');
+  assert.equal(armarPedido(comida, lineas).comidas, 1);
+  const dia = metaManualTotal({ protTotal: 150, carbTotal: 200, grasTotal: 65, comidas: 3 });
+  assert.equal(origenMeta(dia), 'manual_dia');
+  const p = armarPedido(dia, lineas);
+  assert.equal(p.comidas, 3);
+  // Lo que cocina recibe son siempre macros POR COMIDA, ya repartidos.
+  assert.deepEqual(p.macros_objetivo, { kcal: dia.kcal, prot: 50, carb: 67, gras: 22 });
+  // El origen no cambia la clave del plato: misma meta y misma selección, mismo pedido.
+  assert.equal(clavePedido(armarPedido(dia, lineas)), clavePedido(armarPedido({ ...dia, objetivo: 'mantener' }, lineas)));
 });
 
 test('el upsell aceptado añade sus dos campos sin cambiar la clave del plato', () => {

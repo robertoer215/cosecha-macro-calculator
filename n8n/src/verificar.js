@@ -45,6 +45,8 @@ if (d.propuesta_cierre) {
 
 // El umbral (±4 g) también viaja al modelo y es una cifra del cálculo.
 add(4);
+// El número de comidas del cliente ("de tus 3 comidas") también es legítimo.
+add(d.comidas);
 // "230,400" es un separador de miles, no un decimal: se normaliza antes de comparar.
 const citados = (bruto.match(/\d{1,3}(?:,\d{3})+(?![\d,])|\d+(?:[.,]\d+)?/g) || [])
   .map(s => (/^\d{1,3}(?:,\d{3})+$/.test(s) ? s.replace(/,/g, '') : s.replace(',', '.')));
@@ -71,7 +73,12 @@ if (d.propuesta_cierre) {
   }
   if (reemplazo) motivosRechazo.push('describe la propuesta como un reemplazo');
 }
-if (/\b(vos|pod[eé]s|ten[eé]s|quer[eé]s|lleg[aá]s|sum[aá]s|decid[ií]s|and[aá]s|sab[eé]s|ven[ií]s|eleg[ií]s|hac[eé]s)\b/i.test(bruto)) motivosRechazo.push('voseo');
+// Voseo. La lista de verbos se quedaba corta: "Pagás 228 MXN" pasó en vivo el
+// 19-sep-2026. Ahora, además, cualquier palabra terminada en -ás/-és/-ís que no
+// sea una de las pocas legítimas del español ("además", "estás", "después"…).
+const LEGITIMAS = new Set(['además', 'jamás', 'quizás', 'detrás', 'atrás', 'demás', 'compás', 'estás', 'después', 'través', 'interés', 'revés', 'francés', 'inglés', 'país', 'maíz', 'raíz', 'anís', 'cortés', 'marqués', 'estrés', 'ciprés', 'veintitrés', 'veintiséis', 'dieciséis', 'autobús']);
+const vosGenerico = (bruto.match(/[a-záéíóúñ]+(?:ás|és|ís)\b/gi) || []).map(w => w.toLowerCase()).filter(w => !LEGITIMAS.has(w));
+if (/\b(vos|pod[eé]s|ten[eé]s|quer[eé]s|lleg[aá]s|sum[aá]s|decid[ií]s|and[aá]s|sab[eé]s|ven[ií]s|eleg[ií]s|hac[eé]s)\b/i.test(bruto) || vosGenerico.length) motivosRechazo.push('voseo');
 if (bruto.split(/[.!?]+\s/).filter(x => x.trim()).length > 3) motivosRechazo.push('más de tres frases');
 
 // Explicación de respaldo, escrita en código a partir de los mismos números.
