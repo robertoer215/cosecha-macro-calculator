@@ -20,6 +20,16 @@ export const COCINA_TIMEOUT_MS = 15000;
 // n8n devuelve los tamaños como etiqueta de la carta; la app trabaja con el factor.
 export const K_DE_ETIQUETA = { 'Pequeña': 0.5, 'Estándar': 1, 'Grande': 1.5, '2 porciones': 2, '3 porciones': 3, '4 porciones': 4 };
 
+// De dónde sale la meta. Cocina recibe siempre macros POR COMIDA, vengan de la
+// fórmula o de "Ingresar mis macros"; lo que necesita saber es quién los puso,
+// para que el agente hable bien (los del cliente no se cuestionan ni se
+// atribuyen a la app) y para que quede registrado. `comidas` acompaña: en
+// manual_comida es 1 (la meta ya venía por comida, sin repartir).
+export function origenMeta(meta) {
+  if (meta.objetivo !== 'manual') return 'formula';
+  return meta.comidas === 1 ? 'manual_comida' : 'manual_dia';
+}
+
 // El pedido, con el contrato del webhook. `lineas` van en el orden en que el
 // cliente las ve (pasos + extras) y SIEMPRE con tamaño: así cocina no tiene
 // que adivinar nada y `coincide_con_la_app` deja de ser null.
@@ -27,6 +37,8 @@ export const K_DE_ETIQUETA = { 'Pequeña': 0.5, 'Estándar': 1, 'Grande': 1.5, '
 export function armarPedido(meta, lineas, extra = {}) {
   return {
     macros_objetivo: { kcal: meta.kcal, prot: meta.prot, carb: meta.carb, gras: meta.gras },
+    meta_origen: origenMeta(meta),
+    comidas: meta.comidas,
     restricciones: { sin: [] },
     seleccion: lineas.map(l => ({ id: l.id, tamano: l.tamano })),
     ...extra

@@ -10,6 +10,23 @@ Desde el 17-sep-2026 la llamada la hace la app de verdad (`js/cocina.js` +
 `goResumen()` en `js/app.js`, ver CLAUDE.md): manda todas las líneas con su
 tamaño, pinta el resumen local sin esperar y aplica la respuesta al llegar.
 
+## De dónde sale la meta (19-sep-2026)
+
+Los macros objetivo llegan **siempre por comida**, vengan de la fórmula o de
+"Ingresar mis macros" (por comida, o total del día que la app ya reparte). Lo que
+el flujo no sabía era quién los puso. Dos campos opcionales en el cuerpo:
+
+| campo | valores | si falta |
+|---|---|---|
+| `meta_origen` | `formula` · `manual_comida` · `manual_dia` | `formula` (lo que mandaba la app antes) |
+| `comidas` | entero 1–8 (en `manual_comida` es 1: la meta ya venía por comida) | vacío |
+
+El agente los recibe como `meta_origen` y `comidas_al_dia` con la instrucción de
+que, si la meta es del cliente, la llame "tus macros" o "tu plan", nunca diga que
+la app la calculó, no la cuestione y no mencione peso, edad ni objetivo (no los
+conoce). El auditor admite el número de comidas como cifra legítima. Se registran
+en las columnas AA `meta_origen` y AB `comidas` de la hoja de Pedidos.
+
 ## El upsell que se acepta, se registra
 
 Cuando el cliente pulsa "+ Añadir" en la propuesta de cierre, la app añade el

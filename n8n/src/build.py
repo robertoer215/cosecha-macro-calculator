@@ -37,6 +37,12 @@ SYS = (
  'AUTORIA: si un tamano viene en tamanos_fijados_por_el_cliente, lo fijo EL CLIENTE, no el\n'
  'sistema: no digas que el sistema lo eligio ni por que. Si el_sistema_eligio_algun_tamano es\n'
  'false, el sistema no eligio nada. No menciones cuantas combinaciones se evaluaron.\n\n'
+ 'ORIGEN DE LA META: meta_origen dice de donde salen los macros objetivo. Si es "formula", los\n'
+ 'calculo la app con el perfil del cliente y puedes llamarlos "tu meta". Si es "manual_comida" o\n'
+ '"manual_dia", los trajo EL CLIENTE (de su nutriologo o de su plan): por comida, o para todo el\n'
+ 'dia repartido en comidas_al_dia comidas. Entonces llamalos "tus macros" o "tu plan", NUNCA digas\n'
+ 'que la app los calculo, no los cuestiones ni sugieras cambiarlos, y no menciones peso, edad,\n'
+ 'actividad ni objetivo, porque no los conoces.\n\n'
  'PROPUESTA DE CIERRE: si existe, describela SOLO parafraseando propuesta_cierre.descripcion,\n'
  'que ya dice que se anade, que aporta, que otras lineas cambian de tamano y cuanto cuesta. La\n'
  'propuesta siempre ANADE un modulo; NUNCA digas "en lugar de", "reemplazar", "cambiar X por Y"\n'
@@ -56,16 +62,19 @@ AGENT_TEXT = ('={{ JSON.stringify({ objetivo: $json.meta, restricciones_sin: $js
               'lineas: $json.lineas.map(l => ({ id: l.id, nombre: l.nombre, tamano: l.tamano, g: l.g, precio: l.precio })), '
               'macros_totales: $json.macros_totales, desviacion: $json.desviacion, '
               'dentro_de_umbral: $json.dentro_de_umbral, total_mxn: $json.total, '
+              'meta_origen: $json.meta_origen, comidas_al_dia: $json.comidas, '
               'tamanos_fijados_por_el_cliente: $json.seleccion.filter(s => s.tamano != null).map(s => s.id + "=" + s.tamano), '
               'el_sistema_eligio_algun_tamano: $json.combinaciones_evaluadas > 1, '
               'propuesta_cierre: $json.propuesta_cierre, motivo_sin_propuesta: $json.motivo_sin_propuesta, '
               'modulos_rechazados: $json.rechazados, umbral_g: 4 }) }}')
 
-# Una fila por llamada en la hoja de Pedidos, columnas A..Z en este orden:
+# Una fila por llamada en la hoja de Pedidos, columnas A..AB en este orden:
 #   timestamp, pedido_id, kcal/prot/carb/gras objetivo, restricciones, seleccion,
 #   tamanos, lineas, g_totales, kcal/prot/carb/gras total, desv prot/carb/gras,
 #   dentro_de_umbral, coincide_con_la_app, propuesta_cierre, upsell_aceptado,
-#   total_mxn, explicacion, ms, pedido_id_previo.
+#   total_mxn, explicacion, ms, pedido_id_previo, meta_origen, comidas.
+# meta_origen y comidas (AA, AB; cabecera escrita el 19-sep-2026 con un flujo
+# temporal): de dónde salió la meta (formula | manual_comida | manual_dia).
 # upsell_aceptado y pedido_id_previo vienen del cuerpo (Validar entrada): la app
 # repite la llamada al aceptar la propuesta, con el flag en true y el id del
 # pedido al que responde. Antes se escribía `false` fijo.
@@ -79,7 +88,8 @@ REG = ("={{ JSON.stringify({ values: [[ new Date().toISOString(), $json.pedido_i
   "$json.coincide_con_la_app, $json.propuesta_cierre ? $json.propuesta_cierre.id : '', "
   "$('Resolver plato').first().json.upsell_aceptado === true, "
   "$json.total, $json.explicacion, $json.auditoria.ms, "
-  "$('Resolver plato').first().json.pedido_id_previo || '' ]] }) }}")
+  "$('Resolver plato').first().json.pedido_id_previo || '', "
+  "$('Resolver plato').first().json.meta_origen || 'formula', $('Resolver plato').first().json.comidas ?? '' ]] }) }}")
 
 nodes = []
 nodes.append({'id':'wh','name':'Webhook · plato','type':'n8n-nodes-base.webhook','typeVersion':2.1,
@@ -124,7 +134,7 @@ nodes.append(code('Verificar y armar','verificar.js',700,300))
 nodes.append({'id':'registrar','name':'Registrar en Sheets','type':'n8n-nodes-base.httpRequest',
   'typeVersion':4.2,'position':[920,300],
   'parameters':{'method':'POST',
-    'url':'https://sheets.googleapis.com/v4/spreadsheets/'+PED+'/values/A1:Z1:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS',
+    'url':'https://sheets.googleapis.com/v4/spreadsheets/'+PED+'/values/A1:AB1:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS',
     'authentication':'predefinedCredentialType','nodeCredentialType':'googleSheetsOAuth2Api',
     'sendBody':True,'specifyBody':'json','jsonBody':REG,'options':{'timeout':8000}},
   'credentials':GS,'onError':'continueRegularOutput'})
