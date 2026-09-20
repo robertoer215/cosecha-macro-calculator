@@ -313,7 +313,8 @@ test('el tamaño se nombra con su etiqueta de la carta, en mayúscula', () => {
     const ex = explicarCambio(porcionar(base, meta), porcionar(con, meta), con, meta);
     if (!ex) continue;
     visto++;
-    assert.ok(/ a (Pequeña|Estándar|Grande)\b/.test(ex.texto), `etiqueta mal escrita: ${ex.texto}`);
+    // Etiqueta de la carta tal cual: con mayúscula si es una pieza, o "N porciones( y media)" si es compuesta.
+    assert.ok(/ a (Pequeña|Estándar|Grande|\d porciones( y media)?)\b/.test(ex.texto), `etiqueta mal escrita: ${ex.texto}`);
     assert.ok(!/ a (pequeña|estándar|grande)\b/.test(ex.texto), `minúscula indebida: ${ex.texto}`);
   }
   assert.ok(visto > 0, 'ningún caso produjo línea: el test no prueba nada');
@@ -432,12 +433,25 @@ test('una meta alta de carbohidratos se cierra repitiendo el mismo módulo', () 
   assert.ok(libre.coste <= capado.coste + 1e-9, 'ampliar el dominio nunca puede empeorar el óptimo');
 });
 
-test('a partir de 2 porciones el precio es exactamente N veces la Estándar', () => {
+test('a partir de 2 porciones el precio es la suma de las piezas: N Estándar, más una Pequeña si hay media', () => {
   for (const it of ING) {
-    for (const k of [2, 3, 4]) assert.equal(precio(it, k), k * precio(it, 1), `${it.id} ×${k}`);
-    // y los tres tamaños de siempre escalan la base de la banda, con ceil
-    for (const f of [0.5, 1, 1.5]) assert.equal(precio(it, f), Math.ceil(precioBase(it) * f), `${it.id} ×${f}`);
+    for (const n of [2, 3, 4]) if (tamanosPermitidos(it).includes(n)) assert.equal(precio(it, n), n * precio(it, 1), `${it.id} ×${n}`);
+    for (const h of [2.5, 3.5]) if (tamanosPermitidos(it).includes(h)) {
+      assert.equal(precio(it, h), Math.floor(h) * precio(it, 1) + precio(it, 0.5), `${it.id} ×${h}`);
+      assert.ok(Number.isInteger(precio(it, h)), `${it.id} ×${h}: el precio tiene que ser entero`);
+    }
   }
+});
+
+test('los medios pasos existen donde el tope los permite y el motor los usa cuando cierran mejor', () => {
+  assert.deepEqual(tamanosPermitidos(id('C01')), [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4]);
+  assert.deepEqual(tamanosPermitidos(id('P01')), [0.5, 1, 1.5, 2, 2.5, 3]);
+  assert.deepEqual(tamanosPermitidos(id('V01')), [0.5, 1, 1.5, 2]);
+  assert.deepEqual(tamanosPermitidos(id('G01')), [0.5, 1, 1.5, 2]);
+  // 2,5 raciones de arroz son 70 g de carbohidrato: con meta 70 el motor debe elegirlas.
+  const r = porcionar([id('C01')], { prot: 8, carb: 70, gras: 7 });
+  assert.equal(r.tamanos.C01, 2.5);
+  assert.equal(r.macros.carb, 70);
 });
 
 test('la línea de porqué habla de porciones cuando el tamaño pasa de Grande', () => {

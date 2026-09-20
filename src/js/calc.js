@@ -24,9 +24,14 @@ export function precioBase(it) {
 }
 
 export function precio(it, f = 1) {
-  // A partir de 2 porciones cada una cuesta lo que la Estándar: es lo que espera
-  // quien pide "tres de camote". Pequeña, Estándar y Grande escalan la base.
-  if (f >= 2) return f * precio(it, 1);
+  // A partir de 2 porciones el precio es la SUMA de las piezas que vende cocina:
+  // N Estándar, más una Pequeña si hay media ración ("2 porciones y media" = 2
+  // Estándar + 1 Pequeña). Es lo que espera quien pide "tres de camote" y lo que
+  // cobra caja pieza a pieza. Pequeña, Estándar y Grande escalan la base.
+  if (f >= 2) {
+    const n = Math.floor(f);
+    return n * precio(it, 1) + (f - n > 0 ? precio(it, 0.5) : 0);
+  }
   return Math.ceil(precioBase(it) * f);
 }
 export function mac(it, f = 1) {

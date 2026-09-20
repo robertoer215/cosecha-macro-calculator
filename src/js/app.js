@@ -266,7 +266,8 @@ const MACRO_CORTO = { prot: 'proteína', carb: 'carbos', gras: 'grasas' };
 function etiquetaTamano(k) {
   const sv = SIZES.find(s => s.k === k);
   if (!sv) return 'Estándar';
-  return k >= 2 ? `<b>${k}</b> porciones` : sv.l;
+  // "2½ porciones": el entero y la media en negrita, que es lo que hay que leer.
+  return k >= 2 ? `<b>${Math.floor(k)}${k % 1 ? '½' : ''}</b> porciones` : sv.l;
 }
 
 // "¿Qué tan cerca me deja?" — el macro que quedaría MÁS lejos de la meta, que es
@@ -755,7 +756,7 @@ function renderSugg() {
         <div class="sugg-name">${s.it.nombre}</div>
         <div class="sugg-why">${s.why}</div>
         <div class="sugg-controls">
-          <div class="sugg-sizes">${SIZES.filter(sv=>sv.k<=1.5).map(sv=>`<div class="ss-pill${sz===sv.k?' ss-on':''}" onclick="setSzE('${s.it.id}',${sv.k})">${sv.l}</div>`).join('')}</div>
+          <div class="sugg-sizes" role="group" aria-label="Tamaño de ${s.it.nombre}">${tamanosPermitidos(s.it).map(k=>{const sv=SIZES.find(x=>x.k===k);return `<div class="ss-pill${sz===k?' ss-on':''}" role="button" tabindex="0" aria-pressed="${sz===k}" aria-label="${sv.l}, ${mac(s.it,k).g} gramos" onclick="setSzE('${s.it.id}',${k})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();setSzE('${s.it.id}',${k});}">${sv.c||sv.l}</div>`;}).join('')}</div>
           <div class="sugg-price">$${pr}</div>
           <button class="btn-add ${isOn?'on':'off'}" onclick="toggleE('${s.it.id}')">${isOn?'Quitar':'+ Agregar'}</button>
         </div>
@@ -796,8 +797,10 @@ function buildQRText() {
 
 function buildQRInstructions() {
   const inst=[];
-  CATS.forEach(cat=>{ (selBase[cat]||[]).forEach(id=>{ const it=ING.find(i=>i.id===id);const sz=szBase[id]||1,m=mac(it,sz);inst.push({cat:CAT_LABEL[cat],name:it.nombre,g:m.g,sz:SIZES.find(s=>s.k===sz).l.toLowerCase(),isExtra:false}); }); });
-  Object.keys(selExtra).forEach(id=>{ const it=ING.find(i=>i.id===id);const sz=szExtra[id]||1,m=mac(it,sz);inst.push({cat:CAT_LABEL[it.cat],name:it.nombre,g:m.g,sz:SIZES.find(s=>s.k===sz).l.toLowerCase(),isExtra:true}); });
+  // `cocina` dice cómo se emplata un tamaño compuesto ("2 Estándar + 1 Pequeña").
+  const etqCocina = sz => { const s = SIZES.find(x => x.k === sz); return s.l.toLowerCase() + (s.cocina ? ` (${s.cocina})` : ''); };
+  CATS.forEach(cat=>{ (selBase[cat]||[]).forEach(id=>{ const it=ING.find(i=>i.id===id);const sz=szBase[id]||1,m=mac(it,sz);inst.push({cat:CAT_LABEL[cat],name:it.nombre,g:m.g,sz:etqCocina(sz),isExtra:false}); }); });
+  Object.keys(selExtra).forEach(id=>{ const it=ING.find(i=>i.id===id);const sz=szExtra[id]||1,m=mac(it,sz);inst.push({cat:CAT_LABEL[it.cat],name:it.nombre,g:m.g,sz:etqCocina(sz),isExtra:true}); });
   return inst;
 }
 

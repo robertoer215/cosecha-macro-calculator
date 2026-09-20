@@ -122,11 +122,16 @@ n8n: aquí no se redacta nada) y propone (`propuesta_cierre`).
   dejaba food cost 61 % y vendía 7 de 13 módulos por debajo de coste. Resultado:
   proteínas $144 / $168 / $173 (antes $24 / $80 / $82), plato medio $231 (el
   modelo v2 dice $233). El catálogo de n8n (Sheets) lleva estos mismos precios.
-- Tamaños: Pequeña 0.5, Estándar 1, Grande 1.5, y a partir de ahí PORCIONES
-  MÚLTIPLES del mismo módulo (×2, ×3, ×4 = raciones Estándar repetidas), con tope
+- Tamaños: cocina vende TRES piezas (Pequeña 0.5, Estándar 1, Grande 1.5) y a partir
+  de 2 el módulo se COMPONE con ellas en medios pasos (×2, ×2½, ×3, ×3½, ×4; el
+  campo `cocina` de SIZES dice cómo se emplata: "2 Estándar + 1 Pequeña"), con tope
   por categoría en MAX_PORCIONES (proteína 3, carbohidrato 4, vegetal 2, grasa 2).
-  Precio de 2+ porciones = N × precio Estándar (no la fórmula con ceil): es lo que
-  espera quien pide "tres de camote" y coincide con el catálogo de n8n.
+  Precio de 2+ porciones = SUMA de las piezas (N × Estándar + Pequeña si hay media):
+  es lo que espera quien pide "tres de camote" y coincide con el motor de n8n. Los
+  medios pasos (20-sep-2026) dan exactitud: de Grande se saltaba a 2 y de ahí a 3.
+- Los extras del paso 5 ofrecen TODOS los tamaños de la carta (antes solo hasta
+  Grande y entraban clavados: un arroz extra en Estándar dejaba 52 g de carbos de
+  menos aunque el motor hubiera querido ×4).
 - Las kcal de la meta (fórmula y manual-total) se DERIVAN de los macros por comida
   ya redondeados (4P+4C+9G): el panel siempre cuadra. Carbos = residuo, nunca <0;
   si quedan en 0 g/comida se muestra el aviso .meta-warn (flag ajusteCarb).

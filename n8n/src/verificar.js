@@ -28,7 +28,7 @@ const add = n => {
  d.desviacion.prot, d.desviacion.carb, d.desviacion.gras].forEach(add);
 // El número de porciones de cada línea ("3 porciones") también es una cifra que
 // el modelo puede citar con razón: sale de las herramientas tal cual.
-const K_DE = { 'Pequeña': 0.5, 'Estándar': 1, 'Grande': 1.5, '2 porciones': 2, '3 porciones': 3, '4 porciones': 4 };
+const K_DE = { 'Pequeña': 0.5, 'Estándar': 1, 'Grande': 1.5, '2 porciones': 2, '2 porciones y media': 2.5, '3 porciones': 3, '3 porciones y media': 3.5, '4 porciones': 4 };
 (d.lineas || []).forEach(l => { add(l.g); add(l.precio); Object.values(l.macros).forEach(add); if (K_DE[l.tamano] >= 2) add(K_DE[l.tamano]); });
 add(d.lineas ? d.lineas.length : null);
 // combinaciones_evaluadas también viaja al agente: es un número del cálculo, no inventado.
@@ -115,7 +115,7 @@ const respuesta = {
   coincide_con_la_app: (() => {
     const pedidos = d.seleccion.filter(s => s.tamano != null);
     if (!pedidos.length) return null;
-    const ETQ = { 0.5: 'Pequeña', 1: 'Estándar', 1.5: 'Grande', 2: '2 porciones', 3: '3 porciones', 4: '4 porciones' };
+    const ETQ = { 0.5: 'Pequeña', 1: 'Estándar', 1.5: 'Grande', 2: '2 porciones', 2.5: '2 porciones y media', 3: '3 porciones', 3.5: '3 porciones y media', 4: '4 porciones' };
     return pedidos.every(s => {
       const l = d.lineas.find(x => x.id === s.id);
       return l && l.tamano === ETQ[s.tamano];
