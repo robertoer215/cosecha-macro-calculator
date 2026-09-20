@@ -35,13 +35,20 @@ export const ING = [
   {cat:'vegetal',id:'V04',nombre:'Verduras tatemadas con cacahuate',g:120,kcal:90,prot:3,carb:10,gras:4,costoKg:49.24,img:'verduras-tatemadas.jpg',foco:'52% 47%'},
 ];
 export const IMG_DIR = 'assets/ingredientes/';
-// Los tres primeros son los tamaños de siempre. A partir de 2 el módulo se REPITE:
-// "3 porciones" son tres raciones Estándar del mismo módulo (3 × 130 g de camote),
-// que es como lo pide un cliente y como lo emplata cocina. `c` es la etiqueta corta
-// de las píldoras de "Ajustar"; la larga va en la tarjeta, el resumen y el ticket.
+// Cocina vende TRES piezas: Pequeña (½), Estándar (1) y Grande (1½). A partir de 2
+// el módulo se COMPONE con ellas en pasos de media ración: "3 porciones" son tres
+// Estándar, "2 porciones y media" son dos Estándar más una Pequeña (20-sep-2026:
+// antes solo había ×2, ×3 y ×4, y de Grande se saltaba a 2 y de 2 a 3 en pasos de
+// una ración entera; los medios pasos dan al porcionador más exactitud). `c` es la
+// etiqueta corta de las píldoras; la larga va en la tarjeta, el resumen y el ticket;
+// `cocina` es cómo se emplata, y de ahí sale también el precio (suma de piezas).
 export const SIZES = [
   {k:0.5,l:'Pequeña'},{k:1,l:'Estándar'},{k:1.5,l:'Grande'},
-  {k:2,l:'2 porciones',c:'×2'},{k:3,l:'3 porciones',c:'×3'},{k:4,l:'4 porciones',c:'×4'}
+  {k:2,  l:'2 porciones',        c:'×2',  cocina:'2 Estándar'},
+  {k:2.5,l:'2 porciones y media',c:'×2½', cocina:'2 Estándar + 1 Pequeña'},
+  {k:3,  l:'3 porciones',        c:'×3',  cocina:'3 Estándar'},
+  {k:3.5,l:'3 porciones y media',c:'×3½', cocina:'3 Estándar + 1 Pequeña'},
+  {k:4,  l:'4 porciones',        c:'×4',  cocina:'4 Estándar'}
 ];
 // Tope de porciones por categoría. Es una regla de producto, no del algoritmo:
 // cuatro raciones de camote son un plato; cuatro de salmón o de nueces, no. El

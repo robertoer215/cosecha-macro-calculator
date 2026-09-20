@@ -113,9 +113,12 @@ discrepancia queda registrada.
 
 ## Porciones múltiples
 
-`seleccion[].tamano` acepta `0.5 · 1 · 1.5 · 2 · 3 · 4`. A partir de 2 el módulo se
-repite ("3 porciones" = tres raciones Estándar) y **cuesta N × precio_estandar**
-del catálogo, la misma regla que la app. Cada categoría tiene tope de porciones
+`seleccion[].tamano` acepta `0.5 · 1 · 1.5 · 2 · 2.5 · 3 · 3.5 · 4`. Cocina vende tres
+piezas (Pequeña, Estándar, Grande) y a partir de 2 el módulo se COMPONE con ellas en
+medios pasos: "3 porciones" = tres Estándar, "2 porciones y media" = dos Estándar +
+una Pequeña, y **cuesta la suma de las piezas** (N × precio_estandar + precio_pequena
+si hay media), la misma regla que la app. Los medios pasos (20-sep-2026) existen
+porque de Grande se saltaba a 2 y luego a 3 y 4 en raciones enteras. Cada categoría tiene tope de porciones
 (proteína 3, carbohidrato 4, vegetal 2, grasa 2): un tamaño por encima no se
 clava en silencio, va a `rechazados` con su motivo y el módulo se resuelve
 automáticamente. Sin `tamano`, el porcionador decide dentro del tope. Y hay tope

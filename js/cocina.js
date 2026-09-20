@@ -18,7 +18,7 @@ export const COCINA_URL = 'https://n8n.srv1683942.hstgr.cloud/webhook/cosecha-pl
 export const COCINA_TIMEOUT_MS = 15000;
 
 // n8n devuelve los tamaños como etiqueta de la carta; la app trabaja con el factor.
-export const K_DE_ETIQUETA = { 'Pequeña': 0.5, 'Estándar': 1, 'Grande': 1.5, '2 porciones': 2, '3 porciones': 3, '4 porciones': 4 };
+export const K_DE_ETIQUETA = { 'Pequeña': 0.5, 'Estándar': 1, 'Grande': 1.5, '2 porciones': 2, '2 porciones y media': 2.5, '3 porciones': 3, '3 porciones y media': 3.5, '4 porciones': 4 };
 
 // De dónde sale la meta. Cocina recibe siempre macros POR COMIDA, vengan de la
 // fórmula o de "Ingresar mis macros"; lo que necesita saber es quién los puso,
